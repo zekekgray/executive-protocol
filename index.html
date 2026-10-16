@@ -44,6 +44,8 @@ button.sm:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 pre{white-space:pre-wrap;word-break:break-word;font:12px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border-radius:10px;padding:12px;max-height:50vh;overflow:auto;margin:10px 0 0}
 .note{color:var(--mute);font-size:12px;margin-top:18px;line-height:1.5}
 input[type=file]{display:none}
+#sp,#sp2,#sp3,#sp4{max-height:160px}
+button.sm:disabled{opacity:.5;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -57,6 +59,27 @@ input[type=file]{display:none}
     <h1>ArtiByte Executive Protocol</h1>
     <button class="sm p" id="add">Add files</button>
   </div>
+
+  <div class="f"><h2>System prompt</h2>
+    <div class="meta">Copy as-is, then paste as the first message to the LLM.</div>
+    <div class="row"><button class="sm p" id="cp">Copy system prompt</button></div>
+    <pre id="sp"></pre></div>
+
+  <div class="f"><h2>Protocol core</h2>
+    <div class="meta">Partial: Parts 1–3 only. Copy as-is, then paste after the system prompt.</div>
+    <div class="row"><button class="sm p" id="cp3">Copy protocol core</button></div>
+    <pre id="sp3"></pre></div>
+
+  <div class="f"><h2>Configuration record</h2>
+    <div class="meta">config-ISSUE.md. Copy as-is, then paste after the protocol core.</div>
+    <div class="row"><button class="sm p" id="cp4">Copy configuration record</button></div>
+    <pre id="sp4"></pre></div>
+
+  <div class="f"><h2>Operating record</h2>
+    <div class="meta">Copy as-is, then paste after the system prompt.</div>
+    <div class="row"><button class="sm p" id="cp2">Copy operating record</button></div>
+    <pre id="sp2"></pre></div>
+
   <div class="drop" id="drop">Drop files here. Each file with the same name becomes a new version.</div>
   <div id="list"></div>
   <p class="note">Storage status: saved in this browser only. Not synced anywhere else. Download a version to keep a copy elsewhere.</p>
@@ -65,10 +88,8 @@ input[type=file]{display:none}
 
 <script>
 const KEY="artibyte-protocol-files-v1";
-const SLOTS=["system-prompt.md","protocol-v2.8.1.md","config-ISSUE.md","operating-record-ISSUE.md"];
 let db={};
 try{db=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){db={}}
-SLOTS.forEach(n=>{if(!db[n])db[n]=[]});
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){alert("Browser storage is full or blocked. Download your versions to keep them.")}};
 const $=id=>document.getElementById(id);
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -77,7 +98,7 @@ const kb=n=>n<1024?n+" B":(n/1024).toFixed(1)+" KB";
 let viewing=null;
 
 function render(){
-  $("list").innerHTML=Object.keys(db).map(name=>{
+  $("list").innerHTML=Object.keys(db).filter(n=>db[n].length).map(name=>{
     const vs=db[name];
     const last=vs[vs.length-1];
     const head=last?`v${last.v} · ${fmt(last.t)} · ${kb(last.size)}`:"No file yet. Add the first version.";
@@ -125,6 +146,387 @@ $("list").onclick=e=>{
     l.click();setTimeout(()=>URL.revokeObjectURL(l.href),1000);
   }
 };
+
+const SP=`You are operating under ArtiByte Protocol v2.8. You serve as the analytical operating system for [ENTITY NAME], a [entity type] in [jurisdiction].
+
+CORE RULES:
+1. Never fabricate evidence, testimonials, transactions, metrics, approvals, or outcomes.
+2. Never treat missing evidence as proof of nonexistence.
+3. Never report an action as completed until completion is confirmed.
+4. Apply equal evidence standards to the Founder, every agent, every decision, and yourself.
+5. Never claim legal authority, enforceability, or compliance without qualified legal review.
+6. Maintain seven independent state models: Decision, Approval, Execution, Documentation, Verification, Risk, Milestone.
+7. Distinguish CLAIMED from VERIFIED.
+8. Distinguish technical success from business outcome.
+9. Distinguish internal policy from corporate authority.
+10. Record dissent without suppressing it.
+
+EVIDENCE CLASSIFICATIONS:
+CLAIMED · NOT ESTABLISHED · UNVERIFIED · VERIFIED · DISPUTED · REJECTED · NOT APPLICABLE
+
+EXECUTION STATES:
+PROPOSED · PREPARED · SUBMITTED · CONFIRMED · VERIFIED · FAILED · UNKNOWN
+
+BEHAVIOR:
+- Apply the Decision Workflow (Understand → Analyze → Challenge → Deliberate → Decide → Approve → Execute → Verify → Preserve → Review).
+- Never claim persistence without confirmation.
+- Never claim an agent is operational when only its specification exists.
+- Report UNKNOWN when verification is unavailable.
+
+REFERENCE DOCUMENTS:
+- [protocol-v2.8.md](http://protocol-v2.8.md/) — full Protocol Core
+- config-ISSUE.md — organization-specific configuration
+- operating-record-ISSUE.md — current state
+
+When unsure, refer to the full protocol. If the protocol is silent, state that it is silent and do not invent a rule.
+
+Protocol, activate.`;
+
+const OR=`OPERATING RECORD
+================
+Entity: ISSUE
+Protocol Version: 2.8.0-draft
+Record Opened: 2025-10-16
+Last Updated: 2025-10-16
+Status: PARTIALLY POPULATED
+
+DECISION LOG
+------------
+D-20251016-001 Protocol v2.6 stress test conducted [LOGGED]
+D-20251016-002 Protocol v2.7 approved — Standalone Edition [LOGGED]
+D-20251016-003 Entity name confirmed: ISSUE [LOGGED]
+D-20251016-004 v2.8.0-draft accepted as working design document [LOGGED]
+
+APPROVAL RECORDS
+----------------
+A-20251016-001 v2.8.0-draft approval — Founder [OBTAINED]
+
+DISSENT RECORDS
+---------------
+[None recorded]
+
+EVIDENCE REGISTER
+-----------------
+E-20251016-001 Entity status: INCORPORATED — Registration Pending [CLAIMED]
+E-20251016-002 Entity name: ISSUE [VERIFIED]
+E-20251016-003 AI provider: DeepSeek [VERIFIED]
+
+RISK REGISTER
+-------------
+R-20251016-001 Registration pending — blocks contracts/banking/tax [ASSESSED]
+R-20251016-002 Currency not configured — revenue thresholds blocked [ASSESSED]
+R-20251016-003 No data sources registered — no revenue tracking [ASSESSED]
+R-20251016-004 No products registered — milestone engine dormant [ASSESSED]
+
+MILESTONE RECORDS
+-----------------
+Company Milestone: 1 — Corporate and Governance Readiness
+Status: IN PROGRESS
+Blocker: Registration pending
+Product Milestones: [None registered]
+
+EXECUTION LOGS
+--------------
+[None recorded]
+
+SESSION SNAPSHOTS
+-----------------
+SESSION-20251016-001 Protocol stress test [PREPARED]
+SESSION-20251016-002 Meta-session [PREPARED]
+SESSION-20251016-003 Three-question audit [PREPARED]
+SESSION-20251016-004 Long-term org design [PREPARED]
+SESSION-20251016-005 v2.7 approval + entity config [PREPARED]
+SESSION-20251016-006 Founder authority + decision log [PREPARED]
+SESSION-20251016-007 Multi-industry deployment [PREPARED]
+SESSION-20251016-008 v2.8 stress-test audit [PREPARED]
+SESSION-20251016-009 v2.8 approved [PREPARED]
+SESSION-20251016-010 Session closed [PREPARED]
+SESSION-20251016-011 Configuration Record opened [PREPARED]
+Persistence status: NOT CONFIRMED — no storage connected
+
+EXCEPTION REGISTER
+------------------
+[None recorded]
+
+AMENDMENT LOG
+-------------
+v2.8.0-draft Complete rebuild addressing v2.7 audit findings [2025-10-16]
+
+CONTINUITY DESIGNATION
+----------------------
+Primary contact: [NOT PROVIDED]
+Secondary contact: [NOT PROVIDED]
+Threshold: [NOT PROVIDED]
+Access handover: [NOT PROVIDED]`;
+
+function wireCopy(btnId,preId,text,label){
+  $(preId).textContent=text;
+  $(btnId).onclick=()=>{
+    const b=$(btnId),ok=()=>{b.textContent="Copied";setTimeout(()=>b.textContent=label,1600)};
+    const fb=()=>{const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();try{document.execCommand("copy");ok()}catch(e){b.textContent="Select the text and copy manually"}t.remove()};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,fb)}else fb();
+  };
+}
+wireCopy("cp","sp",SP,"Copy system prompt");
+const PC=`ArtiByte Protocol v2.8.1-draft — Complete Version
+Status: DRAFT — NOT YET VERIFIED, TESTED, ADOPTED, OR DEPLOYED
+Version: 2.8.1-draft
+Supersedes: v2.8.0-draft (corrects omission of agent roster, activation commands, operating cadence, and adaptation layer)
+Source: v2.8.0-draft + v2.7 missing parts
+Change class: Defect correction — restores omitted components
+Approval: PENDING — awaiting Founder approval of v2.8.1
+
+DOCUMENT STATUS NOTICE
+This document is a design draft. It has not been:
+• Implemented in any technical system
+• Tested against the mandatory stress-test suite
+• Reviewed by qualified legal, accounting, or compliance counsel
+• Adopted by any organization (beyond design acceptance)
+• Deployed in any production environment
+• Connected to any working infrastructure
+Any organization considering adoption must complete the implementation and change-management procedures in Part 17 before relying on this protocol for material decisions. The protocol must never claim that implementation, adoption, legal review, deployment, or testing has occurred unless evidence establishes it.
+
+VERSION HISTORY
+2.6 — Session Snapshot Protocol (Part XXXV)
+2.7 — Standalone Edition — external adoption, configurable, deployable
+2.8.0-draft — Complete rebuild addressing v2.7 audit findings
+2.8.1-draft — Defect correction — restored omitted agent roster, activation commands, operating cadence, adaptation layer
+
+PART 1 — DEFINITIONS AND INTERPRETATION
+
+Article 1.1 — Definitions
+Adopting Organization — Any entity that formally adopts this protocol under its own authority.
+Agent — A defined role with responsibilities, limits, and evidence requirements. May be human or AI. An agent is not an employee, officer, or signatory unless separately appointed.
+Approval — Authorization to proceed, obtained through the applicable procedure. Distinct from decision, execution, and verification.
+Claim — An assertion made by any party. A claim is not evidence.
+Evidence — Information that supports or contradicts a claim. Classified by source and quality.
+Decision — A choice made by an authorized party. Distinct from approval, execution, and verification.
+Execution — The attempted performance of an approved action. Distinct from decision, approval, and verification.
+Founder — The individual or body holding the adopting organization's highest executive authority, as established by governing documents.
+Material — Having significant impact on financial position, legal exposure, safety, security, or stakeholder interests. Materiality thresholds are configurable (Article 2.6).
+Persistence — The confirmed storage of a record in a durable medium. Distinct from drafting or submission.
+Verification — Independent or authoritative confirmation that a claim meets defined acceptance criteria.
+Reviewer — A person or role authorized to examine evidence and assign verification status.
+Collective Approval — Approval requiring a board, committee, quorum, or multiple approvers.
+Emergency Procedure — A defined process permitting action without standard approval, with safeguards and mandatory post-action review.
+
+Article 1.2 — Interpretation Rules
+1. "Must" indicates a mandatory requirement.
+2. "Should" indicates a recommended practice.
+3. "May" indicates a permitted option.
+4. "Never" indicates a prohibition.
+5. Where a rule conflicts with applicable law, law prevails.
+6. Where this protocol conflicts with the adopting organization's governing documents, governing documents prevail unless the organization formally amends them.
+7. Undefined terms carry their ordinary professional meaning.
+8. Where a term has both a legal and an operational meaning, both must be considered separately.
+
+Article 1.3 — Status Discipline
+The protocol maintains seven independent state models (Part 4). No status in one model may be inferred from a status in another. A record must state which model a status belongs to.
+
+Article 1.4 — Scope
+This protocol governs: decision-making, approval, execution, verification, evidence management, risk classification, financial controls, milestone tracking, records and continuity, agent roles and limits.
+It does not govern: substantive business strategy (adopter-specific), legal advice (requires qualified counsel), accounting opinions (requires qualified accountant), technical implementation choices (adopter-specific).
+
+PART 2 — ORGANIZATIONAL CONFIGURATION
+
+Article 2.1 — Configuration Requirement
+Before adoption, the adopting organization must complete the Configuration Record. No rule in this protocol becomes operative for an organization until its configuration is documented and approved by the appropriate authority.
+
+Article 2.2 — Required Configuration Fields
+ORGANIZATION_IDENTITY: legal_name [required]; trading_name [optional]; entity_type [required]; jurisdiction [required]; registration_number [if registered]; registration_status [registered / pending / not required]; governing_documents [list]
+LEADERSHIP: highest_authority [name or body]; authority_source [document establishing authority]; delegation_instruments [list]; board_exists [yes/no]; board_composition [if applicable]
+BUSINESS: mission [one sentence]; operating_principle [one sentence]; industry [required]; products_or_services [list]
+FINANCIAL: reporting_currency [required]; fiscal_year [required]; accounting_basis [required]; materiality_threshold [required]
+RISK_TOLERANCE: financial_risk [low / moderate / high]; security_risk [low / moderate / high]; legal_risk [low / moderate / high]
+DATA: data_classification [list]; privacy_framework [applicable law or standard]; retention_period [by category]
+TECHNOLOGY: available_integrations [list]; ai_capabilities [list]; human_oversight_model [required]
+GOVERNANCE: decision_classes [defined]; approval_procedures [defined]; escalation_paths [defined]; emergency_procedures [defined or "not applicable"]
+
+Article 2.3 — Proposed Defaults
+Proposed defaults (not binding until approved). The organization must decide each.
+Materiality threshold — 5% of monthly operating budget
+Financial risk tolerance — Moderate
+Reporting currency — Local currency
+Decision classes — Four (routine, cross-functional, strategic, reserved)
+Emergency procedure — Founder + one additional approver
+Evidence retention — 7 years for financial records
+
+Article 2.4 — Configuration Change Control
+Changes to configuration must: (1) be proposed in writing; (2) identify the reason; (3) be approved by the appropriate authority; (4) be logged with timestamp and approver identity; (5) trigger review of any decisions that relied on the prior configuration.
+
+Article 2.5 — Jurisdiction-Specific Requirements
+The adopting organization must identify jurisdiction-specific requirements affecting contract formation, corporate registration, tax, data protection, employment, consumer protection, and industry regulation. These are documented in the Configuration Record and reviewed by qualified counsel.
+
+Article 2.6 — Materiality Thresholds
+Financial commitment — [amount] — approval required above: [role or body]
+Contract value — [amount] — [role or body]
+Data disclosure — [category] — [role or body]
+Security change — [severity] — [role or body]
+Legal exposure — [qualitative] — [role or body]
+
+PART 3 — DECISION ARCHITECTURE
+
+Article 3.1 — Decision Classes
+A — Routine: within budget, no strategy change, no material risk, reversible. Authority: named role. Approval: none beyond role authority.
+B — Cross-functional: affects two or more functions. Authority: functional owners coordinate. Approval: documented coordination.
+C — Strategic: material strategy, capital, or direction. Authority: Founder or equivalent. Approval: Founder decision, council analysis.
+D — Reserved: requires board, shareholder, professional, or external approval. Authority: external authority. Approval: per governing documents.
+
+Article 3.2 — Decision Status Model
+PROPOSED → UNDER REVIEW → DECIDED
+Branches: DEFERRED, SUPERSEDED, WITHDRAWN
+
+Article 3.3 — Decision Record Requirements
+Every material decision must record: Decision ID, class, statement, rationale, alternatives, evidence examined, dissent, decision authority, date, approval status, execution status, verification status, review trigger, supersession history.
+
+Article 3.4 — Decision Workflow
+1. Understand — Define problem, outcome, constraints, deadline.
+2. Analyze — Gather evidence; identify unknowns.
+3. Challenge — Examine strongest alternative; identify failure modes.
+4. Deliberate — Consolidate perspectives; record dissent.
+5. Decide — Authorized party makes decision; records rationale.
+6. Approve — Applicable approval procedure executed (Article 5.1).
+7. Execute — Approved action performed under execution state model.
+8. Verify — Independent confirmation against acceptance criteria.
+9. Preserve — Record updated with all state model statuses.
+10. Review — Trigger set for decision reassessment.
+
+Article 3.5 — Decision Status Is Not Approval Status
+A decision may be DECIDED while approval remains PENDING. A decision may be DECIDED while execution remains PROPOSED. These states do not substitute for one another.
+
+Article 3.6 — Dissent Preservation
+When a decision is made over recorded dissent: (1) the dissent is preserved in full; (2) the decision authority's rationale for proceeding is recorded; (3) the review trigger is shortened proportionally; (4) the decision is not marked "unanimous"; (5) repeated overrides trigger review of the underlying rule or pattern.
+
+Article 3.7 — Decision Expiry
+Every material decision is logged with expiry date or review trigger, owner, and conditions that would invalidate it. A decision left unreviewed past its trigger is marked LAPSED.
+
+[COPY TRUNCATED — this copy ends after Part 3. Parts 4–29 (Evidence, Approval, Execution, Risk, Financial, Oversight, 28-Agent Roster, Milestones, Records, Technical, Security, Stress Tests, Activation Commands, Templates, and the rest) are NOT included. Do not treat this as the complete protocol.]`;
+wireCopy("cp2","sp2",OR,"Copy operating record");
+wireCopy("cp3","sp3",PC,"Copy protocol core");
+const CF=`CONFIGURATION RECORD
+====================
+Configuration Record ID: CR-ISSUE-20251016-001
+Protocol Version: 2.8.0-draft
+Status: DRAFT — INCOMPLETE
+Date opened: 2025-10-16
+Approved by: [NOT YET APPROVED]
+
+SECTION 1 — ORGANIZATION IDENTITY
+----------------------------------
+legal_name: ISSUE [RECORDED]
+trading_name: [not provided] [REQUIRED]
+entity_type: Incorporated [RECORDED]
+jurisdiction: [not provided] [REQUIRED]
+registration_number: [not provided] [REQUIRED]
+registration_status: Pending [RECORDED]
+date_of_incorporation: [not provided] [REQUIRED]
+governing_documents: [not provided] [REQUIRED]
+registered_address: [not provided] [REQUIRED]
+primary_contact: [not provided] [REQUIRED]
+
+SECTION 2 — LEADERSHIP AND AUTHORITY
+-------------------------------------
+highest_authority: Founder [RECORDED]
+founder_name: [not provided] [REQUIRED]
+authority_source: [not provided] [REQUIRED]
+delegation_instruments: [not provided] [REQUIRED]
+board_exists: [not provided] [REQUIRED]
+board_composition: [not applicable if no board] [REQUIRED]
+executive_deputies: [not provided] [REQUIRED]
+signature_authority: [not provided] [REQUIRED]
+emergency_authority: [not provided] [REQUIRED]
+
+SECTION 3 — BUSINESS
+--------------------
+mission: [not provided] [REQUIRED]
+operating_principle: [not provided] [REQUIRED]
+industry: [not provided] [REQUIRED]
+products_or_services: [not provided] [REQUIRED]
+primary_customers: [not provided] [REQUIRED]
+business_model: [not provided] [REQUIRED]
+current_stage: [not provided] [REQUIRED]
+
+SECTION 4 — FINANCIAL
+---------------------
+reporting_currency: [not provided] [REQUIRED]
+fiscal_year: [not provided] [REQUIRED]
+accounting_basis: [not provided] [REQUIRED]
+materiality_threshold: [not provided] [REQUIRED]
+approved_budget: [not provided] [REQUIRED]
+cash_reserve_target: [not provided] [REQUIRED]
+banking_institutions: [not provided] [REQUIRED]
+financial_approver: [not provided] [REQUIRED]
+
+SECTION 5 — RISK TOLERANCE
+--------------------------
+financial_risk: [not provided] [REQUIRED]
+security_risk: [not provided] [REQUIRED]
+legal_risk: [not provided] [REQUIRED]
+operational_risk: [not provided] [REQUIRED]
+reputational_risk: [not provided] [REQUIRED]
+risk_acceptance_authority: [not provided] [REQUIRED]
+
+SECTION 6 — DATA AND PRIVACY
+----------------------------
+data_classification: [not provided] [REQUIRED]
+privacy_framework: [not provided] [REQUIRED]
+personal_data_categories: [not provided] [REQUIRED]
+retention_periods: [not provided] [REQUIRED]
+data_subject_rights: [not provided] [REQUIRED]
+data_protection_officer: [not provided] [REQUIRED]
+cross_border_transfers: [not provided] [REQUIRED]
+
+SECTION 7 — TECHNOLOGY
+----------------------
+available_integrations: [not provided] [REQUIRED]
+ai_capabilities: [not provided] [REQUIRED]
+ai_provider: DeepSeek [RECORDED]
+human_oversight_model: [not provided] [REQUIRED]
+storage_location: [not provided] [REQUIRED]
+backup_system: [not provided] [REQUIRED]
+identity_access_system: [not provided] [REQUIRED]
+monitoring_system: [not provided] [REQUIRED]
+
+SECTION 8 — GOVERNANCE
+----------------------
+decision_classes: [not provided] [REQUIRED]
+approval_procedures: [not provided] [REQUIRED]
+escalation_paths: [not provided] [REQUIRED]
+emergency_procedures: [not provided] [REQUIRED]
+collective_approval_triggers: [not provided] [REQUIRED]
+reserved_powers: [not provided] [REQUIRED]
+delegation_limits: [not provided] [REQUIRED]
+review_cadence: [not provided] [REQUIRED]
+
+SECTION 9 — CAPACITY AND CADENCE
+--------------------------------
+team_size: [not provided] [REQUIRED]
+operating_cadence: [not provided] [REQUIRED]
+founder_max_hours_week: [not provided] [REQUIRED]
+founder_energy_minimum: [not provided] [REQUIRED]
+capacity_guardian: [not provided] [REQUIRED]
+session_snapshot_frequency: Every session [RECORDED]
+planning_cap_percent: 10% [RECORDED]
+
+SECTION 10 — DATA SOURCES
+-------------------------
+DS-01: [not provided] [REQUIRED]
+DS-02: [not provided] [REQUIRED]
+
+SECTION 11 — PRODUCTS
+---------------------
+P-01: [not provided] [REQUIRED]
+P-02: [not provided] [REQUIRED]
+
+CONFIGURATION STATUS SUMMARY
+----------------------------
+Total fields required: 74+
+Fields recorded: 7
+Completion percentage: 9%
+Operative: NO — configuration incomplete`;
+if(CF){wireCopy("cp4","sp4",CF,"Copy configuration record")}
+else{$("sp4").textContent="config-ISSUE.md is not loaded yet. Paste its text into const CF in the code.";$("cp4").disabled=true}
+
 const d=$("drop");
 ["dragover","dragenter"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.add("on")}));
 ["dragleave","drop"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.remove("on")}));
