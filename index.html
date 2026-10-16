@@ -18,7 +18,6 @@ code{font:.8125rem ui-monospace,Menlo,Consolas,monospace;background:var(--bg);pa
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 button{font-family:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-/* home */
 .home{flex:1;position:relative;isolation:isolate;display:grid;place-items:center;padding:24px 20px}
 @property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
 @keyframes ringspin{to{--a:360deg}}
@@ -28,19 +27,20 @@ button{font-family:inherit}
 .orb::after{z-index:1;transform:translate(-50%,-50%) rotate(-20deg);clip-path:inset(50% 0 0 0)}
 .orb:hover{box-shadow:inset -11px -11px 18px rgba(25,12,0,.5),0 0 22px rgba(240,210,140,.55)}
 .home-foot{position:absolute;left:0;right:0;bottom:14px;padding:0 24px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
-.hf-ver{font-size:.6875rem;font-weight:600;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin-bottom:6px}
+.hf-ver{font-size:.6875rem;font-weight:600;letter-spacing:.04em;color:var(--mute)}
 .hf-copy{font-size:.6875rem;line-height:1.4;color:var(--mute)}
 .hf-legal{font-size:.65rem;line-height:1.5;color:var(--mute);max-width:32ch;text-wrap:balance}
-.setup-foot{display:flex;justify-content:center;margin-top:32px}
-.setup-foot .hf-ver{margin-bottom:0}
-/* setup */
-.wrap{width:100%;max-width:640px;margin:0 auto;padding:0 16px 96px}
+.setup-foot{margin-top:auto;padding-top:32px;text-align:center}
+.setup-foot .how{text-align:left}
+.ftl{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:6px}
+#setup{flex:1;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:640px;margin:0 auto;padding:0 16px 20px;flex:1;display:flex;flex-direction:column}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:16px}
 .bar{display:flex;align-items:center;gap:12px}
-.track{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
 .fillbar{height:100%;width:0;background:var(--accent);transition:width .25s ease}
-.cnt{font-size:.8125rem;font-weight:600;min-width:3.2em;text-align:right}
-.ic{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.1rem;cursor:pointer;flex:none}
+.cnt{flex:1;font-size:.8125rem;font-weight:600;text-align:center}
+.ic{width:44px;height:44px;border-radius:50%;border:0;background:none;color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.ic svg{width:20px;height:20px;display:block}
 .ic:hover{background:var(--hover)}
 .sm{font-weight:600;font-size:.875rem;min-height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:10px 18px;cursor:pointer}
 .sm:hover:not(:disabled){background:var(--hover)}
@@ -60,26 +60,46 @@ button{font-family:inherit}
 .field label{font-size:.8125rem;font-weight:600}
 input[type=text],input[type=search]{font:inherit;font-size:.9375rem;min-height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 12px;width:100%}
 .sec{font-size:1.05rem;margin:28px 0 10px}
+.eform{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px;display:grid;gap:12px}
+.eform h2{font-size:1rem}
+.eform select,.eform textarea{font:inherit;font-size:.9375rem;min-height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 12px;width:100%}
+.eform textarea{resize:vertical;min-height:88px}
+.how{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:16px}
+.how h2{font-size:1rem}
+.how ol{margin:6px 0 0;padding-left:20px}
+.how li{font-size:.875rem;line-height:1.6;margin:8px 0}
+.ct{flex:1;min-width:0}
+.sub{margin:2px 0 0;font-size:.8125rem;line-height:1.4;color:var(--mute)}
+.store .sh{display:flex;align-items:center;gap:8px}
+.store .sh .lnk{margin-left:auto;min-height:44px;padding:0 4px}
+.tag{font-size:.6875rem;font-weight:600;letter-spacing:.04em;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--mute)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:600 .8125rem Sora,system-ui,sans-serif;min-height:44px;padding:0 16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;cursor:pointer}
+.chip:hover{background:var(--hover)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--on);border-color:transparent}
+.lrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lact{display:flex;gap:16px}
+.lact .lnk{min-height:44px;padding:0 2px}
+.sm.full{width:100%;min-height:48px;font-size:.9375rem}
+.store .acts .push{margin-left:auto}
+.eform textarea#s_text{min-height:140px;font:.8125rem/1.5 ui-monospace,Menlo,Consolas,monospace}
+.fillbar.hot{background:var(--bad)}
+.peek{margin:8px 0 0;font:.75rem/1.5 ui-monospace,Menlo,Consolas,monospace;color:var(--mute);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.none{text-align:center;padding:28px 16px;border:1px dashed var(--line);border-radius:14px;color:var(--mute);font-size:.8125rem}
+.none b{display:block;color:var(--ink);font-size:.9375rem;margin-bottom:4px}
+.perks{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.perks li{position:relative;padding-left:22px;font-size:.875rem;color:var(--mute)}
+.perks li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:600}
+.perks b{color:var(--ink);font-weight:600}
 .tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .tools input{flex:1;min-width:140px}
 .file{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
 .file h3{margin:0;font-size:.9375rem;overflow-wrap:anywhere}
 .meta{color:var(--mute);font-size:.8125rem}
 .file .acts{margin-top:10px}
-.more{display:flex;gap:16px;align-items:center;margin-top:8px}
 .meter{height:4px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
-/* help */
-.help{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 1rem Sora,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(10,14,30,.18)}
-.help[aria-expanded="true"]{background:var(--accent);color:var(--on);border-color:transparent}
-.helpp{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:40;width:min(360px,calc(100vw - 32px));max-height:min(70vh,calc(100dvh - 120px));overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 12px 40px rgba(10,14,30,.28)}
-.helpp .hh{display:flex;justify-content:space-between;align-items:center}
-.helpp h2{font-size:.9375rem}
-.helpp .x{width:44px;height:44px;margin:-8px -10px -8px 0;border:0;background:none;color:var(--mute);font-size:1.5rem;cursor:pointer;border-radius:50%}
-.helpp ol{margin:6px 0 0;padding-left:20px}
-.helpp li{font-size:.875rem;line-height:1.6;margin:8px 0}
 .cmd{font:.8125rem ui-monospace,Menlo,Consolas,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 8px;min-height:32px;cursor:pointer}
 .cmd.ok{background:var(--ok);color:var(--on-ok);border-color:transparent}
-/* overlays */
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);max-width:min(92vw,440px);padding:12px 18px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:.875rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .toast.err{background:var(--bad);color:var(--on-bad)}
@@ -112,62 +132,106 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 <div class="wrap">
   <header class="top">
     <div class="bar">
-      <button class="ic" id="back" type="button" aria-label="Back">&larr;</button>
-      <div class="track" id="progTrack" role="progressbar" aria-label="Setup progress" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0"><div class="fillbar" id="progF"></div></div>
+      <button class="ic" id="back" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button>
       <b class="cnt" id="progT" aria-live="polite"></b>
-      <button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps">&#8635;</button>
+      <button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
     </div>
   </header>
 
   <h1 class="sr" id="h1s" tabindex="-1">Setup</h1>
 
+  <section class="how" id="howSec" aria-labelledby="howT" hidden>
+    <h2 id="howT">How to use</h2>
+    <ol>
+      <li>Fill in the form below. Legal name, jurisdiction, currency, industry and mission are required.</li>
+      <li>Copy cards 1 to 4 in order and paste each into a new chat with your AI.</li>
+      <li>Send <button class="cmd" data-copy="Protocol, activate." type="button">Protocol, activate.</button></li>
+      <li>When done, send <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button> then <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button> Paste the output into Storage below and tap Save.</li>
+    </ol>
+  </section>
+
+  <div class="eform" id="eform" hidden>
+    <h2>Your organization</h2>
+    <div class="field"><label for="e_name">Legal name</label><input type="text" id="e_name" autocomplete="organization" placeholder="e.g. Acme Trading Inc."></div>
+    <div class="field"><label for="e_type">Entity type</label>
+      <select id="e_type">
+        <option value="incorporated company">Incorporated company</option>
+        <option value="limited liability company">Limited liability company</option>
+        <option value="partnership">Partnership</option>
+        <option value="sole proprietorship">Sole proprietorship</option>
+        <option value="non-profit organization">Non-profit organization</option>
+        <option value="other organization">Other</option>
+      </select>
+    </div>
+    <div class="field"><label for="e_jur">Jurisdiction</label><input type="text" id="e_jur" placeholder="e.g. Philippines"></div>
+    <div class="field"><label for="e_cur">Reporting currency</label><input type="text" id="e_cur" placeholder="e.g. PHP"></div>
+    <div class="field"><label for="e_ind">Industry</label><input type="text" id="e_ind" placeholder="e.g. Food and beverage"></div>
+    <div class="field"><label for="e_mis">Mission (one sentence)</label><textarea id="e_mis" placeholder="What the organization exists to do."></textarea></div>
+  </div>
+
   <div class="card" id="card-sp">
     <button class="n" type="button" data-n="sp" aria-label="Toggle step 1 done">1</button>
-    <h2>System prompt</h2>
+    <div class="ct"><h2>System prompt</h2><p class="sub">Sets the rules. Paste this first.</p></div>
     <div class="acts"><button class="sm p" id="cp" type="button">Copy</button></div>
   </div>
 
   <div class="card" id="card-pc">
     <button class="n" type="button" data-n="pc" aria-label="Toggle step 2 done">2</button>
-    <h2>Protocol core</h2>
+    <div class="ct"><h2>Protocol core</h2><p class="sub">The full protocol. Paste this second.</p></div>
     <div class="acts"><button class="sm p" id="cp3" type="button">Copy</button></div>
   </div>
 
   <div class="card" id="card-cf">
     <button class="n" type="button" data-n="cf" aria-label="Toggle step 3 done">3</button>
-    <h2>Configuration record</h2>
+    <div class="ct"><h2>Configuration record</h2><p class="sub">Your organization's details, built from the form.</p></div>
     <div class="acts"><button class="sm p" id="cp4" type="button">Copy</button></div>
   </div>
 
   <div class="card" id="card-or">
     <button class="n" type="button" data-n="or" aria-label="Toggle step 4 done">4</button>
-    <h2>Operating record</h2>
+    <div class="ct"><h2>Operating record</h2><p class="sub">A blank log to start tracking from.</p></div>
     <div class="acts"><button class="sm p" id="cp2" type="button">Copy</button></div>
   </div>
 
-  <h2 class="sec" id="filesH" hidden>Saved versions</h2>
+  <section class="eform store" id="store" aria-labelledby="storeT">
+    <div class="sh"><h2 id="storeT">Storage</h2><span class="tag" id="planTag">Free</span><button class="lnk" id="proBtn" type="button">Upgrade</button></div>
+    <p class="sub">Paste what your AI gives you at the end of a session. Each save becomes a new version.</p>
+    <div class="field"><div class="lrow"><label for="s_text">Output</label><span class="lact"><button class="lnk" id="s_paste" type="button">Paste</button><button class="lnk" id="addBtn" type="button">Upload file</button></span></div><textarea id="s_text" placeholder="Paste here. The file type is picked for you." spellcheck="false"></textarea></div>
+    <div class="chips" role="group" aria-label="File type">
+      <button class="chip" type="button" data-t="op" aria-pressed="false">Operating record</button>
+      <button class="chip" type="button" data-t="ss" aria-pressed="false">Session snapshot</button>
+      <button class="chip" type="button" data-t="cf" aria-pressed="false">Configuration</button>
+    </div>
+    <div class="field"><label for="s_title">File name</label><input type="text" id="s_title" placeholder="Picked from the file type" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    <p class="sub" id="s_hint" aria-live="polite"></p>
+    <button class="sm p full" id="s_save" type="button" disabled>Save</button>
+    <div><p class="meta" id="stT"></p><div class="meter" id="meterW" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fillbar" id="stF"></div></div></div>
+    <p class="sub">Stored on this device only. Export a backup so nothing is lost.</p>
+  </section>
+
+  <h2 class="sec" id="filesH" hidden>Saved files</h2>
   <div class="tools" id="tools" hidden>
     <input type="search" id="q" placeholder="Search" aria-label="Search file names">
     <button class="sm" id="exportBtn" type="button">Export</button>
     <button class="sm" id="importBtn" type="button">Import</button>
   </div>
   <div id="list"></div>
-  <div class="more"><button class="lnk" id="addBtn" type="button">+ Add file</button><button class="lnk" id="proBtn" type="button">Upgrade</button></div>
-  <div class="meter" id="meterW" hidden><div class="fillbar" id="stF"></div></div>
+  <div class="none" id="empty"><b>Nothing saved yet</b>Paste an output above and tap Save. It will appear here.</div>
   <input type="file" id="pick" hidden accept=".md,.txt,.json,.csv,.yaml,.yml,text/*">
   <input type="file" id="pickJson" hidden accept=".json,application/json">
 
-  <button class="help" id="helpBtn" type="button" aria-label="How to use the protocol" aria-expanded="false" aria-controls="helpPanel">?</button>
-  <aside class="helpp" id="helpPanel" role="dialog" aria-labelledby="helpT" hidden>
-    <div class="hh"><h2 id="helpT">How to use</h2><button class="x" id="helpX" type="button" aria-label="Close">&times;</button></div>
-    <ol>
-      <li>Fill in card 3 in Notes. Minimum: <code>legal_name</code>, <code>jurisdiction</code>, <code>reporting_currency</code>, <code>industry</code>, <code>mission</code>.</li>
-      <li>Open a new DeepSeek chat. Paste cards 1 to 4 in order, using your filled-in card 3.</li>
-      <li>Send <button class="cmd" data-copy="Protocol, activate." type="button">Protocol, activate.</button></li>
-      <li>When done, send <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button> then <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button> Save the output in Notes and upload it under Saved versions.</li>
-    </ol>
-  </aside>
-  <footer class="setup-foot"><p class="hf-ver" id="homeVer"></p></footer>
+  <footer class="setup-foot">
+    <section class="how" id="legalSec" hidden>
+      <h2>Legal</h2>
+      <p class="sub">&copy; 2026 ArtiBytte. All rights reserved. Proprietary and confidential. Unauthorized copying, distribution, or use is prohibited.</p>
+    </section>
+    <nav class="ftl" aria-label="Info">
+      <button class="lnk" type="button" data-tg="howSec">How to use</button>
+      <button class="lnk" type="button" data-tg="eform">Organization</button>
+      <button class="lnk" type="button" data-tg="legalSec">Legal</button>
+    </nav>
+    <p class="hf-ver" id="homeVer"></p>
+  </footer>
 </div>
 </main>
 
@@ -182,7 +246,8 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 <dialog id="pro" aria-labelledby="proT">
   <form method="dialog">
     <h2 id="proT">ArtiBytte Pro</h2>
-    <p>More storage, and your saved versions update to the latest protocol version automatically.</p>
+    <p>Keep your records safe and available everywhere.</p>
+    <ul class="perks"><li><b>1 GB storage</b> instead of 5 MB</li><li><b>Cloud storage</b> that survives clearing your browser</li><li><b>Every device</b>, same records</li><li><b>Automatic backups</b> of every version</li></ul>
     <div class="plans">
       <label class="plan"><input type="radio" name="plan" value="m" checked><b id="pm"></b><span>per month</span></label>
       <label class="plan"><input type="radio" name="plan" value="y"><b id="py"></b><span>per year</span></label>
@@ -197,9 +262,10 @@ const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k
 const fmt=t=>new Date(t).toLocaleString([],{dateStyle:"medium",timeStyle:"short"});
 const kb=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB";
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const LIMIT=5*1024*1024;
+const LIMITS={free:5*1048576,pro:1024*1048576};
+let PLAN=LS.get("artibytte-plan-v1")==="pro"?"pro":"free";
+let LIMIT=LIMITS[PLAN];
 
-/* toast, dialog, copy */
 let toastT;
 function toast(m,k){const t=$("toast");t.textContent=m;t.className="toast on"+(k==="err"?" err":"");clearTimeout(toastT);toastT=setTimeout(()=>{t.className="toast"},k==="err"?6000:2200)}
 function confirmBox(title,msg,ok,danger){
@@ -219,7 +285,6 @@ async function copyText(text,btn){
 }
 document.addEventListener("click",e=>{const c=e.target.closest("[data-copy]");if(c)copyText(c.dataset.copy,c)});
 
-/* texts */
 const SP=`You are operating under ArtiBytte Protocol v2.8. You serve as the analytical operating system for [ENTITY NAME], a [entity type] in [jurisdiction].
 
 CORE RULES:
@@ -1203,222 +1268,91 @@ Status: DRAFT — NOT YET VERIFIED, TESTED, ADOPTED, OR DEPLOYED
 Approval: PENDING — awaiting Founder approval
 Supersedes: v2.8.0-draft (corrects omission of agent roster, activation commands, operating cadence, adaptation layer)
 File type: Protocol Core (invariant — no organization-specific values)`;
-const CF=`CONFIGURATION RECORD
-====================
-Configuration Record ID: CR-ISSUE-20251016-001
-Protocol Version: 2.8.0-draft
-Status: DRAFT — INCOMPLETE
-Date opened: 2025-10-16
-Approved by: [NOT YET APPROVED]
+const VER=(PC.match(/\bv(\d[\d.]*(?:-draft)?)/)||[])[1]||"";
+const CFS=[
+["ORGANIZATION IDENTITY","legal_name trading_name entity_type jurisdiction registration_number registration_status date_of_incorporation governing_documents registered_address primary_contact"],
+["LEADERSHIP AND AUTHORITY","highest_authority founder_name authority_source delegation_instruments board_exists board_composition executive_deputies signature_authority emergency_authority"],
+["BUSINESS","mission operating_principle industry products_or_services primary_customers business_model current_stage"],
+["FINANCIAL","reporting_currency fiscal_year accounting_basis materiality_threshold approved_budget cash_reserve_target banking_institutions financial_approver"],
+["RISK TOLERANCE","financial_risk security_risk legal_risk operational_risk reputational_risk risk_acceptance_authority"],
+["DATA AND PRIVACY","data_classification privacy_framework personal_data_categories retention_periods data_subject_rights data_protection_officer cross_border_transfers"],
+["TECHNOLOGY","available_integrations ai_capabilities ai_provider human_oversight_model storage_location backup_system identity_access_system monitoring_system"],
+["GOVERNANCE","decision_classes approval_procedures escalation_paths emergency_procedures collective_approval_triggers reserved_powers delegation_limits review_cadence"],
+["CAPACITY AND CADENCE","team_size operating_cadence founder_max_hours_week founder_energy_minimum capacity_guardian session_snapshot_frequency planning_cap_percent"],
+["DATA SOURCES","DS-01 DS-02"],
+["PRODUCTS","P-01 P-02"]];
+const DEF_TYPE="incorporated company";
 
-SECTION 1 — ORGANIZATION IDENTITY
-----------------------------------
-legal_name: ISSUE [RECORDED]
-trading_name: [not provided] [REQUIRED]
-entity_type: Incorporated [RECORDED]
-jurisdiction: [not provided] [REQUIRED]
-registration_number: [not provided] [REQUIRED]
-registration_status: Pending [RECORDED]
-date_of_incorporation: [not provided] [REQUIRED]
-governing_documents: [not provided] [REQUIRED]
-registered_address: [not provided] [REQUIRED]
-primary_contact: [not provided] [REQUIRED]
-
-SECTION 2 — LEADERSHIP AND AUTHORITY
--------------------------------------
-highest_authority: Founder [RECORDED]
-founder_name: [not provided] [REQUIRED]
-authority_source: [not provided] [REQUIRED]
-delegation_instruments: [not provided] [REQUIRED]
-board_exists: [not provided] [REQUIRED]
-board_composition: [not applicable if no board] [REQUIRED]
-executive_deputies: [not provided] [REQUIRED]
-signature_authority: [not provided] [REQUIRED]
-emergency_authority: [not provided] [REQUIRED]
-
-SECTION 3 — BUSINESS
---------------------
-mission: [not provided] [REQUIRED]
-operating_principle: [not provided] [REQUIRED]
-industry: [not provided] [REQUIRED]
-products_or_services: [not provided] [REQUIRED]
-primary_customers: [not provided] [REQUIRED]
-business_model: [not provided] [REQUIRED]
-current_stage: [not provided] [REQUIRED]
-
-SECTION 4 — FINANCIAL
----------------------
-reporting_currency: [not provided] [REQUIRED]
-fiscal_year: [not provided] [REQUIRED]
-accounting_basis: [not provided] [REQUIRED]
-materiality_threshold: [not provided] [REQUIRED]
-approved_budget: [not provided] [REQUIRED]
-cash_reserve_target: [not provided] [REQUIRED]
-banking_institutions: [not provided] [REQUIRED]
-financial_approver: [not provided] [REQUIRED]
-
-SECTION 5 — RISK TOLERANCE
---------------------------
-financial_risk: [not provided] [REQUIRED]
-security_risk: [not provided] [REQUIRED]
-legal_risk: [not provided] [REQUIRED]
-operational_risk: [not provided] [REQUIRED]
-reputational_risk: [not provided] [REQUIRED]
-risk_acceptance_authority: [not provided] [REQUIRED]
-
-SECTION 6 — DATA AND PRIVACY
-----------------------------
-data_classification: [not provided] [REQUIRED]
-privacy_framework: [not provided] [REQUIRED]
-personal_data_categories: [not provided] [REQUIRED]
-retention_periods: [not provided] [REQUIRED]
-data_subject_rights: [not provided] [REQUIRED]
-data_protection_officer: [not provided] [REQUIRED]
-cross_border_transfers: [not provided] [REQUIRED]
-
-SECTION 7 — TECHNOLOGY
-----------------------
-available_integrations: [not provided] [REQUIRED]
-ai_capabilities: [not provided] [REQUIRED]
-ai_provider: DeepSeek [RECORDED]
-human_oversight_model: [not provided] [REQUIRED]
-storage_location: [not provided] [REQUIRED]
-backup_system: [not provided] [REQUIRED]
-identity_access_system: [not provided] [REQUIRED]
-monitoring_system: [not provided] [REQUIRED]
-
-SECTION 8 — GOVERNANCE
-----------------------
-decision_classes: [not provided] [REQUIRED]
-approval_procedures: [not provided] [REQUIRED]
-escalation_paths: [not provided] [REQUIRED]
-emergency_procedures: [not provided] [REQUIRED]
-collective_approval_triggers: [not provided] [REQUIRED]
-reserved_powers: [not provided] [REQUIRED]
-delegation_limits: [not provided] [REQUIRED]
-review_cadence: [not provided] [REQUIRED]
-
-SECTION 9 — CAPACITY AND CADENCE
---------------------------------
-team_size: [not provided] [REQUIRED]
-operating_cadence: [not provided] [REQUIRED]
-founder_max_hours_week: [not provided] [REQUIRED]
-founder_energy_minimum: [not provided] [REQUIRED]
-capacity_guardian: [not provided] [REQUIRED]
-session_snapshot_frequency: Every session [RECORDED]
-planning_cap_percent: 10% [RECORDED]
-
-SECTION 10 — DATA SOURCES
--------------------------
-DS-01: [not provided] [REQUIRED]
-DS-02: [not provided] [REQUIRED]
-
-SECTION 11 — PRODUCTS
----------------------
-P-01: [not provided] [REQUIRED]
-P-02: [not provided] [REQUIRED]
-
-CONFIGURATION STATUS SUMMARY
-----------------------------
-Total fields required: 74+
-Fields recorded: 7
-Completion percentage: 9%
-Operative: NO — configuration incomplete`;
-const OR=`OPERATING RECORD
-================
-Entity: ISSUE
-Protocol Version: 2.8.0-draft
-Record Opened: 2025-10-16
-Last Updated: 2025-10-16
-Status: PARTIALLY POPULATED
-
-DECISION LOG
-------------
-D-20251016-001 Protocol v2.6 stress test conducted [LOGGED]
-D-20251016-002 Protocol v2.7 approved — Standalone Edition [LOGGED]
-D-20251016-003 Entity name confirmed: ISSUE [LOGGED]
-D-20251016-004 v2.8.0-draft accepted as working design document [LOGGED]
-
-APPROVAL RECORDS
-----------------
-A-20251016-001 v2.8.0-draft approval — Founder [OBTAINED]
-
-DISSENT RECORDS
----------------
-[None recorded]
-
-EVIDENCE REGISTER
------------------
-E-20251016-001 Entity status: INCORPORATED — Registration Pending [CLAIMED]
-E-20251016-002 Entity name: ISSUE [VERIFIED]
-E-20251016-003 AI provider: DeepSeek [VERIFIED]
-
-RISK REGISTER
--------------
-R-20251016-001 Registration pending — blocks contracts/banking/tax [ASSESSED]
-R-20251016-002 Currency not configured — revenue thresholds blocked [ASSESSED]
-R-20251016-003 No data sources registered — no revenue tracking [ASSESSED]
-R-20251016-004 No products registered — milestone engine dormant [ASSESSED]
-
-MILESTONE RECORDS
------------------
-Company Milestone: 1 — Corporate and Governance Readiness
-Status: IN PROGRESS
-Blocker: Registration pending
-Product Milestones: [None registered]
-
-EXECUTION LOGS
---------------
-[None recorded]
-
-SESSION SNAPSHOTS
------------------
-SESSION-20251016-001 Protocol stress test [PREPARED]
-SESSION-20251016-002 Meta-session [PREPARED]
-SESSION-20251016-003 Three-question audit [PREPARED]
-SESSION-20251016-004 Long-term org design [PREPARED]
-SESSION-20251016-005 v2.7 approval + entity config [PREPARED]
-SESSION-20251016-006 Founder authority + decision log [PREPARED]
-SESSION-20251016-007 Multi-industry deployment [PREPARED]
-SESSION-20251016-008 v2.8 stress-test audit [PREPARED]
-SESSION-20251016-009 v2.8 approved [PREPARED]
-SESSION-20251016-010 Session closed [PREPARED]
-SESSION-20251016-011 Configuration Record opened [PREPARED]
-Persistence status: NOT CONFIRMED — no storage connected
-
-EXCEPTION REGISTER
-------------------
-[None recorded]
-
-AMENDMENT LOG
--------------
-v2.8.0-draft Complete rebuild addressing v2.7 audit findings [2025-10-16]
-
-CONTINUITY DESIGNATION
-----------------------
-Primary contact: [NOT PROVIDED]
-Secondary contact: [NOT PROVIDED]
-Threshold: [NOT PROVIDED]
-Access handover: [NOT PROVIDED]`;
-const DEF_TYPE="incorporated company",DEF_JUR="[jurisdiction]";
-
-/* steps */
 const SK="artibytte-protocol-steps-v1",EK="artibytte-entity-v2";
 const STEPS=["sp","pc","cf","or"];
 let st={};try{st=JSON.parse(LS.get(SK)||"{}")}catch(e){}
 function paintSteps(){
   let n=0;
   STEPS.forEach((k,i)=>{const c=$("card-"+k),d=!!st[k];c.classList.toggle("done",d);c.querySelector(".n").textContent=d?"✓":String(i+1);if(d)n++});
-  $("progT").textContent=n+"/4";$("progF").style.width=(n/4*100)+"%";$("progTrack").setAttribute("aria-valuenow",n);
+  $("progT").textContent=n+"/4";
 }
 function mark(k){if(!st[k]){st[k]=true;LS.set(SK,JSON.stringify(st));paintSteps()}}
 document.querySelectorAll(".n").forEach(b=>b.onclick=()=>{const k=b.dataset.n;st[k]=!st[k];LS.set(SK,JSON.stringify(st));paintSteps()});
 $("resetSteps").onclick=()=>{st={};LS.set(SK,"{}");paintSteps();toast("Steps reset.")};
 
+/* entity form */
+const EF=["name","type","jur","cur","ind","mis"];
+let ent={};try{ent=JSON.parse(LS.get(EK)||"{}")||{}}catch(e){}
+const getEnt=()=>({name:(ent.name||"").trim(),type:ent.type||DEF_TYPE,jur:(ent.jur||"").trim(),cur:(ent.cur||"").trim(),ind:(ent.ind||"").trim(),mis:(ent.mis||"").trim()});
+EF.forEach(k=>{
+  const el=$("e_"+k);
+  if(ent[k])el.value=ent[k];else if(k==="type")el.value=DEF_TYPE;
+  el.addEventListener("input",()=>{ent[k]=el.value;LS.set(EK,JSON.stringify(ent))});
+});
+
 /* copy cards */
-const getSP=()=>SP.replace("[ENTITY NAME]","ISSUE").replace("a [entity type]","an incorporated company").replace(" in [jurisdiction]","");
-async function cc(id,get,k){const b=$(id);b.onclick=async()=>{if(await copyText(get(),b))mark(k)}}
-cc("cp",getSP,"sp");cc("cp3",()=>PC,"pc");cc("cp4",()=>CF,"cf");cc("cp2",()=>OR,"or");
+const slug=s=>(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"entity";
+const today=()=>new Date().toLocaleDateString("en-CA");
+const rep=(t,a,b)=>t.replace(a,()=>b);
+const getSP=()=>{
+  const e=getEnt(),s=slug(e.name),art=/^[aeiou]/i.test(e.type)?"an ":"a ";
+  let t=rep(SP,"[ENTITY NAME]",e.name||"[ENTITY NAME]");
+  t=rep(t,"a [entity type]",art+e.type);
+  t=e.jur?rep(t,"[jurisdiction]",e.jur):t.replace(" in [jurisdiction]","");
+  t=rep(t,"config-ISSUE.md","config-"+s+".md");
+  t=rep(t,"operating-record-ISSUE.md","operating-record-"+s+".md");
+  return rep(t,"Protocol v2.8. You serve","Protocol v"+VER+". You serve");
+};
+const getCF=()=>{
+  const e=getEnt(),d=today(),one=s=>s.replace(/\s+/g," ").trim();
+  const set={legal_name:one(e.name),entity_type:e.type,jurisdiction:one(e.jur),reporting_currency:one(e.cur),industry:one(e.ind),mission:one(e.mis)};
+  let rec=0,tot=0;
+  const o=["CONFIGURATION RECORD","====================","Configuration Record ID: CR-"+slug(e.name).toUpperCase()+"-"+d.replace(/-/g,"")+"-001","Protocol Version: "+VER,"Status: DRAFT — INCOMPLETE","Date opened: "+d,"Approved by: [NOT YET APPROVED]",""];
+  CFS.forEach((s,i)=>{
+    const t="SECTION "+(i+1)+" — "+s[0];o.push(t,"-".repeat(t.length));
+    s[1].split(" ").forEach(k=>{tot++;if(set[k]){rec++;o.push(k+": "+set[k]+" [RECORDED]")}else o.push(k+": "+(k==="board_composition"?"[not applicable if no board]":"[not provided]")+" [REQUIRED]")});
+    o.push("");
+  });
+  const h="CONFIGURATION STATUS SUMMARY";
+  o.push(h,"-".repeat(h.length),"Total fields required: "+tot+"+","Fields recorded: "+rec,"Completion percentage: "+Math.round(rec/tot*100)+"%","Operative: NO — configuration incomplete");
+  return o.join("\n");
+};
+const getOR=()=>{
+  const e=getEnt(),d=today(),N="[None recorded]";
+  const sec=(t,...b)=>[t,"-".repeat(t.length),...b,""];
+  return [
+    "OPERATING RECORD","================",
+    "Entity: "+e.name,"Protocol Version: "+VER,"Record Opened: "+d,"Last Updated: "+d,"Status: NEW — NOT YET POPULATED","",
+    ...sec("DECISION LOG",N),...sec("APPROVAL RECORDS",N),...sec("DISSENT RECORDS",N),...sec("EVIDENCE REGISTER",N),...sec("RISK REGISTER",N),
+    ...sec("MILESTONE RECORDS","Company Milestone: [Not assessed]","Product Milestones: [None registered]"),
+    ...sec("EXECUTION LOGS",N),...sec("SESSION SNAPSHOTS",N,"Persistence status: NOT CONFIRMED"),...sec("EXCEPTION REGISTER",N),...sec("AMENDMENT LOG",N),
+    ...sec("CONTINUITY DESIGNATION","Primary contact: [NOT PROVIDED]","Secondary contact: [NOT PROVIDED]","Threshold: [NOT PROVIDED]","Access handover: [NOT PROVIDED]")
+  ].join("\n").trimEnd();
+};
+const REQ=[["name","Legal name"],["jur","Jurisdiction"],["cur","Currency"],["ind","Industry"],["mis","Mission"]];
+async function cc(id,get,k,need){
+  const b=$(id);
+  b.onclick=async()=>{
+    if(need){const m=REQ.filter(r=>!getEnt()[r[0]]);if(m.length){$("eform").hidden=false;toast("Fill in: "+m.map(r=>r[1]).join(", ")+".","err");$("e_"+m[0][0]).focus();return}}
+    if(await copyText(get(),b))mark(k);
+  };
+}
+cc("cp",getSP,"sp",1);cc("cp3",()=>PC,"pc");cc("cp4",getCF,"cf",1);cc("cp2",getOR,"or",1);
 
 /* saved versions */
 const KEY="artibytte-protocol-files-v2";
@@ -1430,11 +1364,16 @@ function persist(){const ok=LS.set(KEY,JSON.stringify(db));if(!ok)toast("Storage
 const names=()=>Object.keys(db).filter(n=>db[n].vs.length).sort((a,b)=>lastOf(db[b]).t-lastOf(db[a]).t);
 function render(){
   const all=names(),shown=all.filter(n=>n.toLowerCase().includes(q)),has=all.length>0;
-  $("filesH").hidden=!has;$("tools").hidden=!has;$("meterW").hidden=!has;
-  const p=Math.min(100,used()/LIMIT*100);$("stF").style.width=p+"%";
+  $("filesH").hidden=!has;$("tools").hidden=!has;$("empty").hidden=has;
+  const u=used(),p=Math.min(100,u/LIMIT*100);
+  $("stF").style.width=p+"%";$("stF").classList.toggle("hot",p>=90);
+  $("planTag").textContent=PLAN==="pro"?"Pro":"Free";$("proBtn").hidden=PLAN==="pro";
+$("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" of "+(PLAN==="pro"?"1 GB":"5 MB")+" used";
+  $("meterW").setAttribute("aria-valuenow",Math.round(p));
+  $("filesH").textContent="Saved files · "+all.length;
   $("list").innerHTML=shown.map(n=>{const f=db[n],c=lastOf(f),N=esc(n);
-    return `<article class="file"><h3>${N}</h3><p class="meta">v${c.v} · ${fmt(c.t)} · ${kb(c.size||c.text.length)}</p>
-    <div class="acts"><button class="sm" data-a="copy" data-n="${N}">Copy</button><button class="sm" data-a="dl" data-n="${N}">Download</button><button class="sm" data-a="up" data-n="${N}">New version</button><button class="sm d" data-a="del" data-n="${N}">Delete</button></div></article>`}).join("");
+    return `<article class="file"><h3>${N}</h3><p class="meta">v${c.v} · ${f.vs.length} ${f.vs.length===1?"version":"versions"} · ${fmt(c.t)} · ${kb(c.size||c.text.length)}</p><p class="peek">${esc(c.text.replace(/\s+/g," ").slice(0,160))}</p>
+    <div class="acts"><button class="sm" data-a="copy" data-n="${N}">Copy</button><button class="sm" data-a="dl" data-n="${N}">Download</button><button class="sm" data-a="up" data-n="${N}">New version</button><button class="sm d" data-a="del" data-n="${N}">Delete</button></div></article>`}).join("")||(has?'<p class="meta">No files match your search.</p>':"");
 }
 async function handleFiles(files,target){
   files=[...files];if(!files.length)return;if(target)files=files.slice(0,1);
@@ -1455,12 +1394,50 @@ let target=null;
 function pickFile(t){target=t;$("pick").multiple=!t;$("pick").click()}
 $("pick").onchange=e=>{const f=e.target.files,t=target;e.target.value="";handleFiles(f,t)};
 $("addBtn").onclick=()=>pickFile(null);
+
+/* storage box */
+const EXT=/\.(md|txt|json|csv|ya?ml)$/i;
+const finalName=s=>{s=s.replace(/\s+/g," ").trim();return s?(EXT.test(s)?s:s+".md"):""};
+const CHIPS={op:()=>"operating-record-"+slug(getEnt().name)+".md",ss:()=>"session-snapshot-"+today()+".md",cf:()=>"config-"+slug(getEnt().name)+".md"};
+let nameTouched=false;
+const DETECT=[["op",/OPERATING RECORD/i],["ss",/SESSION SNAPSHOT/i],["cf",/CONFIGURATION RECORD/i]];
+function detect(t){const h=t.slice(0,400);for(const[k,r]of DETECT)if(r.test(h))return k;return null}
+function sbState(){
+  const n=finalName($("s_title").value),t=$("s_text").value,ex=n&&db[n],has=!!t.trim();
+  $("s_save").disabled=!n||!has;
+  $("s_save").textContent=ex?"Save as v"+db[n].next:"Save";
+  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(!!n&&n===CHIPS[c.dataset.t]())));
+  $("s_hint").textContent=!has&&!n?"Paste your AI's output to begin.":!has?"Now paste the output.":!n?"Pick a file type above, or type a file name.":(ex?"Saves as v"+db[n].next+" of "+n:"Saves as a new file: "+n)+" · "+kb(new Blob([t]).size);
+}
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{nameTouched=true;$("s_title").value=CHIPS[c.dataset.t]();sbState();$("s_text").focus()});
+$("s_title").addEventListener("input",()=>{nameTouched=true;sbState()});
+$("s_text").addEventListener("input",()=>{
+  if(!nameTouched){const k=detect($("s_text").value);if(k)$("s_title").value=CHIPS[k]()}
+  sbState();
+});
+$("s_text").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter"&&!$("s_save").disabled)$("s_save").click()});
+$("s_paste").onclick=async()=>{
+  try{const t=await navigator.clipboard.readText();if(!t){toast("Clipboard is empty.","err");return}$("s_text").value=t;$("s_text").dispatchEvent(new Event("input"));$("s_text").focus()}
+  catch(e){toast("Can't read the clipboard. Long-press the box and paste.","err")}
+};
+$("s_save").onclick=()=>{
+  const n=finalName($("s_title").value),t=$("s_text").value;
+  if(!n||!t.trim())return;
+  const size=new Blob([t]).size;
+  if(size>1.5*1048576){toast("That's larger than 1.5 MB.","err");return}
+  if(used()+t.length>LIMIT*0.98){toast("Not enough storage.","err");return}
+  const snap=JSON.stringify(db),o=db[n]||(db[n]={next:1,vs:[]});
+  o.vs.push({v:o.next++,t:Date.now(),size,text:t});
+  if(!persist()){db=JSON.parse(snap);render();return}
+  const v=o.next-1;
+  nameTouched=false;$("s_text").value="";sbState();render();toast("Saved as v"+v+".");
+};
 $("q").oninput=e=>{q=e.target.value.trim().toLowerCase();render()};
 $("list").addEventListener("click",async e=>{
   const b=e.target.closest("[data-a]");if(!b)return;
   const n=b.dataset.n,f=db[n];if(!f)return;const c=lastOf(f);
   if(b.dataset.a==="copy")copyText(c.text,b);
-  else if(b.dataset.a==="up")pickFile(n);
+  else if(b.dataset.a==="up"){$("s_title").value=n;$("s_title").dispatchEvent(new Event("input"));$("s_text").focus();$("store").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"})}
   else if(b.dataset.a==="dl"){
     const dot=n.lastIndexOf("."),nm=(dot>0?n.slice(0,dot):n)+"-v"+c.v+(dot>0?n.slice(dot):".txt");
     const url=URL.createObjectURL(new Blob([c.text],{type:"text/plain"})),a=document.createElement("a");
@@ -1484,19 +1461,17 @@ $("pickJson").onchange=async e=>{
   if(!persist())db=JSON.parse(snap);else toast("Imported.");render();
 };
 
-/* help */
-const hb=$("helpBtn"),hp=$("helpPanel");
-function helpSet(o){hp.hidden=!o;hb.setAttribute("aria-expanded",o)}
-hb.onclick=()=>helpSet(hp.hidden);
-$("helpX").onclick=()=>{helpSet(false);hb.focus()};
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!hp.hidden){helpSet(false);hb.focus()}});
-document.addEventListener("pointerdown",e=>{if(!hp.hidden&&!hp.contains(e.target)&&!hb.contains(e.target))helpSet(false)});
+/* footer toggles */
+document.querySelectorAll("[data-tg]").forEach(b=>b.onclick=()=>{
+  const s=$(b.dataset.tg);s.hidden=!s.hidden;
+  if(!s.hidden)s.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"nearest"});
+});
 
 /* pro */
-const PRICE={m:999,y:999},CUR="₱";
+const PRICE={m:999,y:999*12},CUR="₱";
 $("pm").textContent=CUR+PRICE.m.toLocaleString();$("py").textContent=CUR+PRICE.y.toLocaleString();
 $("proBtn").onclick=()=>{const d=$("pro");if(d.showModal)d.showModal()};
-$("proGo").addEventListener("click",()=>toast("Payments are not connected yet.","err"));
+$("proGo").addEventListener("click",()=>{LS.set("artibytte-plan-v1","pro");PLAN="pro";LIMIT=LIMITS.pro;render();toast("Pro preview on (test only).")});
 
 /* routing */
 let pushed=false,cur="home";
@@ -1518,9 +1493,8 @@ $("back").onclick=()=>{
   home();
 };
 
-/* init */
-$("homeVer").textContent="Latest version: "+((PC.match(/\bv(\d[\d.]*(?:-draft)?)/)||[])[0]||"");
-paintSteps();render();route(true);
+$("homeVer").textContent="v"+VER.replace("-draft","");
+paintSteps();render();sbState();route(true);
 </script>
 </body>
 </html>
