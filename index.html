@@ -6,205 +6,334 @@
 <title>ArtiByte Executive Protocol</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef1f6;--surface:#fff;--ink:#141a2b;--mute:#6a7388;--line:#d9deea;--accent:#2d4bd6;--on:#fff;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--surface:#171d31;--ink:#e8ecf8;--mute:#8d97b3;--line:#283050;--accent:#8fa6ff;--on:#0e1220;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e1220;--surface:#171d31;--ink:#e8ecf8;--mute:#8d97b3;--line:#283050;--accent:#8fa6ff;--on:#0e1220;color-scheme:dark}
+:root{--bg:#eef1f6;--surface:#fff;--ink:#141a2b;--mute:#5a6378;--line:#c9d0e0;--accent:#2d4bd6;--on:#fff;
+--warn:#8a5200;--on-warn:#fff;--warn-bg:rgba(217,138,0,.16);--ok:#14703b;--on-ok:#fff;--bad:#b3261e;--on-bad:#fff;--hover:rgba(45,75,214,.08)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--surface:#171d31;--ink:#e8ecf8;--mute:#9aa4c0;--line:#2f3858;--accent:#8fa6ff;--on:#0e1220;
+--warn:#ffb84d;--on-warn:#1a1200;--warn-bg:rgba(255,184,77,.14);--ok:#4ade80;--on-ok:#04210f;--bad:#ff8a80;--on-bad:#2a0a07;--hover:rgba(143,166,255,.12);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1220;--surface:#171d31;--ink:#e8ecf8;--mute:#9aa4c0;--line:#2f3858;--accent:#8fa6ff;--on:#0e1220;
+--warn:#ffb84d;--on-warn:#1a1200;--warn-bg:rgba(255,184,77,.14);--ok:#4ade80;--on-ok:#04210f;--bad:#ff8a80;--on-bad:#2a0a07;--hover:rgba(143,166,255,.12);color-scheme:dark}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font-family:Sora,system-ui,-apple-system,"Segoe UI",sans-serif}
-.home{height:100%;display:grid;place-items:center}
-.orb{width:min(72vw,320px);aspect-ratio:1;border-radius:50%;border:0;cursor:pointer;background:var(--accent);color:var(--on);
-font:600 clamp(16px,4.6vw,22px)/1.3 inherit;font-family:inherit;padding:12%;display:grid;place-items:center;text-align:center;
-box-shadow:0 0 0 14px color-mix(in srgb,var(--accent) 16%,transparent),0 0 0 32px color-mix(in srgb,var(--accent) 7%,transparent);
-transition:transform .18s ease,box-shadow .18s ease}
-.orb:hover{transform:scale(1.03)}
-.orb:active{transform:scale(.96)}
-.orb:focus-visible{outline:3px solid var(--ink);outline-offset:6px}
-.files{display:none;max-width:720px;margin:0 auto;padding:20px 16px 40px}
-body.open .home{display:none}
-body.open .files{display:block}
-.bar{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.bar h1{font-size:clamp(13px,4.2vw,18px);margin:0;flex:1;min-width:0;white-space:nowrap}
-button.sm{font:600 13px inherit;font-family:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 14px;cursor:pointer}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:Sora,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1rem;line-height:1.5;
+padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+[hidden]{display:none!important}
+h1,h2,h3,p{margin:0}
+code{font:.8125rem ui-monospace,Menlo,Consolas,monospace;background:var(--bg);padding:1px 6px;border-radius:6px;word-break:break-word}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.home{flex:1;position:relative;isolation:isolate;display:grid;place-items:center;align-content:center;gap:28px;padding:24px 20px;text-align:center}
+.home-foot{position:absolute;left:0;right:0;bottom:14px;padding:0 24px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.home .home-foot p{margin:0;max-width:none}
+.home .home-foot .hf-ver{font-size:.6875rem;font-weight:600;letter-spacing:.04em;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin-bottom:6px}
+.home .home-foot .hf-copy{font-size:.6875rem;line-height:1.4;color:var(--mute)}
+.home .home-foot .hf-legal{font-size:.65rem;line-height:1.5;color:var(--mute);max-width:32ch;text-wrap:balance}
+.home h1{font-size:clamp(1.4rem,6vw,2rem);line-height:1.2}
+.home p{color:var(--mute);max-width:34ch;margin:10px auto 0;font-size:.9375rem}
+@property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes ringspin{to{--a:360deg}}
+.orb{position:relative;width:64px;height:64px;border-radius:50%;border:0;padding:0;cursor:pointer;
+background:radial-gradient(circle at 34% 28%,rgba(255,246,218,.5),transparent 45%),linear-gradient(160deg,#e9d6a4 0,#d4b373 12%,#e3c98f 22%,#c29a58 34%,#dcc084 46%,#b98f4f 58%,#d8ba7c 70%,#b08545 84%,#9a7238 100%);
+box-shadow:inset -11px -11px 18px rgba(25,12,0,.5),0 0 0 rgba(240,210,140,0);transition:box-shadow .25s ease}
+.orb::before,.orb::after{content:"";position:absolute;left:50%;top:50%;width:160px;height:56px;pointer-events:none;
+background:conic-gradient(from var(--a),transparent 0,rgba(255,255,255,.5) 6%,transparent 14%,transparent 100%),
+radial-gradient(ellipse closest-side,transparent 0 60%,#6b5636 61%,#b79a63 65%,#d9c08a 70%,#8a7650 74%,#15100a 75.5%,#15100a 77%,#e6d3a3 78.5%,#f3e5bb 85%,#cdb27a 91%,#a38a58 96%,transparent 100%);
+-webkit-mask:radial-gradient(ellipse closest-side,transparent 59%,#000 61%,#000 97%,transparent 100%);
+mask:radial-gradient(ellipse closest-side,transparent 59%,#000 61%,#000 97%,transparent 100%);
+animation:ringspin 9s linear infinite}
+.orb::before{z-index:-1;transform:translate(-50%,-50%) rotate(-20deg)}
+.orb::after{z-index:1;transform:translate(-50%,-50%) rotate(-20deg);clip-path:inset(50% 0 0 0)}
+.orb:hover{box-shadow:inset -11px -11px 18px rgba(25,12,0,.5),0 0 22px rgba(240,210,140,.55)}
+.wrap{width:100%;max-width:720px;margin:0 auto;padding:0 16px 56px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.bar{display:flex;align-items:center;gap:12px}
+.bar h1{font-size:clamp(.95rem,4vw,1.15rem);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar h1:focus{outline:none}
+.prog{margin-top:10px}
+.prog .t{display:flex;justify-content:space-between;gap:8px;font-size:.8125rem;color:var(--mute);margin-bottom:6px;flex-wrap:wrap}
+.prog .t b{color:var(--ink)}
+.track{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.fillbar{height:100%;width:0;background:var(--accent);transition:width .25s ease}
+.prog .acts{margin-top:8px}
+button{font-family:inherit}
+button.sm{font-weight:600;font-size:.875rem;min-height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:10px 16px;cursor:pointer;transition:background .15s,transform .1s}
+button.sm:hover:not(:disabled){background:var(--hover)}
+button.sm:active:not(:disabled){transform:scale(.97)}
 button.sm.p{background:var(--accent);color:var(--on);border-color:transparent}
-button.sm:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.drop{border:1.5px dashed var(--line);border-radius:14px;padding:16px;text-align:center;color:var(--mute);font-size:13px;margin-bottom:16px}
-.drop.on{border-color:var(--accent);color:var(--ink)}
-.f{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
-.f h2{font-size:15px;margin:0 0 2px;word-break:break-all}
-.meta{color:var(--mute);font-size:12px}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.vers{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
-.v{display:flex;align-items:center;gap:8px;font-size:13px;padding:5px 0}
-.v b{min-width:34px}
-.v span{flex:1;color:var(--mute)}
-.v a{color:var(--accent);cursor:pointer;font-weight:600;background:none;border:0;font:inherit;font-weight:600;padding:2px 4px}
-.cur{color:var(--accent);font-size:11px;font-weight:600}
-pre{white-space:pre-wrap;word-break:break-word;font:12px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border-radius:10px;padding:12px;max-height:50vh;overflow:auto;margin:10px 0 0}
-.note{color:var(--mute);font-size:12px;margin-top:18px;line-height:1.5}
-input[type=file]{display:none}
-#sp,#sp2,#sp3,#sp4{max-height:160px}
+button.sm.p:hover:not(:disabled){background:var(--accent);filter:brightness(1.1)}
+button.sm.d{color:var(--bad);border-color:var(--bad)}
+button.sm.ok{background:var(--ok);color:var(--on-ok);border-color:transparent}
+button.sm.bad{background:var(--bad);color:var(--on-bad);border-color:transparent}
+button.sm.busy{opacity:.7;cursor:progress}
 button.sm:disabled{opacity:.5;cursor:not-allowed}
-.guide summary{font-weight:600;font-size:15px;cursor:pointer}
-.guide h3{font-size:13px;margin:18px 0 6px}
-.guide p,.guide li{font-size:13px;line-height:1.6;margin:4px 0}
-.guide ol,.guide ul{padding-left:20px;margin:6px 0}
-.guide ul.chk{list-style:none;padding-left:0}
-.guide code{font:12px ui-monospace,Menlo,Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:5px}
-.guide .tip{color:var(--mute)}
+button.lnk{background:none;border:0;padding:0;font:inherit;color:var(--accent);text-decoration:underline;cursor:pointer;min-height:24px}
+.row,.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.banner{border-radius:12px;padding:12px 14px;font-size:.875rem;line-height:1.5;margin-bottom:12px;background:var(--warn-bg);border-left:4px solid var(--warn)}
+.banner.err{background:color-mix(in srgb,var(--bad) 14%,transparent);border-left-color:var(--bad)}
+.f{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.f h2{font-size:1rem;margin-bottom:2px;overflow-wrap:anywhere}
+.meta{color:var(--mute);font-size:.8125rem;line-height:1.5}
+.help{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 1rem Sora,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(10,14,30,.18);transition:background .15s}
+.help:hover,.help[aria-expanded="true"]{background:var(--accent);color:var(--on);border-color:transparent}
+.helpp{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:40;width:min(360px,calc(100vw - 32px));max-height:min(70vh,calc(100dvh - 120px));overflow:auto;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 12px 40px rgba(10,14,30,.28)}
+.helpp .hh{display:flex;justify-content:space-between;align-items:center}
+.helpp h2{font-size:.9375rem}
+.helpp .x{width:44px;height:44px;margin:-8px -10px -8px 0;border:0;background:none;color:var(--mute);font-size:1.5rem;line-height:1;cursor:pointer;border-radius:50%}
+.helpp ol{margin:6px 0 0;padding-left:20px}
+.helpp li{font-size:.875rem;line-height:1.6;margin:8px 0}
+.helpp .meta{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.cmd{font:.8125rem ui-monospace,Menlo,Consolas,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:36px;cursor:pointer;margin:2px 0}
+.cmd:hover{background:var(--hover)}
+.cmd.ok{background:var(--ok);color:var(--on-ok);border-color:transparent}
+.cmd.bad{background:var(--bad);color:var(--on-bad);border-color:transparent}
+.pc{position:relative;padding-left:60px;border-left:6px solid var(--accent)}
+.pc.fill{border-left-color:var(--warn)}
+.pc.done{border-left-color:var(--ok)}
+.pc .n{position:absolute;left:14px;top:14px;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--on);font-size:.9375rem;font-weight:600;display:grid;place-items:center}
+.pc.fill .n{background:var(--warn);color:var(--on-warn)}
+.pc.done .n{background:var(--ok);color:var(--on-ok)}
+.pc.done .n::after{content:"";}
+.tag{display:inline-block;font-size:.75rem;font-weight:600;border-radius:999px;padding:3px 10px;margin-left:8px;vertical-align:middle}
+.tag.cp{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.tag.ed{background:var(--warn-bg);color:var(--warn)}
+.tag.st{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.chip{display:inline-block;font-size:.75rem;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--mute);margin:6px 6px 0 0}
+.todo{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--warn-bg);font-size:.875rem;line-height:1.55}
+.field{display:grid;gap:4px;margin-top:10px}
+.field label{font-size:.8125rem;font-weight:600}
+input[type=text],input[type=search]{font:inherit;font-size:.9375rem;min-height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 12px;width:100%}
+.chkrow{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.9375rem;cursor:pointer;min-height:44px}
+.chkrow input{width:22px;height:22px;accent-color:var(--accent);flex:none}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font:.8125rem/1.6 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border-radius:10px;padding:12px;max-height:180px;overflow:auto;margin:12px 0 0;border:1px solid var(--line)}
+pre.tall{max-height:70vh}
+pre.fade{-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+pre.tall.fade{-webkit-mask-image:none;mask-image:none}
+.sec{font-size:1.15rem;margin:28px 0 4px}
+.tools{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+.tools input{flex:1;min-width:140px}
+.stor{margin:10px 0 0}
+.more{margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.8125rem;color:var(--mute)}
+#pro{max-width:min(92vw,400px)}
+#pro .plans{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 0}
+#pro .plan{position:relative;display:block;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;text-align:center;min-height:44px}
+#pro .plan input{position:absolute;opacity:0;inset:0;cursor:pointer}
+#pro .plan:has(input:checked){border-color:var(--accent);background:var(--hover)}
+#pro .plan:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:2px}
+#pro .plan b{display:block;font-size:1.1rem}
+#pro .plan span{font-size:.75rem;color:var(--mute)}
+#pro ul{margin:14px 0 0;padding-left:20px;font-size:.875rem;line-height:1.6;color:var(--ink)}
+.empty{border:1.5px dashed var(--line);border-radius:14px;padding:24px 16px;text-align:center;color:var(--mute);font-size:.9375rem;line-height:1.55}
+.empty b{display:block;color:var(--ink);font-size:1rem;margin-bottom:4px}
+.empty .row{justify-content:center}
+.curv{margin-top:12px;padding:12px;border-radius:10px;background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{font-size:.6875rem;font-weight:600;letter-spacing:.05em;border-radius:999px;padding:3px 10px;background:var(--accent);color:var(--on)}
+.v{border-top:1px solid var(--line);padding:10px 0}
+.vh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.old{margin-top:12px}
+.diff{margin:12px 0 0;border:1px solid var(--line);border-radius:10px;background:var(--bg);max-height:50vh;overflow:auto;font:.8125rem/1.55 ui-monospace,Menlo,Consolas,monospace}
+.diff div{padding:1px 10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.diff .a{background:color-mix(in srgb,var(--ok) 20%,transparent)}
+.diff .r{background:color-mix(in srgb,var(--bad) 20%,transparent)}
+.diff .s{color:var(--mute);padding:6px 10px;font-family:Sora,system-ui,sans-serif;position:sticky;top:0;background:var(--bg)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);max-width:min(92vw,440px);padding:12px 18px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:.875rem;line-height:1.45;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:var(--bad);color:var(--on-bad)}
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);padding:20px;max-width:min(92vw,420px);width:100%}
+dialog::backdrop{background:rgba(10,14,30,.55)}
+dialog h2{font-size:1.05rem;margin-bottom:6px}
+dialog p{font-size:.9375rem;color:var(--mute);overflow-wrap:anywhere}
+dialog .row{justify-content:flex-end}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<main class="home">
-  <button class="orb" id="go" aria-label="Open the ArtiByte Executive Protocol">Open the ArtiByte Executive Protocol</button>
+
+<main class="home" id="home">
+  <h1 class="sr">ArtiByte Executive Protocol</h1>
+  <button class="orb" id="go" type="button" aria-label="Open setup"></button>
+  <footer class="home-foot">
+    <p class="hf-ver" id="homeVer"></p>
+    <p class="hf-copy">&copy; 2026 ArtiBytte. All rights reserved.</p>
+    <p class="hf-legal">Proprietary and confidential. Unauthorized copying, distribution, or use is prohibited.</p>
+  </footer>
 </main>
 
-<section class="files" id="files" aria-label="Files and versioning">
-  <div class="bar">
-    <button class="sm" id="back" aria-label="Back">Back</button>
-    <h1>ArtiByte Executive Protocol</h1>
+<main id="setup" hidden>
+<div class="wrap">
+  <header class="top">
+    <div class="bar">
+      <button class="sm" id="back" type="button" aria-label="Back to start">Back</button>
+      <h1 id="h1s" tabindex="-1">ArtiByte Executive Protocol</h1>
+    </div>
+    <div class="prog">
+      <div class="t"><span id="progNext" aria-live="polite"></span><b id="progT"></b></div>
+      <div class="track" id="progTrack" role="progressbar" aria-label="Setup progress" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0"><div class="fillbar" id="progF"></div></div>
+      <div class="acts"><button class="sm" id="resetSteps" type="button">New chat: reset steps</button></div>
+    </div>
+  </header>
+
+  <div id="notes"></div>
+
+  <button class="help" id="helpBtn" type="button" aria-label="How to use the protocol" aria-expanded="false" aria-controls="helpPanel">?</button>
+  <aside class="helpp" id="helpPanel" role="dialog" aria-labelledby="helpT" hidden>
+    <div class="hh"><h2 id="helpT">How to use</h2><button class="x" id="helpX" type="button" aria-label="Close">&times;</button></div>
+    <ol>
+      <li>Fill in card 3 in Notes. Minimum: <code>legal_name</code>, <code>jurisdiction</code>, <code>reporting_currency</code>, <code>industry</code>, <code>mission</code>.</li>
+      <li>Open a new DeepSeek chat. Paste cards 1 to 4 in order, using your filled-in card 3.</li>
+      <li>Send <button class="cmd" data-copy="Protocol, activate." type="button">Protocol, activate.</button></li>
+      <li>When done, send <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button> then <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button> Save the output in Notes and upload it under Saved versions.</li>
+    </ol>
+    <p class="meta">The model forgets between chats. Each new session, tap "New chat: reset steps" and repeat steps 2 and 3 with your updated operating record.</p>
+  </aside>
+
+  <div class="f pc fill" id="card-sp" data-step="sp">
+    <span class="n" aria-hidden="true">1</span>
+    <h2>System prompt<span class="tag ed">Fill in first</span></h2>
+    <p class="meta">Paste this first in a new chat. <span class="chip" id="ver-sp"></span></p>
+    <div class="field"><label for="f-name">Entity name</label><input type="text" id="f-name" autocomplete="off" placeholder="e.g. ISSUE"></div>
+    <div class="field"><label for="f-type">Entity type</label><input type="text" id="f-type" autocomplete="off" placeholder="e.g. incorporated company"></div>
+    <div class="field"><label for="f-jur">Jurisdiction</label><input type="text" id="f-jur" autocomplete="off" placeholder="e.g. country or state of registration"></div>
+    <p class="meta" id="spHelp" style="margin-top:8px">Fill in all three fields to enable copying. The preview below updates as you type.</p>
+    <div class="row"><button class="sm p" id="cp" type="button" aria-describedby="spHelp">Copy system prompt</button></div>
+    <pre id="sp" tabindex="0" role="region" aria-label="System prompt preview"></pre>
+    <label class="chkrow"><input type="checkbox" data-chk="sp"><span>Step 1 done: pasted into the chat</span></label>
   </div>
 
-  <<details class="f guide">
-    <summary>How to use the protocol</summary>
+  <div class="f pc" id="card-pc" data-step="pc">
+    <span class="n" aria-hidden="true">2</span>
+    <h2>Protocol core<span class="tag cp">Copy as-is</span></h2>
+    <p class="meta">Parts 1–29. Do not edit. Paste after the system prompt. <span class="chip" id="ver-pc"></span><span class="chip" id="len-pc"></span></p>
+    <div class="row">
+      <button class="sm p" id="cp3" type="button">Copy protocol core</button>
+      <button class="sm" id="cp3a" type="button">Copy part 1 (Parts 1–14)</button>
+      <button class="sm" id="cp3b" type="button">Copy part 2 (Parts 15–29)</button>
+      <button class="sm" id="exp3" type="button" aria-expanded="false" aria-controls="sp3">Expand preview</button>
+    </div>
+    <p class="meta" style="margin-top:8px">If you paste in two parts, send part 1, then part 2, then type: <code>Protocol Core loaded. Confirm receipt.</code></p>
+    <pre id="sp3" class="fade" tabindex="0" role="region" aria-label="Protocol core preview"></pre>
+    <label class="chkrow"><input type="checkbox" data-chk="pc"><span>Step 2 done: pasted into the chat</span></label>
+  </div>
 
-    <h3>Before you start</h3>
-    <ul>
-      <li>You need a DeepSeek account (chat.deepseek.com or the app) and the four copy cards below.</li>
-      <li>Use Notes or Google Docs to keep your filled-in and updated versions. This app does not save your changes.</li>
-      <li>Start a new chat in DeepSeek.</li>
-    </ul>
+  <div class="f pc fill" id="card-cf" data-step="cf">
+    <span class="n" aria-hidden="true">3</span>
+    <h2>Configuration record<span class="tag ed">Fill in first</span></h2>
+    <p class="meta">config-ISSUE.md. This is a blank template. <span class="chip" id="ver-cf"></span></p>
+    <div class="todo">Copy the template into Notes and fill it in. Minimum: <code>legal_name</code>, <code>jurisdiction</code>, <code>reporting_currency</code>, <code>industry</code>, <code>mission</code>. Paste <b>your filled-in version</b> into the chat, not the blank one. To keep it here, upload it under <button class="lnk" data-go="files" type="button">Saved versions</button>, then use Copy on that version.</div>
+    <div class="row"><button class="sm p" id="cp4" type="button">Copy blank template</button></div>
+    <pre id="sp4" tabindex="0" role="region" aria-label="Configuration record preview"></pre>
+    <label class="chkrow"><input type="checkbox" data-chk="cf"><span>Step 3 done: pasted my filled-in version</span></label>
+  </div>
 
-    <h3>Step by step</h3>
-    <ol>
-      <li><b>Fill in the Configuration record.</b> Copy it into Notes and complete every field marked <code>[REQUIRED]</code>. The minimum: <code>legal_name</code>, <code>jurisdiction</code>, <code>reporting_currency</code>, <code>industry</code>, <code>mission</code>. Set <code>registration_status</code> to Pending. The contents differ for every entity.</li>
-      <li><b>System prompt.</b> Tap Copy system prompt and paste it into the chat. Before sending, replace <code>[ENTITY NAME]</code>, <code>[entity type]</code>, and <code>[jurisdiction]</code>. Send it and wait for the acknowledgment.</li>
-      <li><b>Protocol core.</b> Tap Copy protocol core, paste, send. It is long. If the chat has a limit, split it into 2 or 3 parts (for example Parts 1–14, then Parts 15–29). After the last part, type: <code>Protocol Core loaded. Confirm receipt.</code></li>
-      <li><b>Configuration record.</b> Paste your filled-in version from Notes, not the blank one from the app. Send.</li>
-      <li><b>Operating record.</b> Tap Copy operating record, paste, send. In later sessions, paste your updated version from Notes instead.</li>
-      <li><b>Activate.</b> Type: <code>Protocol, activate.</code></li>
-      <li><b>First session.</b> Try <code>Founder briefing.</code>, <code>What should I do next?</code>, or <code>Revenue review.</code> The full command list is in Part 21 of the protocol.</li>
-      <li><b>End of session.</b> Type <code>Update the operating record.</code>, then <code>Produce session snapshot.</code> Copy the output and save it in Notes. It becomes your operating record for the next session.</li>
-      <li><b>Next session.</b> Start a new chat. Repeat steps 2 to 5 using your updated operating record, then type <code>Protocol, activate.</code></li>
-    </ol>
+  <div class="f pc" id="card-or" data-step="or">
+    <span class="n" aria-hidden="true">4</span>
+    <h2>Operating record<span class="tag st">Update each session</span></h2>
+    <p class="meta">Paste this starting record in your first session. In later sessions, paste your updated version from Notes or <button class="lnk" data-go="files" type="button">Saved versions</button>. <span class="chip" id="ver-or"></span></p>
+    <div class="row"><button class="sm p" id="cp2" type="button">Copy starting record</button></div>
+    <pre id="sp2" tabindex="0" role="region" aria-label="Operating record preview"></pre>
+    <label class="chkrow"><input type="checkbox" data-chk="or"><span>Step 4 done: pasted into the chat</span></label>
+  </div>
 
-    <h3>What activation should return</h3>
-    <p>The expected response format: Executive Assessment, Recommended Decision, Council Findings, Immediate Action Plan, Founder Decisions Required, Risks and Blockers, Milestone Status, Continuity Record, and Founder Capacity Check.</p>
-    <p class="tip">This is not guaranteed. Responses vary by model and by run.</p>
+  <section class="f" aria-labelledby="after-h">
+    <h2 id="after-h">Then activate and run your session</h2>
+    <p class="meta">Tap a command to copy it.</p>
+    <div class="row">
+      <button class="cmd" data-copy="Protocol, activate." type="button">Protocol, activate.</button>
+      <button class="cmd" data-copy="Founder briefing." type="button">Founder briefing.</button>
+      <button class="cmd" data-copy="What should I do next?" type="button">What should I do next?</button>
+      <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button>
+      <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button>
+    </div>
+  </section>
 
-    <h3>Keep in mind</h3>
-    <ul>
-      <li>Paste all four at the start of every new chat. The LLM has no memory between chats.</li>
-      <li>Do not skip the system prompt. It orients the LLM.</li>
-      <li>The operating record is your only continuous memory, so update it after every session.</li>
-      <li>If you did not save a snapshot, there is no record of the session.</li>
-      <li>Do not accept "done" or "saved" without confirmation. This is the protocol's core rule.</li>
-    </ul>
-
-    <h3>If something goes wrong</h3>
-    <ul>
-      <li>Not following the rules: type <code>Refer to the protocol.</code></li>
-      <li>Inventing data: type <code>Apply the evidence rules. Mark it CLAIMED or NOT ESTABLISHED.</code></li>
-      <li>Command not recognized: type <code>Protocol, activate.</code> again.</li>
-      <li>No response or cut off: split the paste into smaller parts.</li>
-    </ul>
-
-    <h3>Checklist</h3>
-    <ul class="chk">
-      <li>☐ Configuration record filled in</li>
-      <li>☐ Placeholders replaced in the system prompt</li>
-      <li>☐ System prompt, protocol core, configuration record, and operating record pasted</li>
-      <li>☐ "Protocol, activate." typed</li>
-      <li>☐ First session started</li>
-      <li>☐ Session snapshot saved</li>
-      <li>☐ Operating record updated in Notes</li>
-    </ul>
-  </details>
-  <div class="f"><h2>System prompt</h2>
-    <div class="meta">Copy as-is, then paste as the first message to the LLM.</div>
-    <div class="row"><button class="sm p" id="cp">Copy system prompt</button></div>
-    <pre id="sp"></pre></div>
-
-  <div class="f"><h2>Protocol core</h2>
-    <div class="meta">Complete: Parts 1–29. Copy as-is, then paste after the system prompt.</div>
-    <div class="row"><button class="sm p" id="cp3">Copy protocol core</button></div>
-    <pre id="sp3"></pre></div>
-
-  <div class="f"><h2>Configuration record</h2>
-    <div class="meta">config-ISSUE.md. Copy as-is, then paste after the protocol core.</div>
-    <div class="row"><button class="sm p" id="cp4">Copy configuration record</button></div>
-    <pre id="sp4"></pre></div>
-
-  <div class="f"><h2>Operating record</h2>
-    <div class="meta">Copy as-is, then paste after the configuration record.</div>
-    <div class="row"><button class="sm p" id="cp2">Copy operating record</button></div>
-    <pre id="sp2"></pre></div>
-
+  <h2 class="sec" id="files" tabindex="-1">Saved versions</h2>
+  <div class="prog stor"><div class="t"><span>Browser storage</span><b id="stT"></b></div><div class="track"><div class="fillbar" id="stF"></div></div></div>
+  <div class="more"><span>More storage?</span><button class="lnk" id="proBtn" type="button">Upgrade to Pro</button></div>
+  <div class="tools" id="tools">
+    <input type="search" id="q" placeholder="Search file names" aria-label="Search file names">
+    <button class="sm p" id="addBtn" type="button">Add file</button>
+  </div>
+  <div class="acts" style="margin-top:0;margin-bottom:12px">
+    <button class="sm" id="exportBtn" type="button">Export backup</button>
+    <button class="sm" id="importBtn" type="button">Import backup</button>
+  </div>
+  <p class="sr" id="count" aria-live="polite"></p>
   <div id="list"></div>
-  <input type="file" id="pick" multiple>
-</section>
+  <input type="file" id="pick" hidden accept=".md,.txt,.json,.csv,.yaml,.yml,text/*">
+  <input type="file" id="pickJson" hidden accept=".json,application/json">
+</div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="pro" aria-labelledby="proT">
+  <form method="dialog">
+    <h2 id="proT">ArtiByte Pro</h2>
+    <p>More storage, and your saved versions update to the latest protocol version automatically.</p>
+    <div class="plans">
+      <label class="plan"><input type="radio" name="plan" value="m" checked><b id="pm"></b><span>per month</span></label>
+      <label class="plan"><input type="radio" name="plan" value="y"><b id="py"></b><span>per year</span></label>
+    </div>
+    <ul>
+      <li>Expanded storage for saved versions</li>
+      <li>Auto-update to the latest version</li>
+    </ul>
+    <div class="row"><button class="sm" value="no" type="submit">Not now</button><button class="sm p" id="proGo" value="no" type="submit">Upgrade</button></div>
+  </form>
+</dialog>
+<dialog id="dlg" aria-labelledby="dT" aria-describedby="dM">
+  <form method="dialog">
+    <h2 id="dT"></h2><p id="dM"></p>
+    <div class="row"><button class="sm" value="no" type="submit">Cancel</button><button class="sm p" value="yes" id="dOk" type="submit">OK</button></div>
+  </form>
+</dialog>
 
 <script>
-const KEY="artibyte-protocol-files-v1";
-let db={};
-try{db=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){db={}}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){alert("Browser storage is full or blocked. Download your versions to keep them.")}};
 const $=id=>document.getElementById(id);
-const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}};
 const fmt=t=>new Date(t).toLocaleString([], {dateStyle:"medium",timeStyle:"short"});
-const kb=n=>n<1024?n+" B":(n/1024).toFixed(1)+" KB";
-let viewing=null;
+const kb=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB";
+const LIMIT=5*1024*1024;
 
-function render(){
-  $("list").innerHTML=Object.keys(db).filter(n=>db[n].length).map(name=>{
-    const vs=db[name];
-    const last=vs[vs.length-1];
-    const head=last?`v${last.v} · ${fmt(last.t)} · ${kb(last.size)}`:"No file yet. Add the first version.";
-    const hist=vs.slice().reverse().map(x=>`
-      <div class="v"><b>v${x.v}</b><span>${fmt(x.t)} · ${kb(x.size)}</span>
-      ${x===last?'<em class="cur">current</em>':''}
-      <a data-act="view" data-n="${esc(name)}" data-v="${x.v}">View</a>
-      <a data-act="dl" data-n="${esc(name)}" data-v="${x.v}">Download</a></div>
-      ${viewing===name+"@"+x.v?`<pre>${esc(x.text)}</pre>`:""}`).join("");
-    return `<div class="f"><h2>${esc(name)}</h2><div class="meta">${head}</div>
-      <div class="row"><button class="sm p" data-act="up" data-n="${esc(name)}">${last?"Upload new version":"Upload file"}</button></div>
-      ${vs.length?`<div class="vers">${hist}</div>`:""}</div>`;
-  }).join("");
+/* ---------- feedback: toast, dialog, copy ---------- */
+let toastT;
+function toast(msg,kind){const t=$("toast");t.textContent=msg;t.className="toast on"+(kind==="err"?" err":"");clearTimeout(toastT);toastT=setTimeout(()=>{t.className="toast"},kind==="err"?6000:2600)}
+function confirmBox(title,msg,okLabel,danger){
+  const d=$("dlg");
+  if(!d.showModal)return Promise.resolve(window.confirm(title+"\n\n"+msg));
+  $("dT").textContent=title;$("dM").textContent=msg;
+  const ok=$("dOk");ok.textContent=okLabel||"OK";ok.className="sm "+(danger?"bad":"p");
+  d.returnValue="";
+  return new Promise(res=>{d.addEventListener("close",()=>res(d.returnValue==="yes"),{once:true});d.showModal()});
 }
-
-function ingest(file,forceName){
-  return file.text().then(text=>{
-    const name=forceName||file.name;
-    if(!db[name])db[name]=[];
-    const vs=db[name];
-    vs.push({v:(vs.length?vs[vs.length-1].v:0)+1,t:Date.now(),size:file.size,text});
-  });
+function btnState(b,state,txt,ms){
+  if(!b.dataset.label)b.dataset.label=b.textContent;
+  clearTimeout(b._t);b.classList.remove("ok","bad","busy");
+  if(state)b.classList.add(state);
+  b.disabled=state==="busy";b.textContent=txt||b.dataset.label;
+  if(ms)b._t=setTimeout(()=>btnState(b),ms);
 }
-function ingestAll(files,forceName){
-  Promise.all([...files].map(f=>ingest(f,forceName))).then(()=>{save();render()});
+function legacyCopy(text){
+  const t=document.createElement("textarea");t.value=text;t.setAttribute("readonly","");t.style.cssText="position:fixed;top:0;left:0;opacity:0";
+  document.body.appendChild(t);t.select();t.setSelectionRange(0,text.length);
+  let ok=false;try{ok=document.execCommand("copy")}catch(e){}t.remove();return ok;
 }
+function selectNode(el){if(!el)return;const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+async function copyText(text,btn,what,selectEl){
+  btnState(btn,"busy","Copying…");
+  let ok=false;
+  if(navigator.clipboard&&navigator.clipboard.writeText){try{await navigator.clipboard.writeText(text);ok=true}catch(e){}}
+  if(!ok)ok=legacyCopy(text);
+  if(ok){btnState(btn,"ok","Copied",1600);toast("Copied: "+what+" ("+text.length.toLocaleString()+" characters)")}
+  else{btnState(btn,"bad","Copy failed",2500);selectNode(selectEl);toast("Copy failed. The text is selected: press Ctrl/Cmd+C, or long-press and choose Copy.","err")}
+}
+function wireCopy(id,getText,what,preId){$(id).onclick=()=>copyText(getText(),$(id),what,preId?$(preId):null)}
+document.addEventListener("click",e=>{
+  const c=e.target.closest("[data-copy]");if(c){copyText(c.dataset.copy,c,"command");return}
+  const g=e.target.closest("[data-go]");
+  if(g){const t=$(g.dataset.go);if(t){t.scrollIntoView({block:"start"});if(g.dataset.go==="files")t.focus({preventScroll:true})}}
+});
 
-let target=null;
-$("go").onclick=()=>{document.body.classList.add("open");render();window.scrollTo(0,0)};
-$("back").onclick=()=>document.body.classList.remove("open");
-$("pick").onchange=e=>{ingestAll(e.target.files,target);e.target.value=""};
-$("list").onclick=e=>{
-  const a=e.target.closest("[data-act]");if(!a)return;
-  const n=a.dataset.n,act=a.dataset.act;
-  if(act==="up"){target=n;$("pick").click()}
-  if(act==="view"){const k=n+"@"+a.dataset.v;viewing=viewing===k?null:k;render()}
-  if(act==="dl"){
-    const x=db[n].find(y=>y.v==a.dataset.v);
-    const b=new Blob([x.text],{type:"text/plain"});
-    const l=document.createElement("a");
-    const dot=n.lastIndexOf(".");
-    l.href=URL.createObjectURL(b);
-    l.download=(dot>0?n.slice(0,dot):n)+"-v"+x.v+(dot>0?n.slice(dot):"");
-    l.click();setTimeout(()=>URL.revokeObjectURL(l.href),1000);
-  }
-};
-
+/* ---------- protocol texts (unchanged content) ---------- */
 const SP=`You are operating under ArtiByte Protocol v2.8. You serve as the analytical operating system for [ENTITY NAME], a [entity type] in [jurisdiction].
 
 CORE RULES:
@@ -317,15 +446,6 @@ Secondary contact: [NOT PROVIDED]
 Threshold: [NOT PROVIDED]
 Access handover: [NOT PROVIDED]`;
 
-function wireCopy(btnId,preId,text,label){
-  $(preId).textContent=text;
-  $(btnId).onclick=()=>{
-    const b=$(btnId),ok=()=>{b.textContent="Copied";setTimeout(()=>b.textContent=label,1600)};
-    const fb=()=>{const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();try{document.execCommand("copy");ok()}catch(e){b.textContent="Select the text and copy manually"}t.remove()};
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,fb)}else fb();
-  };
-}
-wireCopy("cp","sp",SP,"Copy system prompt");
 const PC=`ArtiByte Protocol v2.8.1-draft — Complete Version
 Status: DRAFT — NOT YET VERIFIED, TESTED, ADOPTED, OR DEPLOYED
 Version: 2.8.1-draft
@@ -1274,9 +1394,8 @@ END OF v2.8.1-draft
 Status: DRAFT — NOT YET VERIFIED, TESTED, ADOPTED, OR DEPLOYED
 Approval: PENDING — awaiting Founder approval
 Supersedes: v2.8.0-draft (corrects omission of agent roster, activation commands, operating cadence, adaptation layer)
-File type: Protocol Core (invariant — walang organization-specific values)`;
-wireCopy("cp2","sp2",OR,"Copy operating record");
-wireCopy("cp3","sp3",PC,"Copy protocol core");
+File type: Protocol Core (invariant — no organization-specific values)`;
+
 const CF=`CONFIGURATION RECORD
 ====================
 Configuration Record ID: CR-ISSUE-20251016-001
@@ -1398,8 +1517,289 @@ Total fields required: 74+
 Fields recorded: 7
 Completion percentage: 9%
 Operative: NO — configuration incomplete`;
-if(CF){wireCopy("cp4","sp4",CF,"Copy configuration record")}
-else{$("sp4").textContent="config-ISSUE.md is not loaded yet. Paste its text into const CF in the code.";$("cp4").disabled=true}
+
+/* ---------- storage: versions ---------- */
+const KEY="artibyte-protocol-files-v2",OLDKEY="artibyte-protocol-files-v1",SK="artibyte-protocol-steps-v1",EK="artibyte-entity-v1",GK="artibyte-guide-open-v1";
+let db={},storageOk=true,loadNote="";
+(function probe(){storageOk=LS.set("artibyte-probe","1");if(storageOk)try{localStorage.removeItem("artibyte-probe")}catch(e){}})();
+function loadDb(){
+  let raw=LS.get(KEY);if(raw===null)raw=LS.get(OLDKEY);
+  if(!raw)return;
+  try{
+    const o=JSON.parse(raw);
+    for(const n in o){const x=o[n];
+      if(Array.isArray(x)){db[n]={next:(x.length?Math.max(...x.map(y=>y.v)):0)+1,vs:x}}
+      else if(x&&Array.isArray(x.vs)){db[n]=x}}
+  }catch(e){LS.set(KEY+"-corrupt-backup",raw);loadNote="Saved versions could not be read. A raw copy was kept in this browser under the key "+KEY+"-corrupt-backup. New uploads start fresh."}
+}
+const lastOf=f=>f.vs[f.vs.length-1];
+const usedChars=()=>JSON.stringify(db).length;
+function persist(){const ok=LS.set(KEY,JSON.stringify(db));if(!ok)toast("Could not save: browser storage is full or blocked. Nothing was changed. Download or delete versions to free space, then try again.","err");return ok}
+function names(){return Object.keys(db).filter(n=>db[n].vs.length).sort((a,b)=>lastOf(db[b]).t-lastOf(db[a]).t)}
+function addVersion(name,text,size){const f=db[name]||(db[name]={next:1,vs:[]});f.vs.push({v:f.next++,t:Date.now(),size,text})}
+
+/* ---------- diff ---------- */
+function diffLines(a,b){
+  const A=a.split("\n"),B=b.split("\n");
+  let s=0;while(s<A.length&&s<B.length&&A[s]===B[s])s++;
+  let ea=A.length,eb=B.length;while(ea>s&&eb>s&&A[ea-1]===B[eb-1]){ea--;eb--}
+  const a1=A.slice(s,ea),b1=B.slice(s,eb),n=a1.length,m=b1.length;
+  if(n*m>2000000)return null;
+  const w=m+1,dp=new Uint16Array((n+1)*w);
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i*w+j]=a1[i]===b1[j]?dp[(i+1)*w+j+1]+1:Math.max(dp[(i+1)*w+j],dp[i*w+j+1]);
+  const out=[];let i=0,j=0;
+  while(i<n&&j<m){if(a1[i]===b1[j]){i++;j++}else if(dp[(i+1)*w+j]>=dp[i*w+j+1])out.push(["-",a1[i++]]);else out.push(["+",b1[j++]])}
+  while(i<n)out.push(["-",a1[i++]]);while(j<m)out.push(["+",b1[j++]]);
+  return out;
+}
+function diffHtml(prev,cur){
+  const d=diffLines(prev.text,cur.text);
+  if(d===null)return `<div class="diff"><div class="s">These versions are too different to compare in the browser. Download both to compare them.</div></div>`;
+  if(!d.length)return `<div class="diff"><div class="s">No differences between v${prev.v} and v${cur.v}.</div></div>`;
+  const add=d.filter(x=>x[0]==="+").length,rem=d.length-add;
+  return `<div class="diff" role="region" tabindex="0" aria-label="Changes from v${prev.v} to v${cur.v}"><div class="s">v${prev.v} → v${cur.v}: ${add} line${add===1?"":"s"} added, ${rem} removed</div>${d.map(x=>`<div class="${x[0]==="+"?"a":"r"}">${x[0]} ${esc(x[1])||"&nbsp;"}</div>`).join("")}</div>`;
+}
+
+/* ---------- version list UI ---------- */
+let q="",panel="",openOld={},refocusSel="";
+const cssq=s=>window.CSS&&CSS.escape?CSS.escape(s):s.replace(/"/g,'\\"');
+function vrow(name,x,prev,isCur){
+  const N=esc(name),key=name+"|"+x.v,vOpen=panel===key+"|view",dOpen=panel===key+"|diff";
+  const acts=`<div class="acts">
+    <button class="sm" type="button" data-act="view" data-n="${N}" data-v="${x.v}" aria-expanded="${vOpen}">${vOpen?"Hide":"View"}</button>
+    <button class="sm" type="button" data-act="copy" data-n="${N}" data-v="${x.v}">Copy</button>
+    <button class="sm" type="button" data-act="dl" data-n="${N}" data-v="${x.v}">Download</button>
+    ${prev?`<button class="sm" type="button" data-act="diff" data-n="${N}" data-v="${x.v}" aria-expanded="${dOpen}">${dOpen?"Hide changes":"Changes vs v"+prev.v}</button>`:""}
+    ${isCur?`<button class="sm p" type="button" data-act="up" data-n="${N}">Upload new version</button>`:""}
+    <button class="sm d" type="button" data-act="delv" data-n="${N}" data-v="${x.v}">Delete v${x.v}</button></div>`;
+  return acts+(vOpen?`<pre class="tall" tabindex="0" role="region" aria-label="${N} v${x.v} contents">${esc(x.text)}</pre>`:"")+(dOpen&&prev?diffHtml(prev,x):"");
+}
+function meter(){
+  const u=usedChars(),p=Math.min(100,u/LIMIT*100);
+  $("stT").textContent=kb(u)+" of about 5 MB"+(p>=80?" · almost full":"");
+  $("stF").style.width=p+"%";$("stF").style.background=p>=80?"var(--warn)":"";
+}
+function render(){
+  meter();
+  const all=names(),shown=all.filter(n=>n.toLowerCase().includes(q));
+  $("tools").style.display=all.length?"flex":"none";
+  $("count").textContent=all.length?`Showing ${shown.length} of ${all.length} files`:"";
+  if(!all.length){
+    $("list").innerHTML="";
+  }else if(!shown.length){
+    $("list").innerHTML=`<div class="empty"><b>No matches</b>No file name contains "${esc(q)}".<div class="row"><button class="sm" type="button" data-act="clearq">Clear search</button></div></div>`;
+  }else{
+    $("list").innerHTML=shown.map(name=>{
+      const f=db[name],cur=lastOf(f),older=f.vs.slice(0,-1).reverse(),N=esc(name);
+      const prevOf=x=>{const i=f.vs.indexOf(x);return i>0?f.vs[i-1]:null};
+      return `<article class="f"><h2>${N}</h2>
+        <p class="meta">${f.vs.length} version${f.vs.length>1?"s":""}</p>
+        <div class="curv"><div class="hd"><span class="badge">LATEST UPLOAD</span><b>v${cur.v}</b><span class="meta">${fmt(cur.t)} · ${kb(cur.size)}</span></div>${vrow(name,cur,prevOf(cur),true)}</div>
+        ${older.length?`<div class="old"><button class="sm" type="button" data-act="old" data-n="${N}" aria-expanded="${!!openOld[name]}">${openOld[name]?"Hide":"Show"} older versions (${older.length})</button>
+          ${openOld[name]?older.map(x=>`<div class="v"><div class="vh"><b>v${x.v}</b><span class="meta">${fmt(x.t)} · ${kb(x.size)}</span></div>${vrow(name,x,prevOf(x),false)}</div>`).join(""):""}</div>`:""}
+        <div class="row"><button class="sm d" type="button" data-act="delf" data-n="${N}">Delete file</button></div></article>`;
+    }).join("");
+  }
+  if(refocusSel){const el=document.querySelector(refocusSel);if(el)el.focus({preventScroll:true});refocusSel=""}
+}
+function focusAct(act,n,v){refocusSel=`#list [data-act="${act}"][data-n="${cssq(n)}"]`+(v!==undefined?`[data-v="${v}"]`:"")}
+
+async function handleFiles(files,target){
+  files=[...files];if(!files.length)return;
+  if(target&&files.length>1){files=files.slice(0,1);toast("Only the first file was used, because you are adding a version of "+target+".")}
+  const snap=JSON.stringify(db),added=[];
+  for(const f of files){
+    if(f.size>1.5*1048576){toast(`${f.name} is larger than 1.5 MB and was skipped.`,"err");continue}
+    let text;try{text=await f.text()}catch(e){toast(`Could not read ${f.name}. Nothing was changed.`,"err");continue}
+    if(text.indexOf("\u0000")>-1){toast(`${f.name} does not look like a text file and was skipped.`,"err");continue}
+    const name=target||f.name;
+    if(target&&f.name!==target&&!await confirmBox("Different file name",`You chose "${f.name}", but you are adding a version of "${target}". Add it as the next version of "${target}"?`,"Add version"))continue;
+    if(!target&&db[name]&&db[name].vs.length&&!await confirmBox("File already exists",`"${name}" already exists. Add this as v${db[name].next}?`,"Add version"))continue;
+    const cur=db[name]&&db[name].vs.length?lastOf(db[name]):null;
+    if(cur&&cur.text===text&&!await confirmBox("Identical content",`This file is identical to ${name} v${cur.v}. Add it anyway?`,"Add anyway"))continue;
+    if(usedChars()+text.length>LIMIT*0.98){toast(`Not enough browser storage for ${f.name}. Download or delete versions first.`,"err");continue}
+    addVersion(name,text,f.size);added.push(name);
+  }
+  if(!added.length){toast("No files were added.");render();return}
+  if(!persist()){db=JSON.parse(snap);render();return}
+  if(q&&!added.every(n=>n.toLowerCase().includes(q))){q="";$("q").value=""}
+  toast(`Added ${added.length} version${added.length>1?"s":""}: ${[...new Set(added)].join(", ")}`);
+  render();
+}
+let pickTarget=null;
+function openPicker(target){pickTarget=target;$("pick").multiple=!target;$("pick").click()}
+$("pick").onchange=e=>{const f=e.target.files,t=pickTarget;e.target.value="";handleFiles(f,t)};
+$("addBtn").onclick=()=>openPicker(null);
+$("q").oninput=e=>{q=e.target.value.trim().toLowerCase();render()};
+
+$("list").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const n=b.dataset.n,act=b.dataset.act,v=b.dataset.v?+b.dataset.v:undefined,f=db[n],x=f&&v!==undefined?f.vs.find(y=>y.v===v):null;
+  if(act==="add"){openPicker(null);return}
+  if(act==="clearq"){q="";$("q").value="";render();return}
+  if(act==="up"){openPicker(n);return}
+  if(act==="old"){openOld[n]=!openOld[n];focusAct("old",n);render();return}
+  if(act==="view"||act==="diff"){const k=n+"|"+v+"|"+act;panel=panel===k?"":k;focusAct(act,n,v);render();return}
+  if(act==="copy"&&x){copyText(x.text,b,`${n} v${x.v}`);return}
+  if(act==="dl"&&x){
+    try{
+      const dot=n.lastIndexOf("."),nm=(dot>0?n.slice(0,dot):n)+"-v"+x.v+(dot>0?n.slice(dot):".txt");
+      const url=URL.createObjectURL(new Blob([x.text],{type:"text/plain"})),a=document.createElement("a");
+      a.href=url;a.download=nm;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+      toast("Download started: "+nm);
+    }catch(err){toast("Download failed. Use Copy, or View and select the text.","err")}
+    return;
+  }
+  if(act==="delv"&&x){
+    const only=f.vs.length===1;
+    if(!await confirmBox("Delete this version?",only?`v${v} is the only version of "${n}". Deleting it removes the file. This cannot be undone.`:`Delete v${v} of "${n}"? This cannot be undone. Version numbers are never reused.`,"Delete",true))return;
+    const snap=JSON.stringify(db);f.vs=f.vs.filter(y=>y.v!==v);if(!f.vs.length)delete db[n];
+    if(panel.startsWith(n+"|"+v+"|"))panel="";
+    if(!persist())db=JSON.parse(snap);else toast(`Deleted v${v} of ${n}.`);
+    render();return;
+  }
+  if(act==="delf"){
+    if(!await confirmBox("Delete this file?",`Delete "${n}" and all ${f.vs.length} version${f.vs.length>1?"s":""}? This cannot be undone.`,"Delete file",true))return;
+    const snap=JSON.stringify(db);delete db[n];
+    if(!persist())db=JSON.parse(snap);else toast(`Deleted ${n}.`);
+    render();
+  }
+});
+
+/* ---------- backup ---------- */
+$("exportBtn").onclick=()=>{
+  if(!names().length){toast("Nothing to export yet.");return}
+  try{
+    const nm="artibyte-versions-"+new Date().toISOString().slice(0,10)+".json";
+    const url=URL.createObjectURL(new Blob([JSON.stringify({app:"artibyte-protocol",exported:new Date().toISOString(),files:db})],{type:"application/json"}));
+    const a=document.createElement("a");a.href=url;a.download=nm;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast("Backup download started: "+nm);
+  }catch(e){toast("Export failed.","err")}
+};
+$("importBtn").onclick=()=>$("pickJson").click();
+$("importBtn").setAttribute("aria-describedby","count");
+$("pickJson").onchange=async e=>{
+  const f=e.target.files[0];e.target.value="";if(!f)return;
+  let o;try{o=JSON.parse(await f.text())}catch(err){toast("That file is not a valid backup. Nothing was changed.","err");return}
+  if(!o||o.app!=="artibyte-protocol"||!o.files||typeof o.files!=="object"){toast("That file is not an ArtiByte backup. Nothing was changed.","err");return}
+  const incoming=Object.keys(o.files).filter(n=>o.files[n]&&Array.isArray(o.files[n].vs)&&o.files[n].vs.length);
+  if(!incoming.length){toast("The backup has no files.","err");return}
+  if(!await confirmBox("Import backup?",`Add ${incoming.length} file${incoming.length>1?"s":""} from the backup. Versions of files that already exist are added as new versions. Nothing is overwritten.`,"Import"))return;
+  const snap=JSON.stringify(db);
+  incoming.forEach(n=>o.files[n].vs.forEach(x=>{if(typeof x.text==="string")addVersion(n,x.text,x.size||x.text.length)}));
+  if(!persist()){db=JSON.parse(snap);render();return}
+  toast("Backup imported.");render();
+};
+
+/* ---------- steps and progress ---------- */
+const STEPS=[["sp","System prompt"],["pc","Protocol core"],["cf","Configuration record"],["or","Operating record"]];
+let st={};try{st=JSON.parse(LS.get(SK)||"{}")}catch(e){st={}}
+function saveSteps(){if(!LS.set(SK,JSON.stringify(st)))toast("Could not save your step checkmarks. They will reset if you reload.","err")}
+function paintSteps(){
+  let n=0;
+  STEPS.forEach(([k])=>{
+    const c=$("card-"+k),d=!!st[k];
+    c.classList.toggle("done",d);c.querySelector("[data-chk]").checked=d;if(d)n++;
+    c.querySelector(".n").textContent=d?"✓":String(STEPS.findIndex(s=>s[0]===k)+1);
+  });
+  $("progT").textContent=n+" of 4 done";
+  $("progF").style.width=(n/4*100)+"%";
+  $("progTrack").setAttribute("aria-valuenow",n);
+  const nx=STEPS.findIndex(([k])=>!st[k]);
+  $("progNext").textContent=nx<0?"All steps done. In the chat, type: Protocol, activate.":`Next: step ${nx+1}, ${STEPS[nx][1]}`;
+}
+document.querySelectorAll("[data-chk]").forEach(cb=>cb.onchange=e=>{
+  const k=cb.dataset.chk;st[k]=cb.checked;saveSteps();paintSteps();
+  const i=STEPS.findIndex(s=>s[0]===k)+1;toast(cb.checked?`Step ${i} marked done.`:`Step ${i} marked not done.`);
+});
+$("resetSteps").onclick=async()=>{
+  if(!await confirmBox("Start a new chat?","This clears all four step checkmarks so you can paste the setup into a new chat. Your saved versions are not affected.","Reset steps"))return;
+  st={};saveSteps();paintSteps();toast("Steps reset.");
+};
+
+/* ---------- cards ---------- */
+const F={name:$("f-name"),type:$("f-type"),jur:$("f-jur")};
+try{const e=JSON.parse(LS.get(EK)||"{}");F.name.value=e.name||"";F.type.value=e.type||"";F.jur.value=e.jur||""}catch(e){}
+const spReady=()=>F.name.value.trim()&&F.type.value.trim()&&F.jur.value.trim();
+const getSP=()=>SP.replace("[ENTITY NAME]",F.name.value.trim()||"[ENTITY NAME]").replace("[entity type]",F.type.value.trim()||"[entity type]").replace("[jurisdiction]",F.jur.value.trim()||"[jurisdiction]");
+function paintSP(){
+  $("sp").textContent=getSP();
+  const r=!!spReady();$("cp").disabled=!r;
+  $("spHelp").textContent=r?"Ready to copy.":"Fill in all three fields to enable copying. The preview below updates as you type.";
+  LS.set(EK,JSON.stringify({name:F.name.value,type:F.type.value,jur:F.jur.value}));
+}
+Object.values(F).forEach(i=>i.addEventListener("input",paintSP));
+$("sp3").textContent=PC;$("sp4").textContent=CF;$("sp2").textContent=OR;
+const cut=PC.indexOf("\nPART 15 —"),PC1=PC.slice(0,cut).trim(),PC2=PC.slice(cut).trim();
+wireCopy("cp",getSP,"System prompt","sp");
+wireCopy("cp3",()=>PC,"Protocol core","sp3");
+wireCopy("cp3a",()=>PC1,"Protocol core, part 1","sp3");
+wireCopy("cp3b",()=>PC2,"Protocol core, part 2","sp3");
+wireCopy("cp4",()=>CF,"Configuration record template","sp4");
+wireCopy("cp2",()=>OR,"Operating record","sp2");
+$("exp3").onclick=()=>{const p=$("sp3"),t=p.classList.toggle("tall");p.classList.toggle("fade",!t);$("exp3").textContent=t?"Collapse preview":"Expand preview";$("exp3").setAttribute("aria-expanded",t)};
+$("len-pc").textContent=PC.length.toLocaleString()+" characters";
+const verOf=(s,re)=>{const m=s.match(re);return m?m[1].replace(/^v/,""):""};
+const VER={sp:verOf(SP,/Protocol (v[\d.]+(?:-draft)?)/),pc:verOf(PC,/\nVersion: ([\d.]+(?:-draft)?)/),cf:verOf(CF,/Protocol Version: ([\d.]+(?:-draft)?)/),or:verOf(OR,/Protocol Version: ([\d.]+(?:-draft)?)/)};
+Object.keys(VER).forEach(k=>$("ver-"+k).textContent="Text says: v"+VER[k]);
+$("homeVer").textContent="Latest version: v"+VER.pc;
+
+/* ---------- notices, guide, routing ---------- */
+function notices(){
+  const out=[];
+  if(!storageOk)out.push(`<div class="banner err" role="alert">Browser storage is blocked here (for example in a private window). Saved versions, entity fields and step checkmarks will last only until you close or reload this page.</div>`);
+  if(loadNote)out.push(`<div class="banner err" role="alert">${esc(loadNote)}</div>`);
+  $("notes").innerHTML=out.join("");
+}
+const hb=$("helpBtn"),hp=$("helpPanel");
+function helpSet(o){hp.hidden=!o;hb.setAttribute("aria-expanded",o)}
+hb.onclick=()=>helpSet(hp.hidden);
+$("helpX").onclick=()=>{helpSet(false);hb.focus()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!hp.hidden){helpSet(false);hb.focus()}});
+document.addEventListener("pointerdown",e=>{if(!hp.hidden&&!hp.contains(e.target)&&!hb.contains(e.target))helpSet(false)});
+
+let pushed=false,cur="home";
+function show(view,initial){
+  const s=view==="setup";cur=view;$("home").hidden=s;$("setup").hidden=!s;
+  if(!initial){window.scrollTo(0,0);(s?$("h1s"):$("go")).focus()}
+}
+function route(initial){show(location.hash==="#setup"?"setup":"home",initial)}
+window.addEventListener("hashchange",()=>route(false));
+window.addEventListener("popstate",()=>route(false));
+$("go").onclick=()=>{
+  show("setup");
+  try{
+    if(location.hash!=="#setup"){history.pushState({v:"setup"},"","#setup");pushed=true}
+  }catch(e){
+    try{location.hash="#setup";pushed=true}catch(e2){}
+  }
+};
+$("back").onclick=()=>{
+  const home=()=>{
+    try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+    show("home");
+  };
+  if(pushed){
+    pushed=false;
+    try{history.back()}catch(e){}
+    setTimeout(()=>{if(cur==="setup")home()},200);
+    return;
+  }
+  home();
+};
+
+/* ---------- pro ---------- */
+const PRICE={m:999,y:999},CUR="₱";
+$("pm").textContent=CUR+PRICE.m.toLocaleString();
+$("py").textContent=CUR+PRICE.y.toLocaleString();
+$("proBtn").onclick=()=>{const d=$("pro");if(d.showModal)d.showModal()};
+$("proGo").addEventListener("click",()=>{
+  const p=document.querySelector('#pro input[name="plan"]:checked').value;
+  toast("Payments are not connected yet ("+(p==="m"?"monthly":"yearly")+" plan selected).","err");
+});
+
+/* ---------- init ---------- */
+loadDb();notices();paintSP();paintSteps();render();route(true);
 </script>
 </body>
 </html>
