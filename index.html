@@ -206,7 +206,7 @@ background-size:auto,auto,auto,auto,140px 140px;background-repeat:no-repeat,no-r
 /* === START: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
 html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
 /* === START: AMBIENT ATMOSPHERE === */
-#home{color:var(--ink);background:var(--bg)}#home::before{display:none}
+#home{color:var(--ink);background:radial-gradient(circle 300px at 50% 50%,rgba(214,172,102,.07) 0,rgba(214,172,102,.05) 45%,rgba(214,172,102,.02) 75%,transparent 100%),var(--bg)}#home::before{display:none}
 #home::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");background-size:160px 160px}
 /* === END: AMBIENT ATMOSPHERE === */
 #home .hf-legal{color:var(--mute)}
@@ -1680,7 +1680,7 @@ $("back").onclick=()=>{
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
   const cx=cv.getContext("2d"),TAU=Math.PI*2,N=54000,NH=2,NA=120,NS=28000,NC=11000;
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
-  const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N);
+  const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N),GE=new Float32Array(N);
   for(let i=0;i<N;i++){
     const u0=Math.random()*2-1,u=Math.sign(u0)*Math.pow(Math.abs(u0),.55),a=Math.random()*TAU,s=Math.sqrt(1-u*u);
     const nx=s*Math.cos(a),ny=u,nz=s*Math.sin(a);
@@ -1690,7 +1690,7 @@ if(i<NA){tr=3;r=.86+Math.random()*.14}
 else if(i<NA+NS){tr=0;r=.988+Math.random()*.012}
 else if(i<NA+NS+NC){tr=2;r=Math.pow(Math.random(),1.8)*.6}
 else{tr=1;r=.58+Math.cbrt(Math.random())*.36}
-TR[i]=tr;LN[i]=[.011,.013,.009,.028][tr];
+TR[i]=tr;LN[i]=[.011,.013,.009,.028][tr];GE[i]=Math.random();
 /* === END: PARTICLE HIERARCHY (TIERS) === */
     let wx=Math.random()-.5,wy=Math.random()-.5,wz=Math.random()-.5;
     const d=wx*nx+wy*ny+wz*nz;wx-=d*nx;wy-=d*ny;wz-=d*nz;
@@ -1723,7 +1723,7 @@ HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0
     ry+=.34*boost*dt;tm+=dt;
     const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=tm*.3,ct=Math.cos(tl),st=Math.sin(tl),mo=.6+.3*Math.sin(tm*.3);
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
-    const paths=[],ap=[];for(let k=0;k<NH*6;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);
+    const paths=[],ap=[];for(let k=0;k<NH*6;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gp=[new Path2D(),new Path2D(),new Path2D()];
     for(let i=0;i<N;i++){
       const k=i*3,th=tm*SP[i]*.7+PH[i],cc=Math.cos(th)*LN[i],ss=Math.sin(th)*LN[i];
       const ox=TG[k]*cc+BN[k]*ss,oy=TG[k+1]*cc+BN[k+1]*ss,oz=TG[k+2]*cc+BN[k+2]*ss;
@@ -1732,7 +1732,15 @@ HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0
       const a1=ox*cr+oz*sr,c1=-ox*sr+oz*cr,b2=oy*ct-c1*st;
       const tr=TR[i],fr=z2>0?1:0;
 if(tr===3&&!fr)continue;if(tr===0&&z2<-.15)continue;
-const p=tr===3?ap[HB[i]]:paths[HB[i]*6+tr*2+fr];
+let p;
+if(tr===0){
+  const gw=Math.max(0,-(x1+y2)*.7071),ge=GE[i];
+  let gi=-1;
+  if(fr&&ge<.004)gi=2;
+  else if(ge<.03)gi=fr?1:0;
+  else if(fr&&gw>0&&ge<.03+.3*gw*gw)gi=1;
+  p=gi>=0?gp[gi]:paths[HB[i]*6+fr];
+}else p=tr===3?ap[HB[i]]:paths[HB[i]*6+tr*2+fr];
       p.moveTo(c+(x1+a1)*R,c+(y2+b2)*R);
       p.lineTo(c+(x1+a1)*R+.01,c+(y2+b2)*R);
     }
@@ -1749,6 +1757,11 @@ g.addColorStop(0,"rgba(255,175,195,.20)");g.addColorStop(1,"rgba(255,175,195,0)"
 cx.fillStyle=g;cx.fillRect(0,0,w,w);
 cx.globalCompositeOperation="source-over";
 /* === END: LIGHT RIG ON PARTICLES (KEY + FILL) === */
+cx.lineCap="round";
+cx.lineWidth=1.3;cx.strokeStyle="hsla(43,85%,50%,.35)";cx.stroke(gp[0]);
+cx.lineWidth=1.5;cx.strokeStyle="hsla(43,90%,58%,.85)";cx.stroke(gp[1]);
+cx.lineWidth=4.2;cx.strokeStyle="hsla(45,100%,70%,.22)";cx.stroke(gp[2]);
+cx.lineWidth=2.4;cx.strokeStyle="hsla(45,100%,78%,1)";cx.stroke(gp[2]);
 for(let h=0;h<NH;h++){cx.lineWidth=2.6;cx.strokeStyle=ACOL[h][0];cx.stroke(ap[h]);cx.lineWidth=1.5;cx.strokeStyle=ACOL[h][1];cx.stroke(ap[h])}
 /* === END: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
   }
