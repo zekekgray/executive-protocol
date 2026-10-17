@@ -2,7 +2,7 @@
 <html lang="en" data-view="home">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>ArtiBytte Executive Protocol</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -10,9 +10,11 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--surface:#171d31;--ink:#e8ecf8;--mute:#9aa4c0;--line:#2f3858;--accent:#8fa6ff;--on:#0e1220;--ok:#4ade80;--on-ok:#04210f;--bad:#ff8a80;--on-bad:#2a0a07;--hover:rgba(143,166,255,.12);color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e1220;--surface:#171d31;--ink:#e8ecf8;--mute:#9aa4c0;--line:#2f3858;--accent:#8fa6ff;--on:#0e1220;--ok:#4ade80;--on-ok:#04210f;--bad:#ff8a80;--on-bad:#2a0a07;--hover:rgba(143,166,255,.12);color-scheme:dark}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;touch-action:manipulation;overscroll-behavior:none}
+body{touch-action:pan-x pan-y}
 body{margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:Sora,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:1rem;line-height:1.5;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 [hidden]{display:none!important}
+@media (pointer:coarse){input,select,textarea{font-size:16px!important}}
 h1,h2,p{margin:0}
 code{font:.8125rem ui-monospace,Menlo,Consolas,monospace;background:var(--bg);padding:1px 6px;border-radius:6px}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
@@ -222,6 +224,14 @@ dialog.prof{margin:calc(56px + env(safe-area-inset-top,0px)) 12px auto auto;padd
 .wsrow #stT{margin-left:auto;font-size:.875rem;color:var(--mute)}
 .meter{height:6px;margin:0 0 8px}
 .sec{font-size:1.25rem;font-weight:600;margin:24px 0 12px}
+.sech{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:24px 0 12px}
+.sech .sec{margin:0}
+.sech .ic{margin-right:-10px}
+.sect .sub{margin:2px 0 0}
+.bar{flex-wrap:wrap}
+.brk{flex-basis:100%;height:0}
+.bar .ttl{flex:0 1 auto}
+#avBtn{margin-left:auto}
 .card,.card.done{border:1px solid var(--line);border-radius:18px;padding:16px;gap:12px;flex-wrap:nowrap}
 .card .n{width:32px;height:32px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);font-size:.875rem}
 .card.done .n{background:var(--ok);color:var(--on-ok);border-color:var(--ok)}
@@ -271,10 +281,43 @@ dialog[open]::backdrop{animation:fadeIn .25s ease}
   dialog.sheet>*{border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
 }
 /* === END: SPRING + MOTION CSS === */
+.pro-b{margin-left:6px;font-size:.6875rem;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--mute)}
+.ai{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ai a{display:inline-flex;align-items:center;text-decoration:none}
+.ai a:first-child{background:var(--accent);color:var(--on);border-color:transparent}
+.rate{display:flex;gap:8px;margin-bottom:8px}
+.rate .chip{flex:1}
+.rtm{display:block;width:100%;min-height:88px;resize:vertical;font:inherit;font-size:.9375rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:18px;padding:12px 16px;margin-bottom:8px}
+.avb{position:relative}
+.avb.new::after{content:"";position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-left:auto;flex:none}
+.srow.new{background:var(--hover);border-radius:10px;padding:0 10px;margin:4px 0}
+.srow.new .lnk{font-weight:600}
+.upd{padding:12px 0;border-bottom:1px solid var(--line)}
+.upd.new{background:var(--hover);border-radius:12px;padding:12px;border-bottom:0;margin:6px 0}
+.upd b{font-size:.9375rem}
+.upd p{font-size:.8125rem;line-height:1.5;color:var(--mute);margin:4px 0 0}
+.nw{font-size:.6875rem;font-weight:600;color:var(--on);background:var(--accent);border-radius:999px;padding:1px 8px;margin-left:8px}
+.dra .sm{padding:10px 6px;font-size:.8125rem;white-space:nowrap;min-width:0}
+.ntin{display:block;width:100%;font:inherit;font-size:.9375rem;min-height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 16px;margin-bottom:8px}
+.ntx{display:block;width:100%;font:inherit;font-size:.9375rem;min-height:120px;resize:vertical;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:18px;padding:12px 16px;margin-bottom:8px}
+.ntb{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.ntb .sm.p{flex:1}
+.nti{padding:12px 0;border-bottom:1px solid var(--line)}
+.nti b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.nti .pv{margin:6px 0 0;font:.75rem/1.5 ui-monospace,Menlo,Consolas,monospace;color:var(--mute);display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;white-space:pre-wrap}
+.nti .lact{margin-top:4px}
 .hl{display:grid;gap:8px;margin:12px 0}
 .faq{border-bottom:1px solid var(--line)}
 .faq summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:.9375rem;font-weight:600}
 .faq p{font-size:.8125rem;line-height:1.5;color:var(--mute);margin:0 0 12px}
+.lg h3.mh{margin:18px 0 6px}
+.lg p,.lg li{font-size:.8125rem;line-height:1.6;color:var(--mute)}
+.lg p{margin:6px 0}
+.lg ul{margin:6px 0;padding-left:18px}
+.lg li{margin:4px 0}
+.lg b{color:var(--ink)}
+.lg .lgm{font-size:.75rem;margin:2px 0 4px}
 .cpo{display:grid;gap:8px;margin-top:14px}
 .cpo .plan{text-align:left;padding:12px 14px}
 .cpo .plan b{font-size:.9375rem}
@@ -325,7 +368,7 @@ dialog.drawer[open]{animation:drawerIn .4s cubic-bezier(.2,.9,.3,1)}
 .drh{display:flex;align-items:center;justify-content:space-between}
 .drh b{font-size:1.25rem}
 .dra{display:flex;gap:8px}
-.dra .sm{flex:1;padding:10px 12px}
+.dra .sm{flex:1;padding:10px 8px}
 .fr{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:8px 10px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:.9375rem;text-align:left;cursor:pointer}
 .fr:hover{background:var(--hover)}
 .fr .ln{min-width:2.5ch;text-align:right;color:var(--mute);font:.8125rem ui-monospace,Menlo,Consolas,monospace}
@@ -368,11 +411,11 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   <header class="top">
     <div class="bar">
       <button class="ic" id="back" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button>
-      <!-- === START: TITLE EDIT === -->
-<div class="ttl"><b>System Workspace</b><span id="progT" aria-live="polite"></span></div>
+      <span class="brk"></span>
+<!-- === START: TITLE EDIT === -->
+<div class="ttl"><b>System Workspace</b></div>
 <!-- === END: TITLE EDIT === -->
       <button class="ic" id="menuBtn" type="button" aria-label="Files"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
-      <button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
       <button class="avb" id="avBtn" type="button" aria-label="Account menu" aria-haspopup="dialog"><span class="av" id="avL">A</span></button>
     </div>
   </header>
@@ -394,6 +437,20 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
       <li>Send <button class="cmd" data-copy="Protocol, activate." type="button">Protocol, activate.</button></li>
       <li>When done, send <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button> then <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button> Paste the output into Files (Add file) and tap Commit changes.</li>
     </ol>
+    <h3 class="mh">Open your AI</h3>
+    <p class="sub">Tap to open a new chat, then paste cards 1 to 4 in order.</p>
+    <div class="ai">
+      <a class="chip" href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">DeepSeek</a>
+      <a class="chip" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT</a>
+      <a class="chip" href="https://claude.ai/new" target="_blank" rel="noopener noreferrer">Claude</a>
+      <a class="chip" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer">Gemini</a>
+      <a class="chip" href="https://grok.com/" target="_blank" rel="noopener noreferrer">Grok</a>
+      <a class="chip" href="https://www.perplexity.ai/" target="_blank" rel="noopener noreferrer">Perplexity</a>
+      <a class="chip" href="https://copilot.microsoft.com/" target="_blank" rel="noopener noreferrer">Copilot</a>
+      <a class="chip" href="https://chat.mistral.ai/chat" target="_blank" rel="noopener noreferrer">Mistral</a>
+      <a class="chip" href="https://www.kimi.com/" target="_blank" rel="noopener noreferrer">Kimi</a>
+      <a class="chip" href="https://chat.qwen.ai/" target="_blank" rel="noopener noreferrer">Qwen</a>
+    </div>
   </section>
 
   <div class="eform" id="eform" hidden>
@@ -418,7 +475,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   </div>
 
   <!-- === START: PROMPTS HEADING === -->
-<h2 class="sec">Prompts &amp; Setup</h2>
+<div class="sech"><div class="sect"><h2 class="sec">Prompts &amp; Setup</h2><p class="sub" id="progT" aria-live="polite"></p></div><button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button></div>
 <!-- === END: PROMPTS HEADING === -->
 <div class="card" id="card-sp">
     <button class="n" type="button" data-n="sp" aria-label="Toggle step 1 done">1</button>
@@ -448,9 +505,73 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   <input type="file" id="pickJson" hidden accept=".json,application/json">
 
   <footer class="setup-foot">
-    <section class="how" id="legalSec" hidden>
+    <section class="how lg" id="legalSec" hidden>
       <h2>Legal</h2>
-      <p class="sub">&copy; 2026 ArtiBytte. All rights reserved. Proprietary and confidential. Unauthorized copying, distribution, or use is prohibited.</p>
+      <p class="lgm">ArtiBytte Executive Protocol. Last updated: October 17, 2026. By using this app you agree to these terms.</p>
+
+      <h3 class="mh">1. Ownership and copyright</h3>
+      <p>&copy; 2026 ArtiBytte. All rights reserved. The app, the Protocol text, prompts, templates, design, code and trademarks are owned by ArtiBytte and are proprietary and confidential. Nothing here transfers ownership to you.</p>
+
+      <h3 class="mh">2. License to use</h3>
+      <p>We grant you a limited, personal, non-exclusive, non-transferable, revocable license to use the app and the Protocol for your own internal business operations, under a valid license code (including a free guest code).</p>
+
+      <h3 class="mh">3. What you may not do</h3>
+      <ul>
+        <li>Copy, publish, resell, sublicense or distribute the app or Protocol, in whole or in part, without written permission.</li>
+        <li>Remove copyright, confidentiality or proprietary notices.</li>
+        <li>Reverse engineer, scrape or build a competing product from the app or Protocol.</li>
+        <li>Share your license code, or bypass plan limits, roles or license checks.</li>
+        <li>Use the app for unlawful, fraudulent or harmful purposes.</li>
+      </ul>
+
+      <h3 class="mh">4. Not professional advice</h3>
+      <p>The Protocol is an operating framework and design draft. It is <b>not</b> legal, accounting, tax, financial, investment, employment or compliance advice. It has not been legally reviewed, tested or certified. Consult qualified professionals in your jurisdiction before relying on it for material decisions. Nothing here creates a lawyer-client, advisor or fiduciary relationship.</p>
+
+      <h3 class="mh">5. AI output and your responsibility</h3>
+      <p>The app prepares prompts and records for use with third-party AI tools. AI output can be wrong, incomplete or fabricated. You are solely responsible for reviewing, verifying and approving any output, and for every decision, action and filing you make based on it. Final authority for material decisions stays with you.</p>
+
+      <h3 class="mh">6. Your content and data</h3>
+      <p>You own what you enter, including organization details, files and versions. This app stores them <b>only on your device</b>, in your browser. They are not uploaded to our servers, not synced across devices, and not backed up for you. Clearing browser data, changing browsers or devices, or storage limits can permanently delete them. Export backups regularly.</p>
+
+      <h3 class="mh">7. Privacy</h3>
+      <ul>
+        <li><b>What the app keeps:</b> your files, AI notes, organization details, members list, settings and license code (and email, if you gave one), all in local browser storage on your device.</li>
+        <li><b>What we receive:</b> nothing automatically. We only get what you send us yourself, for example by email for support, a problem report or the Pro waitlist. Those emails include your license code and basic app and browser details.</li>
+        <li><b>Fonts:</b> the app loads a font from Google Fonts, so your browser connects to Google when the page opens. See Google's privacy policy.</li>
+        <li><b>No sale of data</b> and no ads or tracking in this version.</li>
+        <li>We aim to handle any personal data we receive in line with the Data Privacy Act of 2012 (Republic Act No. 10173) and other applicable law. You may ask us to access, correct or delete data you sent us by emailing the address below.</li>
+        <li>Do not enter data you are not allowed to store or share, such as another person's sensitive personal information without a lawful basis.</li>
+      </ul>
+
+      <h3 class="mh">8. Licenses, Free and Pro</h3>
+      <p>Free guest codes are generated on your device. License codes are checked for format only in this version, not against a server. Pro is not yet available: cloud storage, multi-device access, automatic backups and Trash are planned and not guaranteed. Joining the waitlist is not a purchase, a reservation or a promise of features, price or date. Plans, limits and prices may change before launch.</p>
+
+      <h3 class="mh">9. Members and roles</h3>
+      <p>Members, roles and invite links are saved on this device only and are not enforced by a server. They are not a security or access-control guarantee. Do not rely on them to protect confidential information.</p>
+
+      <h3 class="mh">10. Third-party services</h3>
+      <p>AI tools, email apps, browsers and fonts you use with the app are provided by third parties under their own terms and privacy policies. We do not control them and are not responsible for them.</p>
+
+      <h3 class="mh">11. Disclaimer of warranties</h3>
+      <p>The app and Protocol are provided "as is" and "as available", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, accuracy, availability, non-infringement and uninterrupted or error-free operation. We do not warrant that the Protocol is legally valid, compliant with any law, or suitable for your organization.</p>
+
+      <h3 class="mh">12. Limitation of liability</h3>
+      <p>To the maximum extent permitted by law, ArtiBytte and its owners, officers, contractors and affiliates are not liable for any indirect, incidental, special, consequential or punitive damages, or for loss of data, profits, revenue, business or goodwill, arising from your use of or inability to use the app or Protocol, even if advised of the possibility. Our total liability for any claim is limited to the amount you paid us for the app in the 12 months before the claim, or PHP 0 if you paid nothing. Nothing here limits liability that cannot be limited by law.</p>
+
+      <h3 class="mh">13. Indemnity</h3>
+      <p>You agree to defend and hold ArtiBytte harmless from claims, losses and expenses arising from your breach of these terms, your content, or your decisions and actions based on the app or AI output.</p>
+
+      <h3 class="mh">14. Termination</h3>
+      <p>You may stop using the app at any time. We may suspend or revoke a license if you breach these terms. Sections on ownership, restrictions, disclaimers, liability, indemnity and governing law survive termination.</p>
+
+      <h3 class="mh">15. Changes</h3>
+      <p>We may update these terms and the app. The "Last updated" date above shows the latest version. Continued use after an update means you accept it.</p>
+
+      <h3 class="mh">16. Governing law</h3>
+      <p>These terms are governed by the laws of the Republic of the Philippines. Disputes fall under the courts of the city where ArtiBytte maintains its principal office, unless the law requires otherwise. If any part of these terms is unenforceable, the rest remains in effect.</p>
+
+      <h3 class="mh">17. Contact</h3>
+      <p>Questions, privacy requests or license issues: <b>team@artibytte.co</b></p>
     </section>
     <nav class="ftl" aria-label="Info">
       <button class="lnk" type="button" data-tg="howSec">How to use</button>
@@ -464,7 +585,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 <dialog class="drawer" id="drawer" aria-label="Files">
     <div class="dr">
       <div class="drh"><b id="drT">Files</b><button class="ic" id="drClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button></div>
-      <div class="dra"><button class="sm p" id="newBtn" type="button">Add file</button><button class="sm" id="addBtn" type="button">Upload</button></div>
+      <div class="dra"><button class="sm p" id="newBtn" type="button">Add file</button><button class="sm" id="addBtn" type="button">Upload<span class="pro-b">Pro</span></button><button class="sm" id="aiBtn" type="button">AI Notes</button></div>
       <div id="tools" hidden><input type="search" id="q" placeholder="Search" aria-label="Search files"></div>
       <div id="list"></div>
       <div class="none" id="empty">No files</div>
@@ -528,11 +649,37 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
     </div>
     <h3 class="mh">Common questions</h3>
     <details class="faq"><summary>Where are my files saved?</summary><p>On this device, in your browser. The Free plan holds up to 5 MB. Clearing your browser data removes them, so export a backup from Files regularly.</p></details>
+    <details class="faq"><summary>What are AI Notes?</summary><p>A separate place to keep anything your AI tells you. Open Files, then AI Notes. They are not part of your workspace files, not in Context Pack, and not in Export. Clearing browser data deletes them.</p></details>
+    <details class="faq"><summary>What can I save on the Free plan?</summary><p>Text only. Use Add file to type or paste. Uploading photos and files is for Pro.</p></details>
     <details class="faq"><summary>How do versions work?</summary><p>Saving with the same file name creates a new version (v1, v2, v3). If nothing changed, no new version is made.</p></details>
     <details class="faq"><summary>How do I back up or move my files?</summary><p>Open Files, then tap Export to download a backup, or Context Pack to export everything as one .md file. Import restores a backup.</p></details>
     <details class="faq"><summary>I lost my license code</summary><p>Tap Email support and include the email address you used. Guest codes (ARTI-FREE) are saved on this device only.</p></details>
     <details class="faq"><summary>What happens when I paste long text?</summary><p>Pasted paragraphs are split into rows of about 100 characters. Rows you type have no limit. The maximum is 50,000 lines per file.</p></details>
     <details class="faq"><summary>Do members work across devices?</summary><p>Not yet. Members and invite links are saved on this device until cloud sync is available.</p></details>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="updD" aria-label="What's new">
+  <section class="how">
+    <button class="ic sheet-x" id="updX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>What's new</h2>
+    <p class="sub">Updates from the ArtiBytte team.</p>
+    <div id="upd_list"></div>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="aiD" aria-label="AI Notes">
+  <section class="how">
+    <button class="ic sheet-x" id="aiX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>AI Notes</h2>
+    <p class="sub">Keep anything your AI tells you. Separate from your workspace files and Context Pack.</p>
+    <div style="margin-top:12px">
+      <input class="ntin" type="text" id="ai_t" placeholder="Title (optional)" autocomplete="off" aria-label="Note title">
+      <textarea class="ntx" id="ai_x" placeholder="Paste or type a note" aria-label="Note"></textarea>
+      <div class="ntb"><button class="sm p" id="ai_save" type="button">Save note</button><button class="sm" id="ai_p" type="button">Paste</button><button class="sm" id="ai_cancel" type="button" hidden>Cancel</button></div>
+    </div>
+    <h3 class="mh">Saved notes <span class="meta" id="ai_cnt"></span></h3>
+    <div id="ai_list"></div>
   </section>
 </dialog>
 
@@ -542,7 +689,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
     <h2>Offline pages</h2>
     <p class="sub"><span class="stp" id="of_net"></span></p>
     <h3 class="mh">What works without internet</h3>
-    <p class="ofn">Everything you saved here: files and versions, organization, members and settings. They live in this browser, so you can open and edit them without internet while this page is open. Free and Pro work the same way today.</p>
+    <p class="ofn">Everything you saved here: files and versions, AI notes, organization, members and settings. They live in this browser, so you can open and edit them without internet while this page is open. Free and Pro work the same way today.</p>
     <h3 class="mh" id="of_h">Saved on this device</h3>
     <div class="ofl" id="of_list"></div>
     <p class="ofn" id="of_st"></p>
@@ -603,6 +750,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
     <div class="srow"><span>License</span><code id="set_lic"></code></div>
     <div class="srow"><span>Plan</span><span id="set_plan"></span></div>
     <div class="srow"><span>Subscription</span><span class="meta" id="set_sub"></span></div>
+    <div class="srow" id="set_updR"><span>What's new</span><button class="lnk" id="set_upd" type="button">View</button></div>
     <h3 class="mh">Storage</h3>
     <div class="meter" id="set_meterW" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fillbar" id="set_stF"></div></div>
     <p class="sub" id="set_st"></p>
@@ -610,6 +758,10 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
     <div class="srow"><span>Protected from browser cleanup</span><button class="lnk" id="set_pers" type="button"></button></div>
     <div class="srow"><span>Backup</span><span class="lact"><button class="lnk" id="set_exp" type="button">Export</button><button class="lnk" id="set_imp" type="button">Import</button></span></div>
     <div class="srow"><span>Theme</span><select class="msel" id="set_theme" aria-label="Theme"><option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+    <h3 class="mh">Rate us</h3>
+    <div class="rate"><button class="chip" id="rt_g" type="button" aria-pressed="false">Good</button><button class="chip" id="rt_b" type="button" aria-pressed="false">Bad</button></div>
+    <textarea class="rtm" id="rt_m" placeholder="Tell us more (optional)" aria-label="Feedback message"></textarea>
+    <button class="sm p full" id="rt_s" type="button">Send feedback</button>
     <button class="sm d full" id="set_clr" type="button" style="margin-top:14px">Clear local data</button>    <button class="sm bad full" id="set_out" type="button" style="margin-top:14px">Log out</button>
   </section>
 </dialog>
@@ -693,7 +845,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 <dialog id="pro" aria-labelledby="proT">  <form method="dialog">
     <h2 id="proT">ArtiBytte Pro</h2>
     <p>Pro is coming soon. Join the waitlist and we'll tell you when it opens.</p>
-    <ul class="perks"><li class="soon"><b>Cloud storage</b> that survives clearing your browser</li><li class="soon"><b>Every device</b>, same records</li><li class="soon"><b>Automatic backups</b> of every version</li><li class="soon"><b>Restore deleted files</b> from Trash</li></ul>    <div class="plans">
+    <ul class="perks"><li class="soon"><b>Upload photos and files</b>, not just text</li><li class="soon"><b>Cloud storage</b> that survives clearing your browser</li><li class="soon"><b>Every device</b>, same records</li><li class="soon"><b>Automatic backups</b> of every version</li><li class="soon"><b>Restore deleted files</b> from Trash</li></ul>    <div class="plans">
       <label class="plan"><input type="radio" name="plan" value="m" checked><b id="pm"></b><span>per month</span></label>
       <label class="plan"><input type="radio" name="plan" value="y"><b id="py"></b><span>per year</span></label>
     </div>
@@ -703,7 +855,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 
 <script>
 const $=id=>document.getElementById(id);
-const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}};
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v);if(window.onStore)setTimeout(window.onStore,0);return true}catch(e){return false}}};
 const fmt=t=>new Date(t).toLocaleString([],{dateStyle:"medium",timeStyle:"short"});
 const kb=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB";
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -1758,7 +1910,7 @@ function paintSteps(){
   let n=0;
   STEPS.forEach((k,i)=>{const c=$("card-"+k),d=!!st[k];c.classList.toggle("done",d);c.querySelector(".n").textContent=d?"✓":String(i+1);if(d)n++});
   /* === START: STEP LABEL EDIT === */
-const nx=STEPS.findIndex(k=>!st[k]);$("progT").textContent="Step "+(nx<0?4:nx+1)+" of 4";
+const nx=STEPS.findIndex(k=>!st[k]);$("progT").textContent=nx<0?"All 4 steps done":"Step "+(nx+1)+" of 4 · copy in order";
 /* === END: STEP LABEL EDIT === */
 }
 function mark(k){if(!st[k]){st[k]=true;LS.set(SK,JSON.stringify(st));paintSteps()}}
@@ -1850,13 +2002,14 @@ function render(){
   const all=names(),shown=all.filter(n=>n.toLowerCase().includes(q)),has=all.length>0;
   $("tools").hidden=!has;$("empty").hidden=has;
   const u=used(),p=Math.min(100,u/LIMIT*100);
-  $("stF").style.width=p+"%";$("stF").classList.toggle("hot",p>=90);
-  $("planTag").textContent=PLAN==="pro"?"Pro plan":"Free plan";$("proBtn").hidden=PLAN==="pro";
-  $("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" / 5 MB";  $("meterW").setAttribute("aria-valuenow",Math.round(p));
+  $("stF").style.width=(u>0?Math.max(p,1.5):0)+"%";$("stF").classList.toggle("hot",p>=90);
+  $("planTag").textContent=PLAN==="pro"?"Pro plan":"Free plan";document.querySelector("#addBtn .pro-b").hidden=PLAN==="pro";$("proBtn").hidden=PLAN==="pro";
+  $("stT").textContent=kb(u)+" / "+(LIMIT/1048576)+" MB";  $("meterW").setAttribute("aria-valuenow",Math.round(p));
   $("drT").textContent=has?"Files · "+all.length:"Files";
   $("list").innerHTML=shown.map((n,i)=>{const c=lastOf(db[n]),N=esc(n);return `<button class="fr" type="button" data-a="open" data-n="${N}"><span class="ln">${i+1}</span><span class="nm">${N}</span><span class="vv">v${c.v}</span></button>`}).join("")||(has?'<p class="meta">No match</p>':"");
 }
 async function handleFiles(files,target){
+  if(PLAN!=="pro")return;
   files=[...files];if(!files.length)return;if(target)files=files.slice(0,1);
   const snap=JSON.stringify(db);let added=0;
   for(const f of files){
@@ -1864,7 +2017,7 @@ async function handleFiles(files,target){
     let t;try{t=await f.text()}catch(e){toast("Could not read "+f.name,"err");continue}
     if(t.indexOf("\u0000")>-1){toast(f.name+" is not a text file.","err");continue}
        {const lm=limCheck(t);if(lm.over){toast(f.name+": "+lm.msg,"err");continue}}
-    {const lm=limCheck(t);if(lm.over){toast(f.name+": "+lm.msg,"err");continue}}    if(used()+t.length>LIMIT*0.98){toast("Not enough storage.","err");continue}
+    {const lm=limCheck(t);if(lm.over){toast(f.name+": "+lm.msg,"err");continue}}    if(used()+JSON.stringify(t).length+80>LIMIT*0.98){toast("Not enough storage.","err");continue}
     const name=target||f.name;
     if(db[name]&&db[name].vs.length&&lastOf(db[name]).text===t){toast(name+": no changes.");continue}
     const o=db[name]||(db[name]={next:1,vs:[]});
@@ -1877,7 +2030,10 @@ async function handleFiles(files,target){
 let target=null;
 function pickFile(t){target=t;$("pick").multiple=!t;$("pick").click()}
 $("pick").onchange=e=>{const f=e.target.files,t=target;e.target.value="";handleFiles(f,t)};
-$("addBtn").onclick=()=>pickFile(null);
+$("addBtn").onclick=()=>{
+  if(PLAN!=="pro"){toast("Upload is for Pro. Free supports text only: use Add file or Paste.","err");const d=$("pro");if(d.showModal&&!d.open)d.showModal();return}
+  pickFile(null);
+};
 
 /* storage box */
 const EXT=/\.(md|txt|json|csv|ya?ml)$/i;
@@ -1931,14 +2087,14 @@ function sbState(){
   const lm=limCheck(t);
   $("s_save").disabled=!n||!has||lm.over;syncType();
   const le=$("s_lim");le.textContent=lm.over?lm.msg:lm.lines.toLocaleString()+" / "+MAX_LINES.toLocaleString()+" lines";le.classList.toggle("over",lm.over);  $("s_save").textContent="Commit changes";gut();
-  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(!!n&&n===CHIPS[c.dataset.t]())));
+  document.querySelectorAll(".chip[data-t]").forEach(c=>c.setAttribute("aria-pressed",String(!!n&&n===CHIPS[c.dataset.t]())));
   $("s_hint").textContent=!has&&!n?"Paste your AI's output to begin.":!has?"Now paste the output.":!n?"Pick a file type above, or type a file name.":(ex?"Saves as v"+db[n].next+" of "+n:"Saves as a new file: "+n)+" · "+kb(new Blob([t]).size);
 }
 /* === START: RECORD TYPE SELECT JS === */
 function syncType(){const n=finalName($("s_title").value);let v="";for(const k in CHIPS)if(n&&n===CHIPS[k]())v=k;$("s_type").value=v}
 $("s_type").onchange=()=>{const k=$("s_type").value;if(!k)return;if((k==="op"||k==="cf")&&!getEnt().name){openSheet("eform");setTimeout(()=>$("e_name").focus(),60)}nameTouched=true;$("s_title").value=CHIPS[k]();sbState();$("s_text").focus()};
 /* === END: RECORD TYPE SELECT JS === */
-document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{nameTouched=true;$("s_title").value=CHIPS[c.dataset.t]();sbState();$("s_text").focus()});
+document.querySelectorAll(".chip[data-t]").forEach(c=>c.onclick=()=>{nameTouched=true;$("s_title").value=CHIPS[c.dataset.t]();sbState();$("s_text").focus()});
 $("s_title").addEventListener("input",()=>{nameTouched=true;sbState()});
 $("s_text").addEventListener("paste",e=>{
   const txt=(e.clipboardData||window.clipboardData).getData("text");
@@ -1965,7 +2121,7 @@ $("s_save").onclick=()=>{
   if(size>1.5*1048576){toast("That's larger than 1.5 MB.","err");return}
   {const lm=limCheck(t);if(lm.over){toast(lm.msg,"err");return}}
   {const lm=limCheck(t);if(lm.over){toast(lm.msg,"err");return}}
-  if(used()+t.length>LIMIT*0.98){toast("Not enough storage.","err");return}
+  if(used()+JSON.stringify(t).length+80>LIMIT*0.98){toast("Not enough storage.","err");return}
   if(db[n]&&lastOf(db[n]).text===t){toast("No changes.");return}
   const snap=JSON.stringify(db),o=db[n]||(db[n]={next:1,vs:[]});
   o.vs.push({v:o.next++,t:Date.now(),size,text:t});
@@ -2108,7 +2264,8 @@ $("proBtn").onclick=()=>{const d=$("pro");if(d.showModal)d.showModal()};
 $("proGo").addEventListener("click",()=>{
   if(PRO_PREVIEW){LS.set("artibytte-plan-v1","pro");PLAN="pro";LIMIT=LIMITS.pro;render();toast("Pro preview on (test only).");return}
   const l=getLic()||{},yr=document.querySelector('input[name="plan"]:checked').value==="y";
-  location.href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent("ArtiBytte Pro waitlist")+"&body="+encodeURIComponent("Hi ArtiBytte team,\n\nPlease add me to the Pro waitlist ("+(yr?"yearly":"monthly")+").\n\nLicense: "+(l.code||"none")+"\nEmail: "+(l.email||"")+"\n");
+  const gm="https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(TEAM_EMAIL)+"&su="+encodeURIComponent("ArtiBytte Pro waitlist")+"&body="+encodeURIComponent("Hi ArtiBytte team,\n\nPlease add me to the Pro waitlist ("+(yr?"yearly":"monthly")+").\n\nLicense: "+(l.code||"none")+"\nEmail: "+(l.email||"")+"\n");
+  if(!window.open(gm,"_blank","noopener"))location.href=gm;
 });
 /* === START: HAPTICS TOGGLE JS === */
 function paintHap(){$("hapBtn").textContent="Haptics: "+(LS.get("artibytte-haptics")==="off"?"Off":"On")}
@@ -2583,7 +2740,7 @@ function applyTheme(){const v=LS.get(THK),h=document.documentElement;if(v==="lig
 async function persState(){try{return navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():null}catch(e){return null}}
 async function paintSetX(){
   const u=used(),p=Math.min(100,u/LIMIT*100);
-  $("set_stF").style.width=p+"%";$("set_stF").classList.toggle("hot",p>=90);
+  $("set_stF").style.width=(u>0?Math.max(p,1.5):0)+"%";$("set_stF").classList.toggle("hot",p>=90);
   $("set_meterW").setAttribute("aria-valuenow",Math.round(p));
   $("set_st").textContent=kb(u)+" of "+kb(LIMIT)+" used on this device ("+Math.round(p)+"%)";
   $("set_sub").textContent=PLAN==="pro"?"Pro (preview)":"None. Free plan.";
@@ -2600,8 +2757,19 @@ $("set_pers").onclick=async()=>{
   try{const ok=await navigator.storage.persist();toast(ok?"Storage protected.":"The browser declined. Bookmark or install this page, then try again.",ok?"":"err")}catch(e){toast("Could not request protection.","err")}
   paintSetX();
 };
+let rate="";
+const rtPaint=()=>{$("rt_g").setAttribute("aria-pressed",String(rate==="good"));$("rt_b").setAttribute("aria-pressed",String(rate==="bad"))};
+$("rt_g").onclick=()=>{rate="good";rtPaint()};
+$("rt_b").onclick=()=>{rate="bad";rtPaint()};
+$("rt_s").onclick=()=>{
+  if(!rate){toast("Pick Good or Bad first.","err");return}
+  const lab=rate==="good"?"Good":"Bad",m=$("rt_m").value.trim();
+  const gm="https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(TEAM_EMAIL)+"&su="+encodeURIComponent("ArtiBytte Protocol feedback: "+lab)+"&body="+encodeURIComponent("Rating: "+lab+"\n\nMessage:\n"+m+diag());
+  if(!window.open(gm,"_blank","noopener"))location.href=gm;
+  rate="";rtPaint();$("rt_m").value="";
+};
 $("set_clr").onclick=async()=>{
-  if(!await confirmBox("Clear local data?","This deletes all files, versions, members, your organization and your license from this device. Export a backup first. This can't be undone.","Delete everything",true))return;
+  if(!await confirmBox("Clear local data?","This deletes all files, versions, AI notes, members, your organization and your license from this device. Export a backup first. This can't be undone.","Delete everything",true))return;
   try{Object.keys(localStorage).filter(k=>k.startsWith("artibytte-")).forEach(k=>localStorage.removeItem(k))}catch(e){}
   location.replace(location.pathname+location.search);
 };
@@ -2613,10 +2781,96 @@ window.addEventListener("storage",e=>{
     else if(e.key===SK){st=JSON.parse(e.newValue||"{}")||{};paintSteps()}
     else if(e.key===LICK){paintProf();if(!licOk()&&cur==="setup")show("home")}
     else if(e.key===THK){applyTheme()}
+    else if(e.key===NK){try{NT=JSON.parse(e.newValue||"[]")||[]}catch(x){NT=[]}ntRender()}
   }catch(x){}
 });
 applyTheme();
+/* === START: WHAT'S NEW === */
+/* Para magdagdag ng update: maglagay ng bagong linya sa PINAKA-ITAAS, at gawing +1 ang id ng dating pinakamataas. */
+const UPDATES=[
+  {id:6,d:"2026-10-17",t:"Free and Pro",b:"Free supports text only. Uploading photos and files is for Pro, coming soon."},
+  {id:5,d:"2026-10-17",t:"AI Notes",b:"Open Files, then AI Notes, to keep anything your AI tells you. It is separate from your workspace files."},
+  {id:4,d:"2026-10-17",t:"Rate us",b:"Open Settings and tap Good or Bad, then add a message. It opens an email to our team."},
+  {id:3,d:"2026-10-17",t:"Open your AI",b:"How to use now has quick links to DeepSeek, ChatGPT, Claude, Gemini and more."},
+  {id:2,d:"2026-10-17",t:"Offline pages",b:"See what is saved on this device, your last backup, and save an app copy."},
+  {id:1,d:"2026-10-17",t:"Settings",b:"Storage meter, theme (Auto, Light, Dark), backup export and import, and protection from browser cleanup."}
+];
+const UK="artibytte-seen-update",UD=$("updD");
+const lastUpd=()=>UPDATES.reduce((m,u)=>Math.max(m,u.id),0);
+const seenUpd=()=>Number(LS.get(UK)||0);
+function paintNew(){
+  const n=lastUpd()>seenUpd();
+  $("avBtn").classList.toggle("new",n);
+  $("set_updR").classList.toggle("new",n);
+  $("set_upd").textContent=n?"New":"View";
+  const m=document.querySelector('#prof [data-p="set"]');
+  if(m){let d=m.querySelector(".dot");if(n&&!d){d=document.createElement("span");d.className="dot";m.appendChild(d)}else if(!n&&d)d.remove()}
+}
+function openUpd(){
+  const seen=seenUpd();
+  $("upd_list").innerHTML=UPDATES.length?UPDATES.map(u=>{const nw=u.id>seen;return `<div class="upd${nw?" new":""}"><b>${esc(u.t)}</b>${nw?'<span class="nw">New</span>':""}<p class="meta">${esc(u.d)}</p><p>${esc(u.b)}</p></div>`}).join(""):'<p class="meta">No updates yet.</p>';
+  LS.set(UK,String(lastUpd()));paintNew();UD.showModal();
+}
+$("set_upd").onclick=()=>{SD.close();openUpd()};
+$("updX").onclick=()=>UD.close();
+UD.addEventListener("click",e=>{if(e.target===UD&&outside(UD,e))UD.close()});
+paintNew();
+/* === END: WHAT'S NEW === */
+window.onStore=()=>{
+  const u=used(),p=Math.min(100,u/LIMIT*100);
+  $("stF").style.width=(u>0?Math.max(p,1.5):0)+"%";$("stF").classList.toggle("hot",p>=90);
+  $("stT").textContent=kb(u)+" / "+(LIMIT/1048576)+" MB";
+  $("meterW").setAttribute("aria-valuenow",Math.round(p));
+  if(SD.open)paintSetX();
+};
 /* === END: SETTINGS HARDENING === */
+["gesturestart","gesturechange","gestureend"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+document.addEventListener("touchmove",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
+/* === START: AI NOTES === */
+const NK="artibytte-ainotes-v1",AD=$("aiD");
+let NT=[];try{NT=JSON.parse(LS.get(NK)||"[]");if(!Array.isArray(NT))NT=[]}catch(e){NT=[]}
+let ntEdit=null;
+const ntSave=()=>LS.set(NK,JSON.stringify(NT));
+function ntRender(){
+  $("ai_cnt").textContent=NT.length?"· "+NT.length:"";
+  $("ai_list").innerHTML=NT.length?NT.map(n=>`<div class="nti"><b>${esc(n.title||"Untitled")}</b><span class="meta">${esc(fmt(n.t))}</span><p class="pv">${esc(n.text)}</p><div class="lact"><button class="lnk" data-c="${n.id}" type="button">Copy</button><button class="lnk" data-e="${n.id}" type="button">Edit</button><button class="lnk" data-d="${n.id}" type="button">Delete</button></div></div>`).join(""):'<div class="none"><b>No notes yet</b>Paste anything your AI told you.</div>';
+  $("ai_save").textContent=ntEdit?"Update note":"Save note";
+  $("ai_cancel").hidden=!ntEdit;
+}
+function ntReset(){ntEdit=null;$("ai_t").value="";$("ai_x").value="";ntRender()}
+$("aiBtn").onclick=()=>{ntRender();AD.showModal()};
+$("aiX").onclick=()=>AD.close();
+AD.addEventListener("click",e=>{if(e.target===AD&&outside(AD,e))AD.close()});
+$("ai_cancel").onclick=ntReset;
+$("ai_p").onclick=async()=>{
+  try{const t=await navigator.clipboard.readText();if(!t){toast("Clipboard is empty.","err");return}$("ai_x").value=t;$("ai_x").focus()}
+  catch(e){toast("Can't read the clipboard. Long-press the box and paste.","err")}
+};
+$("ai_save").onclick=()=>{
+  const title=$("ai_t").value.trim(),text=$("ai_x").value;
+  if(!text.trim()){toast("Paste or type a note first.","err");return}
+  if(used()+JSON.stringify(text).length+120>LIMIT*0.98){toast("Not enough storage.","err");return}
+  const prev=JSON.stringify(NT);
+  if(ntEdit){const n=NT.find(x=>x.id===ntEdit);if(n){n.title=title;n.text=text;n.t=Date.now()}}
+  else NT.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),title,text,t:Date.now()});
+  NT.sort((a,b)=>b.t-a.t);
+  if(!ntSave()){NT=JSON.parse(prev);toast("Storage is full or blocked. Nothing was changed.","err");return}
+  warnStorage();ntReset();toast("Note saved.");
+};
+$("ai_list").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-c],[data-e],[data-d]");if(!b)return;
+  const id=b.dataset.c||b.dataset.e||b.dataset.d,n=NT.find(x=>x.id===id);if(!n)return;
+  if(b.dataset.c)copyText(n.text,b);
+  else if(b.dataset.e){ntEdit=n.id;$("ai_t").value=n.title||"";$("ai_x").value=n.text;ntRender();$("ai_x").focus();$("ai_x").scrollIntoView({block:"center"})}
+  else{
+    if(!await confirmBox("Delete note?","This note will be removed from this device.","Delete",true))return;
+    const prev=JSON.stringify(NT);NT=NT.filter(x=>x.id!==id);
+    if(!ntSave())NT=JSON.parse(prev);
+    if(ntEdit===id)ntEdit=null;
+    ntRender();
+  }
+});
+/* === END: AI NOTES === */
 $("homeVer").textContent="v"+VER.replace("-draft","");
 paintSteps();render();paintProf();$("s_title").value=CHIPS.op();sbState();route(true);</script>
 </body>
