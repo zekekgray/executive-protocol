@@ -391,6 +391,20 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 .code pre{margin:0;padding:12px 10px 40px 12px;min-width:3ch;text-align:right;color:var(--mute);background:var(--surface);border-right:1px solid var(--line);overflow:hidden;user-select:none;-webkit-user-select:none;font:inherit}
 .code textarea{flex:1;min-width:0;border:0;border-radius:0;background:var(--bg);color:var(--ink);padding:12px 14px 40px;font:inherit;resize:none;white-space:pre;overflow:auto}
 .code textarea:focus-visible{outline:0}
+/* === START: NOTES UI CSS === */
+.ntrow{display:block;width:100%;text-align:left;background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer}
+.ntrow b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.ntrow .meta{display:block;margin-top:4px}
+.nti .lact{flex-wrap:wrap;gap:0 16px}
+.ntok{width:20px;height:20px;color:var(--ok);display:block}
+#nt_x{flex:1;min-height:0;width:100%;border:0;border-radius:0;background:var(--bg);color:var(--ink);padding:16px;font:inherit;font-size:16px;line-height:1.6;resize:none}
+#nt_x:focus-visible{outline:0}
+#nt_vs{flex:1;overflow:auto}
+#ntSide{border-bottom:1px solid var(--line);margin-bottom:8px}
+.ntck{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--accent);margin-right:10px;vertical-align:middle;color:var(--on);font-size:.75rem;font-weight:600}
+.nti.sel .ntck{background:var(--accent)}
+.nti.sel{background:var(--hover);border-radius:12px;padding-left:10px;padding-right:10px}
+/* === END: NOTES UI CSS === */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -435,6 +449,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
       <li>Fill in the form below. Legal name, jurisdiction, currency, industry and mission are required.</li>
       <li>Copy cards 1 to 4 in order and paste each into a new chat with your AI.</li>
       <li>Send <button class="cmd" data-copy="Protocol, activate." type="button">Protocol, activate.</button></li>
+      <li>Optional: in Files, open Notes, tap Select, choose notes, then Mitochondria. Paste that prompt only after cards 1 to 4 are active in the chat. Its output is a claim until you verify it.</li>
       <li>When done, send <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button> then <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button> Paste the output into Files (Add file) and tap Commit changes.</li>
     </ol>
     <h3 class="mh">Open your AI</h3>
@@ -587,7 +602,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
       <div class="drh"><b id="drT">Files</b><button class="ic" id="drClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button></div>
       <div class="dra"><button class="sm p" id="newBtn" type="button">Add file</button><button class="sm" id="addBtn" type="button">Upload<span class="pro-b">Pro</span></button><button class="sm" id="aiBtn" type="button">AI Notes</button></div>
       <div id="tools" hidden><input type="search" id="q" placeholder="Search" aria-label="Search files"></div>
-      <div id="list"></div>
+      <div id="ntSide"></div><div id="list"></div>
       <div class="none" id="empty">No files</div>
       <div class="drf"><button class="lnk" id="cpkBtn" type="button">Context Pack</button><button class="lnk" id="exportBtn" type="button">Export</button><button class="lnk" id="importBtn" type="button">Import</button></div>
     </div>
@@ -649,7 +664,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
     </div>
     <h3 class="mh">Common questions</h3>
     <details class="faq"><summary>Where are my files saved?</summary><p>On this device, in your browser. The Free plan holds up to 5 MB. Clearing your browser data removes them, so export a backup from Files regularly.</p></details>
-    <details class="faq"><summary>What are AI Notes?</summary><p>A separate place to keep anything your AI tells you. Open Files, then AI Notes. They are not part of your workspace files, not in Context Pack, and not in Export. Clearing browser data deletes them.</p></details>
+    <details class="faq"><summary>What are Notes?</summary><p>A place for your raw thinking and anything your AI tells you. Open Files, then tap Notes or a folder. Notes autosave and keep versions. They are separate from workspace files, and not in Context Pack or Export. Clearing browser data deletes them. Mitochondria only reads the notes you select. It never edits them, and nothing is sent anywhere until you copy the prompt.</p></details>
     <details class="faq"><summary>What can I save on the Free plan?</summary><p>Text only. Use Add file to type or paste. Uploading photos and files is for Pro.</p></details>
     <details class="faq"><summary>How do versions work?</summary><p>Saving with the same file name creates a new version (v1, v2, v3). If nothing changed, no new version is made.</p></details>
     <details class="faq"><summary>How do I back up or move my files?</summary><p>Open Files, then tap Export to download a backup, or Context Pack to export everything as one .md file. Import restores a backup.</p></details>
@@ -667,22 +682,59 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
     <div id="upd_list"></div>
   </section>
 </dialog>
-
-<dialog class="sheet" id="aiD" aria-label="AI Notes">
+<dialog class="sheet" id="aiD" aria-label="Notes">
   <section class="how">
     <button class="ic sheet-x" id="aiX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
-    <h2>AI Notes</h2>
-    <p class="sub">Keep anything your AI tells you. Separate from your workspace files and Context Pack.</p>
-    <div style="margin-top:12px">
-      <input class="ntin" type="text" id="ai_t" placeholder="Title (optional)" autocomplete="off" aria-label="Note title">
-      <textarea class="ntx" id="ai_x" placeholder="Paste or type a note" aria-label="Note"></textarea>
-      <div class="ntb"><button class="sm p" id="ai_save" type="button">Save note</button><button class="sm" id="ai_p" type="button">Paste</button><button class="sm" id="ai_cancel" type="button" hidden>Cancel</button></div>
-    </div>
-    <h3 class="mh">Saved notes <span class="meta" id="ai_cnt"></span></h3>
+    <h2 id="ai_h">Notes</h2>
+    <div class="ntb" style="margin-top:12px"><button class="sm p" id="ai_new" type="button">New note</button><button class="sm p" id="ai_mito" type="button" hidden>Mitochondria</button><button class="sm" id="ai_sel" type="button">Select</button><button class="sm" id="ai_all" type="button" hidden>All</button></div>
     <div id="ai_list"></div>
   </section>
 </dialog>
 
+<dialog class="editor" id="ntE" aria-label="Note">
+  <div class="ed">
+    <div class="edh">
+      <button class="ic" id="nt_back" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button>
+      <span id="nt_st" aria-live="polite"></span>
+      <span style="flex:1"></span>
+      <button class="lnk" id="nt_hist" type="button" hidden>Versions</button>
+    </div>
+    <textarea id="nt_x" aria-label="Note" spellcheck="false"></textarea>
+    <div id="nt_vs" hidden></div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="mtD" aria-label="Mitochondria">
+  <section class="how">
+    <button class="ic sheet-x" id="mtX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Mitochondria</h2>
+    <p class="sub" id="mt_sub" aria-live="polite"></p>
+    <h3 class="mh">Fragments</h3>
+    <div class="ofl" id="mt_fr"></div>
+    <h3 class="mh">Objective</h3>
+    <textarea class="rtm" id="mt_obj" placeholder="What do you want to solve or explore?" aria-label="Objective"></textarea>
+    <h3 class="mh">Output type</h3>
+    <select class="msel" id="mt_ty" aria-label="Output type"></select>
+    <h3 class="mh">Prompt</h3>
+    <textarea class="ntx" id="mt_p" aria-label="Prompt" spellcheck="false" style="min-height:240px;font:.8125rem/1.5 ui-monospace,Menlo,Consolas,monospace"></textarea>
+    <div class="ntb"><button class="sm p" id="mt_cp" type="button">Copy prompt</button><button class="lnk" id="mt_rs" type="button">Reset</button></div>
+    <div class="ai">
+      <a class="chip" href="https://claude.ai/new" target="_blank" rel="noopener noreferrer">Claude</a>
+      <a class="chip" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT</a>
+      <a class="chip" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer">Gemini</a>
+      <a class="chip" href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer">DeepSeek</a>
+    </div>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="ntM" aria-label="Move note">
+  <section class="how">
+    <button class="ic sheet-x" id="ntMX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Move note</h2>
+    <div id="ntM_list"></div>
+    <div class="mfld" style="margin-top:12px"><input type="text" id="ntM_new" placeholder="New folder" aria-label="New folder name" autocomplete="off"><button class="sm p" id="ntM_add" type="button">Move</button></div>
+  </section>
+</dialog>
 <dialog class="sheet" id="ofD" aria-label="Offline pages">
   <section class="how">
     <button class="ic sheet-x" id="ofX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
@@ -2788,6 +2840,7 @@ applyTheme();
 /* === START: WHAT'S NEW === */
 /* Para magdagdag ng update: maglagay ng bagong linya sa PINAKA-ITAAS, at gawing +1 ang id ng dating pinakamataas. */
 const UPDATES=[
+  {id:7,d:"2026-10-17",t:"Notes and Mitochondria",b:"Notes now have folders, pin, duplicate, share, move and version history. Select notes and tap Mitochondria to build a prompt for your AI."},
   {id:6,d:"2026-10-17",t:"Free and Pro",b:"Free supports text only. Uploading photos and files is for Pro, coming soon."},
   {id:5,d:"2026-10-17",t:"AI Notes",b:"Open Files, then AI Notes, to keep anything your AI tells you. It is separate from your workspace files."},
   {id:4,d:"2026-10-17",t:"Rate us",b:"Open Settings and tap Good or Bad, then add a message. It opens an email to our team."},
@@ -2827,49 +2880,215 @@ window.onStore=()=>{
 ["gesturestart","gesturechange","gestureend"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
 document.addEventListener("touchmove",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
 /* === START: AI NOTES === */
-const NK="artibytte-ainotes-v1",AD=$("aiD");
-let NT=[];try{NT=JSON.parse(LS.get(NK)||"[]");if(!Array.isArray(NT))NT=[]}catch(e){NT=[]}
-let ntEdit=null;
-const ntSave=()=>LS.set(NK,JSON.stringify(NT));
-function ntRender(){
-  $("ai_cnt").textContent=NT.length?"· "+NT.length:"";
-  $("ai_list").innerHTML=NT.length?NT.map(n=>`<div class="nti"><b>${esc(n.title||"Untitled")}</b><span class="meta">${esc(fmt(n.t))}</span><p class="pv">${esc(n.text)}</p><div class="lact"><button class="lnk" data-c="${n.id}" type="button">Copy</button><button class="lnk" data-e="${n.id}" type="button">Edit</button><button class="lnk" data-d="${n.id}" type="button">Delete</button></div></div>`).join(""):'<div class="none"><b>No notes yet</b>Paste anything your AI told you.</div>';
-  $("ai_save").textContent=ntEdit?"Update note":"Save note";
-  $("ai_cancel").hidden=!ntEdit;
+const NK="artibytte-ainotes-v1",AD=$("aiD"),NE=$("ntE"),NM=$("ntM");
+const CHECK='<svg class="ntok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Saved"><path d="M5 13l4 4L19 7"/></svg>';
+let NT=[],ntScope="",ntCur=null,ntTimer=null,ntMv=null,ntSelMode=false,ntSel=new Set();
+function ntLoad(){
+  try{NT=JSON.parse(LS.get(NK)||"[]");if(!Array.isArray(NT))NT=[]}catch(e){NT=[]}
+  NT.forEach(n=>{n.text=n.text||"";if(n.title){n.text=n.title+"\n"+n.text;n.title=""}n.vs=Array.isArray(n.vs)?n.vs:[];n.pin=!!n.pin;n.folder=n.folder||""});
 }
-function ntReset(){ntEdit=null;$("ai_t").value="";$("ai_x").value="";ntRender()}
-$("aiBtn").onclick=()=>{ntRender();AD.showModal()};
-$("aiX").onclick=()=>AD.close();
-AD.addEventListener("click",e=>{if(e.target===AD&&outside(AD,e))AD.close()});
-$("ai_cancel").onclick=ntReset;
-$("ai_p").onclick=async()=>{
-  try{const t=await navigator.clipboard.readText();if(!t){toast("Clipboard is empty.","err");return}$("ai_x").value=t;$("ai_x").focus()}
-  catch(e){toast("Can't read the clipboard. Long-press the box and paste.","err")}
+ntLoad();
+const ntSave=()=>LS.set(NK,JSON.stringify(NT));
+const ntId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const ntLines=n=>n.text.trim().split("\n");
+const ntHas=n=>n.vs.some(v=>v.text!==n.text);
+const ntFolders=()=>[...new Set(NT.map(n=>n.folder).filter(Boolean))].sort();
+function ntDo(f){
+  const prev=JSON.stringify(NT);f();
+  if(!ntSave()){NT=JSON.parse(prev);toast("Storage is full or blocked. Nothing was changed.","err");ntRender();return false}
+  warnStorage();ntRender();return true;
+}
+function ntSideRender(){
+  const el=$("ntSide");if(!el)return;
+  const row=(k,l,c)=>`<button class="fr" type="button" data-nf="${esc(k)}"><span class="nm">${esc(l)}</span><span class="vv">${c}</span></button>`;
+  el.innerHTML=row("","Notes",NT.filter(n=>!n.folder).length)+ntFolders().map(f=>row(f,f,NT.filter(n=>n.folder===f).length)).join("");
+}
+function ntRender(){
+  if(ntScope&&!NT.some(n=>n.folder===ntScope))ntScope="";
+  ntSideRender();
+  $("ai_h").textContent=ntScope||"Notes";
+  $("ai_new").hidden=ntSelMode;$("ai_all").hidden=!ntSelMode;$("ai_mito").hidden=!ntSelMode;$("ai_sel").textContent=ntSelMode?"Cancel":"Select";$("ai_mito").textContent="Mitochondria"+(ntSel.size?" · "+ntSel.size:"");
+  const l=NT.filter(n=>n.folder===ntScope).sort((a,b)=>(b.pin-a.pin)||(b.t-a.t));
+  $("ai_list").innerHTML=l.length?l.map(n=>{
+    const ls=ntLines(n),pv=ls.slice(1).join(" ").trim();
+    const on=ntSel.has(n.id);return `<div class="nti${on?" sel":""}"><button class="ntrow" type="button" data-o="${n.id}"${ntSelMode?` aria-pressed="${on}"`:""}><b>${ntSelMode?`<span class="ntck">${on?"✓":""}</span>`:""}${esc(ls[0]||"Empty note")}</b>${pv?`<p class="pv">${esc(pv)}</p>`:""}<span class="meta">${n.pin?"Pinned · ":""}${esc(fmt(n.t))}</span></button>${ntSelMode?"":`<div class="lact"><button class="lnk" type="button" data-a="pin" data-id="${n.id}">${n.pin?"Unpin":"Pin"}</button><button class="lnk" type="button" data-a="dup" data-id="${n.id}">Duplicate</button><button class="lnk" type="button" data-a="share" data-id="${n.id}">Share</button><button class="lnk" type="button" data-a="move" data-id="${n.id}">Move</button><button class="lnk" type="button" data-a="del" data-id="${n.id}">Delete</button></div>`}</div>`;
+  }).join(""):'<div class="none">No notes</div>';
+}
+/* versions: snapshot on close, or every 2 min while typing */
+function ntSnap(n,force){
+  if(!n.text.trim())return;
+  const l=n.vs[n.vs.length-1];
+  if(l&&l.text===n.text)return;
+  if(!force&&(!l||Date.now()-l.t<120000))return;
+  n.vs.push({t:Date.now(),text:n.text});
+  while(n.vs.length>20||(n.vs.length>1&&n.vs.reduce((a,v)=>a+v.text.length,0)>200000))n.vs.shift();
+}
+function ntSaveNow(snap){
+  clearTimeout(ntTimer);
+  const n=ntCur;if(!n)return true;
+  const txt=$("nt_x").value,isNew=!NT.includes(n);
+  if(isNew&&!txt.trim())return true;
+  if(n.text!==txt){n.text=txt;n.t=Date.now()}
+  if(isNew)NT.push(n);
+  ntSnap(n,snap);
+  if(!ntSave()){toast("Storage is full or blocked. Not saved.","err");$("nt_st").innerHTML="";return false}
+  warnStorage();$("nt_st").innerHTML=CHECK;$("nt_hist").hidden=!ntHas(n);ntSideRender();return true;
+}
+function ntVs(on){$("nt_vs").hidden=!on;$("nt_x").hidden=on;$("nt_hist").textContent=on?"Done":"Versions"}
+function openNote(id){
+  ntCur=id?NT.find(x=>x.id===id):{id:ntId(),text:"",t:Date.now(),pin:false,folder:ntScope,vs:[]};
+  if(!ntCur)return;
+  $("nt_x").value=ntCur.text;$("nt_st").innerHTML=id?CHECK:"";
+  $("nt_hist").hidden=!ntHas(ntCur);ntVs(false);
+  NE.showModal();if(!id)setTimeout(()=>$("nt_x").focus(),60);
+}
+async function ntClose(){
+  const n=ntCur;if(!n)return;
+  if(!ntSaveNow(true)){
+    if(!await confirmBox("Not saved","Storage is full. Close and lose this change?","Close",true))return;
+    ntLoad();
+  }else if(!n.text.trim()&&!n.vs.length){NT=NT.filter(x=>x!==n);ntSave()}
+  ntCur=null;NE.close();ntRender();
+}
+$("nt_x").addEventListener("input",()=>{
+  $("nt_st").innerHTML="";clearTimeout(ntTimer);
+  ntTimer=setTimeout(()=>ntSaveNow(false),600);
+});
+$("nt_back").onclick=ntClose;
+NE.addEventListener("cancel",e=>{e.preventDefault();ntClose()});
+window.addEventListener("pagehide",()=>{if(ntCur)ntSaveNow(true)});
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&ntCur)ntSaveNow(false)});
+$("nt_hist").onclick=()=>{
+  if(!$("nt_vs").hidden){ntVs(false);return}
+  if(!ntSaveNow(true))return;
+  const n=ntCur;
+  $("nt_vs").innerHTML=n.vs.map((v,i)=>[v,i]).reverse().filter(([v])=>v.text!==n.text).map(([v,i])=>`<button class="fr" type="button" data-v="${i}"><span class="nm">${esc(fmt(v.t))}</span><span class="vv">${kb(new Blob([v.text]).size)}</span></button>`).join("");
+  ntVs(true);
 };
-$("ai_save").onclick=()=>{
-  const title=$("ai_t").value.trim(),text=$("ai_x").value;
-  if(!text.trim()){toast("Paste or type a note first.","err");return}
-  if(used()+JSON.stringify(text).length+120>LIMIT*0.98){toast("Not enough storage.","err");return}
-  const prev=JSON.stringify(NT);
-  if(ntEdit){const n=NT.find(x=>x.id===ntEdit);if(n){n.title=title;n.text=text;n.t=Date.now()}}
-  else NT.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),title,text,t:Date.now()});
-  NT.sort((a,b)=>b.t-a.t);
-  if(!ntSave()){NT=JSON.parse(prev);toast("Storage is full or blocked. Nothing was changed.","err");return}
-  warnStorage();ntReset();toast("Note saved.");
+$("nt_vs").addEventListener("click",e=>{
+  const b=e.target.closest("[data-v]");if(!b)return;
+  const v=ntCur.vs[+b.dataset.v];if(!v)return;
+  $("nt_x").value=v.text;ntSaveNow(true);ntVs(false);toast("Restored.");
+});
+/* move */
+function ntMoveRender(){
+  const row=(f,l)=>`<button class="fr" type="button" data-mf="${esc(f)}"><span class="nm">${esc(l)}</span>${ntMv.folder===f?'<span class="vv">Here</span>':""}</button>`;
+  $("ntM_list").innerHTML=row("","Notes")+ntFolders().map(f=>row(f,f)).join("");
+}
+function ntMoveTo(f){const n=ntMv;if(ntDo(()=>{n.folder=f})){NM.close();toast("Moved.")}}
+$("ntM_list").addEventListener("click",e=>{const b=e.target.closest("[data-mf]");if(b)ntMoveTo(b.dataset.mf)});
+$("ntM_add").onclick=()=>{
+  const f=$("ntM_new").value.replace(/\s+/g," ").trim().slice(0,40);
+  if(!f){toast("Type a folder name.","err");$("ntM_new").focus();return}
+  $("ntM_new").value="";ntMoveTo(f);
 };
+$("ntM_new").addEventListener("keydown",e=>{if(e.key==="Enter")$("ntM_add").click()});
+$("ntMX").onclick=()=>NM.close();
+NM.addEventListener("click",e=>{if(e.target===NM&&outside(NM,e))NM.close()});
+/* list + sidebar */
 $("ai_list").addEventListener("click",async e=>{
-  const b=e.target.closest("[data-c],[data-e],[data-d]");if(!b)return;
-  const id=b.dataset.c||b.dataset.e||b.dataset.d,n=NT.find(x=>x.id===id);if(!n)return;
-  if(b.dataset.c)copyText(n.text,b);
-  else if(b.dataset.e){ntEdit=n.id;$("ai_t").value=n.title||"";$("ai_x").value=n.text;ntRender();$("ai_x").focus();$("ai_x").scrollIntoView({block:"center"})}
-  else{
+  const b=e.target.closest("[data-o],[data-a]");if(!b)return;
+  if(b.dataset.o){if(ntSelMode){const i=b.dataset.o;ntSel.has(i)?ntSel.delete(i):ntSel.add(i);ntRender();return}openNote(b.dataset.o);return}
+  const n=NT.find(x=>x.id===b.dataset.id);if(!n)return;
+  const a=b.dataset.a;
+  if(a==="pin")ntDo(()=>{n.pin=!n.pin});
+  else if(a==="dup")ntDo(()=>{NT.push({...n,id:ntId(),t:Date.now(),pin:false,vs:[]})});
+  else if(a==="share"){if(navigator.share){try{await navigator.share({text:n.text})}catch(x){}}else copyText(n.text,b)}
+  else if(a==="move"){ntMv=n;ntMoveRender();NM.showModal()}
+  else if(a==="del"){
     if(!await confirmBox("Delete note?","This note will be removed from this device.","Delete",true))return;
-    const prev=JSON.stringify(NT);NT=NT.filter(x=>x.id!==id);
-    if(!ntSave())NT=JSON.parse(prev);
-    if(ntEdit===id)ntEdit=null;
-    ntRender();
+    ntDo(()=>{NT=NT.filter(x=>x!==n)});
   }
 });
+$("ai_new").onclick=()=>openNote(null);
+/* === START: MITOCHONDRIA P1 === */
+const ntFrags=n=>{
+  const out=[],LI=/^\s*([-*•]|\d+[.)])\s/;
+  n.text.replace(/\r\n?/g,"\n").split(/\n\s*\n/).forEach(b=>{
+    const ls=b.split("\n").map(s=>s.trim()).filter(Boolean);
+    if(!ls.length)return;
+    if(ls.length>1&&ls.filter(s=>LI.test(s)).length>ls.length/2){let c=null;ls.forEach(s=>{if(LI.test(s)||c===null){if(c)out.push(c);c=s}else c+=" "+s});if(c)out.push(c)}
+    else out.push(ls.join(" "));
+  });
+  return out;
+};
+const MT_TYPES={rd:["R&D","Explore possibilities and propose research directions worth testing."],res:["Resolution","Resolve the problems stated and propose concrete solutions."],idea:["New idea","Combine concepts across the fragments into new ideas."],str:["Strategy","Turn the material into an action plan."],cus:["Custom",""]};
+let mtF=[],mtDirty=false;
+function mitoFrags(list){
+  const F=[];
+  list.forEach((n,k)=>ntFrags(n).forEach((t,i)=>F.push({id:"N"+(k+1)+"-"+(i+1),alias:"N"+(k+1),note:n,text:t})));
+  return F;
+}
+function mitoPrompt(F,obj,ty){
+  const e=getEnt().name,T=MT_TYPES[ty]||MT_TYPES.rd,H=ty==="cus"?"OUTPUTS":T[0].toUpperCase();
+  return [
+    "You are the Mitochondria Engine of ArtiBytte Protocol"+(e?" for "+e:"")+". Below are raw note fragments, each with a source ID. Transform them into testable possibilities. Do not merely summarize.",
+    "",
+    "OBJECTIVE: "+(obj.trim()||"Not specified. State the most useful objective the fragments support, then proceed."),
+    "OUTPUT TYPE: "+T[0]+(T[1]?" - "+T[1]:""),
+    "",
+    "RULES:",
+    "1. Use only the fragments below. Never invent facts, data, quotes, or sources.",
+    "2. Every item must cite at least one fragment ID exactly as written (example: N1-2). No citation, no item.",
+    "3. Label every item and relationship BASIS: stated or inferred.",
+    "4. Every output item is a hypothesis. STATUS: UNVERIFIED. Never mark anything VERIFIED.",
+    "5. If the fragments are insufficient, say so under GAPS instead of filling in.",
+    "6. Look for relationships, conflicts, and combinations across different notes, not only within one.",
+    "",
+    "OUTPUT FORMAT (exact headings, one item per line, each item starts with \"- \"):",
+    "## MAP",
+    "- ID | KIND   (KIND is one of: problem, observation, fact, constraint, idea, hypothesis, goal, question)",
+    "## RELATIONSHIPS",
+    "- ID, ID | TYPE | BASIS   (TYPE is one of: supports, conflicts, depends-on, addresses, constrains, combines, related)",
+    "## "+H,
+    "- TITLE | SOURCES: id, id | CLAIM: ... | BASIS: stated or inferred | STATUS: UNVERIFIED | TEST: the smallest way to check it",
+    "## CONTRADICTIONS",
+    "- SOURCES: id, id | CONFLICT: ...",
+    "## GAPS",
+    "- MISSING: ... | WHY IT MATTERS: ...",
+    "## SUPER PROMPT",
+    "One structured, editable prompt I can test in an AI model, built from the strongest items above, citing their IDs.",
+    "If a section has nothing, write \"None.\"",
+    "",
+    "FRAGMENTS ("+F.length+"):",
+    ...F.map(f=>"["+f.id+"] "+f.text)
+  ].join("\n");
+}
+$("ai_sel").onclick=()=>{ntSelMode=!ntSelMode;ntSel.clear();ntRender()};
+const MTD=$("mtD");
+$("mt_ty").innerHTML=Object.keys(MT_TYPES).map(k=>`<option value="${k}">${MT_TYPES[k][0]}</option>`).join("");
+function mtRefresh(force){
+  if(force||!mtDirty){$("mt_p").value=mitoPrompt(mtF,$("mt_obj").value,$("mt_ty").value);mtDirty=false}
+  const sz=new Blob([$("mt_p").value]).size;
+  $("mt_sub").textContent=mtF.length+" fragments · "+kb(sz)+(sz>60000?" · Large: select fewer notes.":"")+(mtDirty?" · Edited":"");
+}
+function openMito(list){
+  mtF=mitoFrags(list);
+  $("mt_fr").innerHTML=mtF.map(f=>`<div class="nti" style="padding:10px 12px"><b>${f.id}</b><span class="meta">${f.alias} · ${esc(ntLines(f.note)[0]||"Empty note")}</span><p class="pv">${esc(f.text)}</p></div>`).join("");
+  mtDirty=false;mtRefresh(true);MTD.showModal();
+}
+$("ai_mito").onclick=()=>{
+  const l=NT.filter(n=>ntSel.has(n.id));
+  if(!l.length){toast("Select at least one note.","err");return}
+  if(!l.some(n=>n.text.trim())){toast("Selected notes are empty.","err");return}
+  openMito(l);
+};
+$("ai_all").onclick=()=>{ntSel.size===NT.length?ntSel.clear():NT.forEach(n=>ntSel.add(n.id));ntRender()};
+const mtChg=()=>{if(mtDirty)toast("Prompt was edited. Tap Reset to apply.");mtRefresh(false)};
+$("mt_obj").addEventListener("input",()=>mtRefresh(false));
+$("mt_ty").onchange=mtChg;
+$("mt_p").addEventListener("input",()=>{mtDirty=true;mtRefresh(false)});
+$("mt_rs").onclick=()=>mtRefresh(true);
+$("mt_cp").onclick=()=>copyText($("mt_p").value,$("mt_cp"));
+$("mtX").onclick=()=>MTD.close();
+MTD.addEventListener("click",e=>{if(e.target===MTD&&outside(MTD,e))MTD.close()});
+AD.addEventListener("close",()=>{ntSelMode=false;ntSel.clear();ntRender()});
+/* === END: MITOCHONDRIA P1 === */
+$("ntSide").addEventListener("click",e=>{const b=e.target.closest("[data-nf]");if(!b)return;ntScope=b.dataset.nf;ntRender();AD.showModal()});
+$("aiBtn").onclick=()=>{ntScope="";ntRender();AD.showModal()};
+$("aiX").onclick=()=>AD.close();
+AD.addEventListener("click",e=>{if(e.target===AD&&outside(AD,e))AD.close()});
+ntSideRender();
 /* === END: AI NOTES === */
 $("homeVer").textContent="v"+VER.replace("-draft","");
 paintSteps();render();paintProf();$("s_title").value=CHIPS.op();sbState();route(true);</script>
