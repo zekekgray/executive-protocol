@@ -177,6 +177,14 @@ dialog[open]::backdrop{animation:fadeIn .25s ease}
   dialog.sheet>*{border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
 }
 /* === END: SPRING + MOTION CSS === */
+.cpo{display:grid;gap:8px;margin-top:14px}
+.cpo .plan{text-align:left;padding:12px 14px}
+.cpo .plan b{font-size:.9375rem}
+.cpf{margin-top:10px;max-height:28dvh;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:4px 12px}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px;font-size:.875rem;overflow-wrap:anywhere}
+.chk input{width:18px;height:18px;flex:none;accent-color:var(--accent)}
+#cpS{margin-top:12px}
+#cpk .row{flex-wrap:wrap}
 /* === START: PARTICLE SPHERE CSS === */
 /* === START: NO BLACK DISC === */
 .orb{width:min(80vw,330px);height:min(80vw,330px);background:transparent;box-shadow:none}
@@ -212,6 +220,33 @@ html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
 #home .hf-legal{color:var(--mute)}
 #home :focus-visible{outline-color:rgba(226,190,150,.85)}
 /* === END: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
+dialog.drawer{margin:0 0 0 auto;padding:0;border:0;border-radius:22px 0 0 22px;width:min(88vw,360px);max-width:none;height:100dvh;max-height:none;overflow:auto}
+dialog.drawer[open]{animation:drawerIn .4s cubic-bezier(.2,.9,.3,1)}
+@keyframes drawerIn{from{transform:translateX(100%)}to{transform:none}}
+.dr{display:flex;flex-direction:column;gap:12px;min-height:100%;padding:calc(10px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.drh{display:flex;align-items:center;justify-content:space-between}
+.drh b{font-size:1.25rem}
+.dra{display:flex;gap:8px}
+.dra .sm{flex:1;padding:10px 12px}
+.fr{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:8px 10px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:.9375rem;text-align:left;cursor:pointer}
+.fr:hover{background:var(--hover)}
+.fr .ln{min-width:2.5ch;text-align:right;color:var(--mute);font:.8125rem ui-monospace,Menlo,Consolas,monospace}
+.fr .nm{flex:1;min-width:0;overflow-wrap:anywhere}
+.fr .vv{color:var(--mute);font-size:.8125rem}
+.drf{margin-top:auto;display:flex;justify-content:center;gap:24px;padding-top:12px}
+dialog.editor{margin:0;padding:0;border:0;border-radius:0;width:100%;max-width:none;height:100dvh;max-height:none;overflow:hidden;background:var(--bg)}
+dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
+.ed{display:flex;flex-direction:column;height:100%;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.edh{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.edh input{flex:1;min-width:0;font-size:16px}
+.edh .sm{white-space:nowrap}
+.edt{display:flex;align-items:center;gap:16px;min-height:40px;padding:0 16px;border-bottom:1px solid var(--line)}
+.edt .lnk{min-height:36px}
+.edx{display:flex;gap:16px;margin-left:auto}
+.code{flex:1;display:flex;min-height:0;font:16px/1.5 ui-monospace,Menlo,Consolas,monospace}
+.code pre{margin:0;padding:12px 10px 40px 12px;min-width:3ch;text-align:right;color:var(--mute);background:var(--surface);border-right:1px solid var(--line);overflow:hidden;user-select:none;-webkit-user-select:none;font:inherit}
+.code textarea{flex:1;min-width:0;border:0;border-radius:0;background:var(--bg);color:var(--ink);padding:12px 14px 40px;font:inherit;resize:none;white-space:pre;overflow:auto}
+.code textarea:focus-visible{outline:0}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -235,6 +270,7 @@ html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
       <!-- === START: TITLE EDIT === -->
 <div class="ttl"><b>System Workspace</b><span id="progT" aria-live="polite"></span></div>
 <!-- === END: TITLE EDIT === -->
+      <button class="ic" id="menuBtn" type="button" aria-label="Files"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
       <button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
     </div>
   </header>
@@ -275,6 +311,8 @@ html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
     <div class="field"><label for="e_cur">Reporting currency</label><input type="text" id="e_cur" placeholder="e.g. PHP"></div>
     <div class="field"><label for="e_ind">Industry</label><input type="text" id="e_ind" placeholder="e.g. Food and beverage"></div>
     <div class="field"><label for="e_mis">Mission (one sentence)</label><textarea id="e_mis" placeholder="What the organization exists to do."></textarea></div>
+    <p class="sub" id="e_hint" aria-live="polite"></p>
+    <button class="sm p full" id="e_save" type="button">Save</button>
   </div>
 
   <!-- === START: PROMPTS HEADING === -->
@@ -304,39 +342,7 @@ html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
     <div class="acts"><button class="sm p" id="cp2" type="button">Copy</button></div>
   </div>
 
-  <section class="eform store" id="store" aria-labelledby="storeT">
-    <h2 id="storeT">Save / Update Session</h2>
-    <!-- === START: RECORD TYPE SELECT === -->
-<div class="field"><label for="s_type">Record type</label>
-  <select id="s_type">
-    <option value="op">Operating record</option>
-    <option value="ss">Session snapshot</option>
-    <option value="cf">Configuration</option>
-    <option value="">Custom name</option>
-  </select>
-</div>
-<!-- === END: RECORD TYPE SELECT === -->
-    <div class="field"><div class="lrow"><label for="s_text">Paste output</label><span class="lact"><button class="lnk" id="s_paste" type="button">Paste</button><button class="lnk" id="addBtn" type="button">Upload file</button></span></div><textarea id="s_text" placeholder="Paste here. The file type is picked for you." spellcheck="false"></textarea></div>
-    <div class="chips" role="group" aria-label="File type" hidden>
-      <button class="chip" type="button" data-t="op" aria-pressed="false">Operating record</button>
-      <button class="chip" type="button" data-t="ss" aria-pressed="false">Session snapshot</button>
-      <button class="chip" type="button" data-t="cf" aria-pressed="false">Configuration</button>
-    </div>
-    <div class="field"><label for="s_title">File name</label><input type="text" id="s_title" placeholder="Picked from the file type" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
-    <p class="sub" id="s_hint" aria-live="polite"></p>
-    <button class="sm p full" id="s_save" type="button" disabled>Save</button>
-    <p class="sub">Stored on this device only. Export a backup so nothing is lost.</p>
-  </section>
-
-  <h2 class="sec" id="filesH" hidden>Saved files</h2>
-  <div class="tools" id="tools" hidden>
-    <input type="search" id="q" placeholder="Search" aria-label="Search file names">
-    <button class="sm" id="exportBtn" type="button">Export</button>
-    <button class="sm" id="importBtn" type="button">Import</button>
-  </div>
-  <div id="list"></div>
-  <div class="none" id="empty"><b>Nothing saved yet</b>Paste an output above and tap Save. It will appear here.</div>
-  <input type="file" id="pick" hidden accept=".md,.txt,.json,.csv,.yaml,.yml,text/*">
+<input type="file" id="pick" hidden accept=".md,.txt,.json,.csv,.yaml,.yml,text/*">
   <input type="file" id="pickJson" hidden accept=".json,application/json">
 
   <footer class="setup-foot">
@@ -352,6 +358,31 @@ html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
     <p class="hf-ver" id="homeVer"></p>
   </footer>
 </div>
+
+<dialog class="drawer" id="drawer" aria-label="Files">
+    <div class="dr">
+      <div class="drh"><b id="drT">Files</b><button class="ic" id="drClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button></div>
+      <div class="dra"><button class="sm p" id="newBtn" type="button">Add file</button><button class="sm" id="addBtn" type="button">Upload</button></div>
+      <div id="tools" hidden><input type="search" id="q" placeholder="Search" aria-label="Search files"></div>
+      <div id="list"></div>
+      <div class="none" id="empty">No files</div>
+      <div class="drf"><button class="lnk" id="cpkBtn" type="button">Context Pack</button><button class="lnk" id="exportBtn" type="button">Export</button><button class="lnk" id="importBtn" type="button">Import</button></div>
+    </div>
+  </dialog>
+
+  <dialog class="editor" id="editor" aria-label="Editor">
+    <div class="ed">
+      <div class="edh">
+        <button class="ic" id="edClose" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+        <input type="text" id="s_title" placeholder="Name your file" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button class="sm p" id="s_save" type="button" disabled>Commit changes</button>
+      </div>
+      <div class="edt"><button class="lnk" id="s_paste" type="button">Paste</button><span class="edx" id="edTools" hidden><button class="lnk" data-a="copy" type="button">Copy</button><button class="lnk" data-a="dl" type="button">Download</button><button class="lnk" data-a="del" type="button">Delete</button></span></div>
+      <div class="code"><pre id="gut" aria-hidden="true">1</pre><textarea id="s_text" wrap="off" placeholder="Paste or type here" spellcheck="false"></textarea></div>
+    </div>
+    <select id="s_type" hidden><option value="op"></option><option value="ss"></option><option value="cf"></option><option value=""></option></select>
+    <p id="s_hint" hidden></p>
+  </dialog>
 </main>
 
 <div class="toast" id="toast" role="status" aria-live="polite" popover="manual"></div>
@@ -360,6 +391,18 @@ html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
   <form method="dialog"><h2 id="dT"></h2><p id="dM"></p>
     <div class="row"><button class="sm" value="no" type="submit">Cancel</button><button class="sm p" value="yes" id="dOk" type="submit">OK</button></div>
   </form>
+</dialog>
+
+<dialog id="cpk" aria-labelledby="cpkT">
+  <h2 id="cpkT">Export Context Pack</h2>
+  <div class="cpo">
+    <label class="plan"><input type="radio" name="cps" value="all" checked><b>All files, every version</b></label>
+    <label class="plan"><input type="radio" name="cps" value="lat"><b>Latest versions + operating history</b><span>Operating records and snapshots keep all versions</span></label>
+    <label class="plan"><input type="radio" name="cps" value="sel"><b>Selected files only</b></label>
+  </div>
+  <div class="cpf" id="cpF" hidden></div>
+  <p class="sub" id="cpS" aria-live="polite"></p>
+  <div class="row"><button class="sm" id="cpX" type="button">Close</button><button class="sm" id="cpDl" type="button">Download .md</button><button class="sm p" id="cpCopy" type="button">Copy</button></div>
 </dialog>
 
 <dialog id="pro" aria-labelledby="proT">
@@ -410,7 +453,7 @@ document.addEventListener("click",e=>{
 });
 /* === END: HAPTICS JS === */
 let toastT;
-function toast(m,k){HAP(k==="err"?"error":"success");const t=$("toast");try{if(!t.matches(":popover-open"))t.showPopover()}catch(e){}t.textContent=m;t.className="toast on"+(k==="err"?" err":"");clearTimeout(toastT);toastT=setTimeout(()=>{t.className="toast"},k==="err"?6000:2200)}
+function toast(m,k){HAP(k==="err"?"error":"success");const t=$("toast");try{if(t.matches(":popover-open"))t.hidePopover();t.showPopover()}catch(e){}t.textContent=m;t.className="toast on"+(k==="err"?" err":"");clearTimeout(toastT);toastT=setTimeout(()=>{t.className="toast"},k==="err"?6000:2200)}
 function confirmBox(title,msg,ok,danger){
   const d=$("dlg");if(!d.showModal)return Promise.resolve(true);
   $("dT").textContent=title;$("dM").textContent=msg;
@@ -1491,10 +1534,11 @@ const getOR=()=>{
 
 };
 const REQ=[["name","Legal name"],["jur","Jurisdiction"],["cur","Currency"],["ind","Industry"],["mis","Mission"]];
+let pend=null;
 async function cc(id,get,k,need){
   const b=$(id);
   b.onclick=async()=>{
-    if(need){const m=REQ.filter(r=>!getEnt()[r[0]]);if(m.length){$("eform").hidden=false;toast("Fill in: "+m.map(r=>r[1]).join(", ")+".","err");$("e_"+m[0][0]).focus();return}}
+    if(need){const m=REQ.filter(r=>!getEnt()[r[0]]);if(m.length){pend=b;openSheet("eform");toast("Fill in: "+m.map(r=>r[1]).join(", ")+".","err");setTimeout(()=>$("e_"+m[0][0]).focus(),60);return}}
     if(await copyText(get(),b))mark(k);
   };
 }
@@ -1510,16 +1554,14 @@ function persist(){const ok=LS.set(KEY,JSON.stringify(db));if(!ok)toast("Storage
 const names=()=>Object.keys(db).filter(n=>db[n].vs.length).sort((a,b)=>lastOf(db[b]).t-lastOf(db[a]).t);
 function render(){
   const all=names(),shown=all.filter(n=>n.toLowerCase().includes(q)),has=all.length>0;
-  $("filesH").hidden=!has;$("tools").hidden=!has;$("empty").hidden=has;
+  $("tools").hidden=!has;$("empty").hidden=has;
   const u=used(),p=Math.min(100,u/LIMIT*100);
   $("stF").style.width=p+"%";$("stF").classList.toggle("hot",p>=90);
   $("planTag").textContent=PLAN==="pro"?"Pro plan":"Free plan";$("proBtn").hidden=PLAN==="pro";
-$("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" / "+(PLAN==="pro"?"1 GB":"5 MB");
+  $("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" / "+(PLAN==="pro"?"1 GB":"5 MB");
   $("meterW").setAttribute("aria-valuenow",Math.round(p));
-  $("filesH").textContent="Saved files · "+all.length;
-  $("list").innerHTML=shown.map(n=>{const f=db[n],c=lastOf(f),N=esc(n);
-    return `<article class="file"><h3>${N}</h3><p class="meta">v${c.v} · ${f.vs.length} ${f.vs.length===1?"version":"versions"} · ${fmt(c.t)} · ${kb(c.size||c.text.length)}</p><p class="peek">${esc(c.text.replace(/\s+/g," ").slice(0,160))}</p>
-    <div class="acts"><button class="sm" data-a="copy" data-n="${N}">Copy</button><button class="sm" data-a="dl" data-n="${N}">Download</button><button class="sm" data-a="up" data-n="${N}">New version</button><button class="sm d" data-a="del" data-n="${N}">Delete</button></div></article>`}).join("")||(has?'<p class="meta">No files match your search.</p>':"");
+  $("drT").textContent=has?"Files · "+all.length:"Files";
+  $("list").innerHTML=shown.map((n,i)=>{const c=lastOf(db[n]),N=esc(n);return `<button class="fr" type="button" data-a="open" data-n="${N}"><span class="ln">${i+1}</span><span class="nm">${N}</span><span class="vv">v${c.v}</span></button>`}).join("")||(has?'<p class="meta">No match</p>':"");
 }
 async function handleFiles(files,target){
   files=[...files];if(!files.length)return;if(target)files=files.slice(0,1);
@@ -1551,13 +1593,13 @@ function detect(t){const h=t.slice(0,400);for(const[k,r]of DETECT)if(r.test(h))r
 function sbState(){
   const n=finalName($("s_title").value),t=$("s_text").value,ex=n&&db[n],has=!!t.trim();
   $("s_save").disabled=!n||!has;syncType();
-  $("s_save").textContent=ex?"Save as v"+db[n].next:"Save";
+  $("s_save").textContent="Commit changes";gut();
   document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(!!n&&n===CHIPS[c.dataset.t]())));
   $("s_hint").textContent=!has&&!n?"Paste your AI's output to begin.":!has?"Now paste the output.":!n?"Pick a file type above, or type a file name.":(ex?"Saves as v"+db[n].next+" of "+n:"Saves as a new file: "+n)+" · "+kb(new Blob([t]).size);
 }
 /* === START: RECORD TYPE SELECT JS === */
 function syncType(){const n=finalName($("s_title").value);let v="";for(const k in CHIPS)if(n&&n===CHIPS[k]())v=k;$("s_type").value=v}
-$("s_type").onchange=()=>{const k=$("s_type").value;if(!k)return;nameTouched=true;$("s_title").value=CHIPS[k]();sbState();$("s_text").focus()};
+$("s_type").onchange=()=>{const k=$("s_type").value;if(!k)return;if((k==="op"||k==="cf")&&!getEnt().name){openSheet("eform");setTimeout(()=>$("e_name").focus(),60)}nameTouched=true;$("s_title").value=CHIPS[k]();sbState();$("s_text").focus()};
 /* === END: RECORD TYPE SELECT JS === */
 document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{nameTouched=true;$("s_title").value=CHIPS[c.dataset.t]();sbState();$("s_text").focus()});
 $("s_title").addEventListener("input",()=>{nameTouched=true;sbState()});
@@ -1576,27 +1618,29 @@ $("s_save").onclick=()=>{
   const size=new Blob([t]).size;
   if(size>1.5*1048576){toast("That's larger than 1.5 MB.","err");return}
   if(used()+t.length>LIMIT*0.98){toast("Not enough storage.","err");return}
+  if(db[n]&&lastOf(db[n]).text===t){toast("No changes.");return}
   const snap=JSON.stringify(db),o=db[n]||(db[n]={next:1,vs:[]});
   o.vs.push({v:o.next++,t:Date.now(),size,text:t});
   if(!persist()){db=JSON.parse(snap);render();return}
   const v=o.next-1;
-  nameTouched=false;$("s_text").value="";sbState();render();toast("Saved as v"+v+".");
+  nameTouched=false;$("s_text").value="";$("s_title").value="";sbState();render();$("editor").close();toast("Committed v"+v+".");
 };
 $("q").oninput=e=>{q=e.target.value.trim().toLowerCase();render()};
-$("list").addEventListener("click",async e=>{
+const lh=async e=>{
   const b=e.target.closest("[data-a]");if(!b)return;
   const n=b.dataset.n,f=db[n];if(!f)return;const c=lastOf(f);
   if(b.dataset.a==="copy")copyText(c.text,b);
-  else if(b.dataset.a==="up"){$("s_title").value=n;$("s_title").dispatchEvent(new Event("input"));$("s_text").focus();$("store").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"})}
+  else if(b.dataset.a==="open")openEd(n);
   else if(b.dataset.a==="dl"){
     const dot=n.lastIndexOf("."),nm=(dot>0?n.slice(0,dot):n)+"-v"+c.v+(dot>0?n.slice(dot):".txt");
     const url=URL.createObjectURL(new Blob([c.text],{type:"text/plain"})),a=document.createElement("a");
     a.href=url;a.download=nm;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
   }else if(b.dataset.a==="del"){
     if(!await confirmBox("Delete file?",`Delete "${n}" and all its versions?`,"Delete",true))return;
-    const snap=JSON.stringify(db);delete db[n];if(!persist())db=JSON.parse(snap);render();
+    const snap=JSON.stringify(db);delete db[n];if(!persist())db=JSON.parse(snap);render();$("editor").close();
   }
-});
+};
+$("list").addEventListener("click",lh);$("editor").addEventListener("click",lh);
 $("exportBtn").onclick=()=>{
   const url=URL.createObjectURL(new Blob([JSON.stringify({app:"artibytte-protocol",files:db})],{type:"application/json"})),a=document.createElement("a");
   a.href=url;a.download="artibytte-versions-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
@@ -1630,11 +1674,78 @@ d.addEventListener("close",()=>{d.style.transform="";d.style.transition=""});
   d.addEventListener("click",e=>{if(e.target!==d)return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()});
 });
 /* === END: SHEET MODALS JS === */
+$("eform").closest("dialog").addEventListener("close",()=>{const b=pend;pend=null;if(b&&!REQ.some(r=>!getEnt()[r[0]]))b.click()});
+function eh(){const m=REQ.filter(r=>!getEnt()[r[0]]);$("e_hint").textContent=m.length?(REQ.length-m.length)+" of "+REQ.length+" required fields filled. Missing: "+m.map(r=>r[1]).join(", ")+".":"All required fields filled. Tap Save."}
+$("eform").addEventListener("input",eh);eh();
+$("e_save").onclick=()=>{
+  LS.set(EK,JSON.stringify(ent));
+  const m=REQ.filter(r=>!getEnt()[r[0]]);
+  if(m.length){toast("Still needed: "+m.map(r=>r[1]).join(", ")+".","err");$("e_"+m[0][0]).focus();return}
+  if(!pend)toast("Saved.");
+  $("eform").closest("dialog").close();
+};
 /* footer toggles */
 document.querySelectorAll("[data-tg]").forEach(b=>b.onclick=()=>{
   openSheet(b.dataset.tg);
 });
 
+/* files drawer + editor */
+function gut(){const t=$("s_text"),g=$("gut"),n=t.value.split("\n").length;if(g._n!==n){g._n=n;g.textContent=Array.from({length:n},(_,i)=>i+1).join("\n")}g.scrollTop=t.scrollTop}
+$("s_text").addEventListener("scroll",()=>{$("gut").scrollTop=$("s_text").scrollTop});
+function openEd(n){
+  const f=n&&db[n],c=f&&lastOf(f);
+  $("s_title").value=n||"";$("s_text").value=c?c.text:"";nameTouched=!!n;
+  $("edTools").hidden=!n;document.querySelectorAll("#edTools [data-a]").forEach(b=>b.dataset.n=n||"");
+  sbState();$("editor").showModal();setTimeout(()=>$("s_text").focus(),60);
+}
+$("newBtn").onclick=()=>openEd("");
+$("menuBtn").onclick=()=>$("drawer").showModal();
+$("drClose").onclick=()=>$("drawer").close();
+$("edClose").onclick=()=>$("editor").close();
+$("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").close()});
+/* context pack */
+const CPL={all:"All files, every version",lat:"Latest versions + operating history",sel:"Selected files, every version"};
+const cpMode=()=>document.querySelector('input[name="cps"]:checked').value;
+const cpFence=t=>"`".repeat((t.match(/`+/g)||[]).reduce((a,b)=>Math.max(a,b.length),2)+1);
+function cpBuild(){
+  const mode=cpMode(),e=getEnt();
+  const picked=[...document.querySelectorAll("#cpF input:checked")].map(c=>c.value);
+  const sel=names().sort().filter(n=>mode!=="sel"||picked.includes(n));
+  const full=n=>mode!=="lat"||/^(operating-record|session-snapshot)/i.test(n);
+  const inc=n=>{const v=db[n].vs.slice().reverse();return full(n)?v:v.slice(0,1)};
+  let vers=0;sel.forEach(n=>vers+=inc(n).length);
+  const L=["# ArtiBytte Context Pack","",
+    "- Entity: "+(e.name||"[not set]"),"- Protocol version: "+VER,"- Exported: "+new Date().toISOString(),
+    "- Scope: "+CPL[mode],"- Files: "+sel.length+" · Versions included: "+vers,"",
+    "The current version of each file is the latest state. Older versions are history, newest first.","",
+    "## Index","","| # | File | Latest | Versions included | Updated |","|---|---|---|---|---|"];
+  sel.forEach((n,i)=>{const c=lastOf(db[n]);L.push("| "+(i+1)+" | "+n.replace(/\|/g,"\\|")+" | v"+c.v+" | "+inc(n).length+" | "+new Date(c.t).toISOString()+" |")});
+  L.push("");
+  sel.forEach(n=>{
+    L.push("## File: "+n,"");
+    inc(n).forEach((c,i)=>{const f=cpFence(c.text);L.push("### v"+c.v+(i===0?" (current)":"")+" · "+new Date(c.t).toISOString()+" · "+kb(c.size||c.text.length),"",f,c.text,f,"")});
+  });
+  return{text:L.join("\n"),files:sel.length,vers};
+}
+function cpRefresh(){
+  $("cpF").hidden=cpMode()!=="sel";
+  const r=cpBuild();
+  $("cpS").textContent=r.files+" files · "+r.vers+" versions · "+kb(new Blob([r.text]).size);
+  $("cpCopy").disabled=$("cpDl").disabled=!r.files;
+}
+$("cpkBtn").onclick=()=>{
+  if(!names().length){toast("No saved files yet.","err");return}
+  $("cpF").innerHTML=names().sort().map(n=>`<label class="chk"><input type="checkbox" value="${esc(n)}" checked><span>${esc(n)}</span></label>`).join("");
+  cpRefresh();$("cpk").showModal();
+};
+document.querySelectorAll('input[name="cps"]').forEach(r=>r.onchange=cpRefresh);
+$("cpF").addEventListener("change",cpRefresh);
+$("cpX").onclick=()=>$("cpk").close();
+$("cpCopy").onclick=()=>copyText(cpBuild().text,$("cpCopy"));
+$("cpDl").onclick=()=>{
+  const url=URL.createObjectURL(new Blob([cpBuild().text],{type:"text/markdown"})),a=document.createElement("a");
+  a.href=url;a.download="context-pack-"+slug(getEnt().name)+"-"+today()+".md";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+};
 /* pro */
 const PRICE={m:999,y:999*12},CUR="₱";
 $("pm").textContent=CUR+PRICE.m.toLocaleString();$("py").textContent=CUR+PRICE.y.toLocaleString();
