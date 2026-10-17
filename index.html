@@ -179,7 +179,9 @@ dialog[open]::backdrop{animation:fadeIn .25s ease}
 /* === END: SPRING + MOTION CSS === */
 /* === START: PARTICLE SPHERE CSS === */
 /* === START: NO BLACK DISC === */
-.orb{width:min(70vw,260px);height:min(70vw,260px);background:transparent;box-shadow:none}
+/* === START: SUBTLE BLACK SPHERE BG === */
+.orb{width:min(70vw,260px);height:min(70vw,260px);background:radial-gradient(circle at 50% 45%,rgba(0,0,0,.88) 0,rgba(0,0,0,.78) 60%,rgba(0,0,0,.62) 100%);box-shadow:0 14px 40px rgba(0,0,0,.18)}
+/* === END: SUBTLE BLACK SPHERE BG === */
 /* === END: NO BLACK DISC === */
 .orb::before,.orb::after{display:none}
 .orb:hover{box-shadow:none}
