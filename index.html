@@ -204,13 +204,12 @@ background-size:auto,auto,auto,auto,140px 140px;background-repeat:no-repeat,no-r
 .orb::before,.orb::after{display:none}
 /* === END: PARTICLE SPHERE CSS === */
 /* === START: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
-html[data-view="home"],html[data-view="home"] body{background:#08080a}
+html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
 /* === START: AMBIENT ATMOSPHERE === */
-#home{color-scheme:dark;color:#e8ecf8;background:radial-gradient(circle 250px at 50% 50%,rgba(196,150,104,.07) 0,rgba(196,150,104,.03) 55%,transparent 100%),radial-gradient(ellipse 90% 70% at 50% 48%,#111113 0,#0c0c0e 60%,#08080a 100%)}
+#home{color:var(--ink);background:var(--bg)}#home::before{display:none}
 #home::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");background-size:160px 160px}
 /* === END: AMBIENT ATMOSPHERE === */
-#home .hf-copy{color:rgba(226,232,248,.6)}
-#home .hf-legal{color:rgba(226,232,248,.5)}
+#home .hf-legal{color:var(--mute)}
 #home :focus-visible{outline-color:rgba(226,190,150,.85)}
 /* === END: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
@@ -1652,7 +1651,7 @@ paintHap();
 function paintBar(){
   let m=document.querySelector('meta[name="theme-color"]');
   if(!m){m=document.createElement("meta");m.name="theme-color";document.head.appendChild(m)}
-  m.content=cur==="home"?"#08080a":getComputedStyle(document.body).backgroundColor;
+  m.content=getComputedStyle(document.body).backgroundColor;
 }
 try{matchMedia("(prefers-color-scheme:dark)").addEventListener("change",paintBar)}catch(e){}
 /* === END: THEME-COLOR (STATUS BAR) === */
