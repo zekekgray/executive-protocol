@@ -114,6 +114,75 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 .plan:has(input:checked){border-color:var(--accent);background:var(--hover)}
 .plan b{display:block;font-size:1.1rem}
 .plan span{font-size:.75rem;color:var(--mute)}
+/* === START: UX REFRESH CSS === */
+:root{--bg:#f6f4ee;--surface:#fff;--ink:#1f1d19;--mute:#7a766c;--line:#e6e1d6;--accent:#c4693f;--on:#fff;--hover:rgba(196,105,63,.08)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171512;--surface:#211e1a;--ink:#f1ede4;--mute:#a39d90;--line:#37322a;--accent:#e8946a;--on:#1b1208;--hover:rgba(232,148,106,.12)}}
+:root[data-theme="dark"]{--bg:#171512;--surface:#211e1a;--ink:#f1ede4;--mute:#a39d90;--line:#37322a;--accent:#e8946a;--on:#1b1208;--hover:rgba(232,148,106,.12)}
+.ttl{flex:1;min-width:0}
+.ttl b{display:block;font-size:1.25rem;line-height:1.2}
+.ttl span{display:block;font-size:.875rem;color:var(--mute)}
+.top{border-bottom:0;margin-bottom:4px}
+.wsrow{display:flex;align-items:center;gap:10px;margin:8px 0}
+.wsrow .tag{background:var(--line);border:0;color:var(--mute);text-transform:uppercase;padding:8px 14px;font-size:.8125rem}
+.wsrow .lnk{min-height:32px}
+.wsrow #stT{margin-left:auto;font-size:.875rem;color:var(--mute)}
+.meter{height:6px;margin:0 0 8px}
+.sec{font-size:1.25rem;font-weight:600;margin:24px 0 12px}
+.card,.card.done{border:1px solid var(--line);border-radius:18px;padding:16px;gap:12px;flex-wrap:nowrap}
+.card .n{width:32px;height:32px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);font-size:.875rem}
+.card.done .n{background:var(--ok);color:var(--on-ok);border-color:var(--ok)}
+.card h2{font-size:1.1rem}
+.card .sm.p{background:var(--surface);color:var(--ink);border:1px solid var(--line);padding:10px 22px}
+.card .sm.ok{background:var(--ok);color:var(--on-ok);border-color:transparent}
+.card .sm.bad{background:var(--bad);color:var(--on-bad);border-color:transparent}
+.field label{font-weight:400;color:var(--mute);font-size:.9375rem}
+.eform select,.eform input[type=text]{border-radius:999px;padding:8px 18px}
+.eform textarea{border-radius:18px;padding:14px 18px}
+.store{background:none;border:0;border-top:1px solid var(--line);border-radius:0;padding:24px 0 0;margin-top:24px}
+.store h2{font-size:1.25rem;font-weight:600}
+/* === END: UX REFRESH CSS === */
+/* === START: SHEET MODALS CSS === */
+dialog.sheet{padding:0;border:0;background:transparent;width:100%;max-width:min(92vw,520px);max-height:86dvh;overflow:auto;color:var(--ink)}
+dialog.sheet>*{position:relative;margin:0}
+dialog.sheet h2{padding-right:44px}
+dialog.sheet .sheet-x{position:absolute;top:6px;right:6px;z-index:1}
+.toast{top:auto;right:auto;margin:0;border:0;overflow:visible}
+/* === END: SHEET MODALS CSS === */
+/* === START: SPRING + MOTION CSS === */
+:root{--spring:cubic-bezier(.34,1.56,.64,1)}
+@supports (transition-timing-function:linear(0,1)){:root{--spring:linear(0,.009,.035 2.1%,.141,.281 6.7%,.723 12.9%,.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,.991,.977 51%,.974 53.8%,.975 57.1%,.997 69.8%,1.003 76.9%,1)}}
+button,select,.card{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes check{from{transform:scale(.55)}to{transform:scale(1)}}
+.sm,.chip,.ic,.n,.cmd,.lnk{transition:transform .45s var(--spring),background-color .2s ease,box-shadow .25s ease,opacity .2s}
+.sm:active:not(:disabled),.chip:active,.ic:active,.n:active,.cmd:active{transform:scale(.93);transition-duration:.1s}
+.lnk:active{transform:scale(.96);opacity:.7}
+.orb{transition:transform .5s var(--spring),box-shadow .25s ease}
+.orb:active{transform:scale(.9);transition-duration:.1s}
+.fillbar{transition:width .7s var(--spring),background-color .2s}
+.toast{transition:opacity .2s,transform .5s var(--spring)}
+dialog[open]{animation:pop .5s var(--spring)}
+dialog[open]::backdrop{animation:fadeIn .25s ease}
+#setup:not([hidden]) .card{animation:rise .55s var(--spring) both}
+#card-pc{animation-delay:.05s!important}
+#card-cf{animation-delay:.1s!important}
+#card-or{animation-delay:.15s!important}
+.card.done .n{animation:check .5s var(--spring)}
+@media (max-width:600px){
+  dialog.sheet{margin:auto auto 0;max-width:100%;max-height:90dvh}
+  dialog.sheet[open]{animation:sheetUp .45s cubic-bezier(.2,.9,.3,1)}
+  dialog.sheet>*{border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+}
+/* === END: SPRING + MOTION CSS === */
+/* === START: PARTICLE SPHERE CSS === */
+.orb{width:min(70vw,260px);height:min(70vw,260px);background:radial-gradient(circle at 50% 50%,#0b0b16 0,#000 70%);box-shadow:0 0 0 1px rgba(255,255,255,.06),0 18px 50px rgba(0,0,0,.35)}
+.orb::before,.orb::after{display:none}
+.orb:hover{box-shadow:0 0 0 1px rgba(255,255,255,.1),0 0 40px rgba(120,140,255,.35)}
+.orb canvas{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:50%;pointer-events:none}
+/* === END: PARTICLE SPHERE CSS === */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -121,7 +190,9 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 
 <main class="home" id="home">
   <h1 class="sr">ArtiBytte Executive Protocol</h1>
-  <button class="orb" id="go" type="button" aria-label="Open setup"></button>
+  <!-- === START: PARTICLE SPHERE HTML === -->
+<button class="orb" id="go" type="button" aria-label="Open setup"><canvas id="orbCv" aria-hidden="true"></canvas></button>
+<!-- === END: PARTICLE SPHERE HTML === -->
   <footer class="home-foot">
     <p class="hf-copy">&copy; 2026 ArtiBytte. All rights reserved.</p>
     <p class="hf-legal">Proprietary and confidential. Unauthorized copying, distribution, or use is prohibited.</p>
@@ -133,15 +204,24 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
   <header class="top">
     <div class="bar">
       <button class="ic" id="back" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button>
-      <b class="cnt" id="progT" aria-live="polite"></b>
+      <!-- === START: TITLE EDIT === -->
+<div class="ttl"><b>System Workspace</b><span id="progT" aria-live="polite"></span></div>
+<!-- === END: TITLE EDIT === -->
       <button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
     </div>
   </header>
 
   <h1 class="sr" id="h1s" tabindex="-1">Setup</h1>
+<!-- === START: PLAN + STORAGE ROW === -->
+<div class="wsrow"><span class="tag" id="planTag">Free</span><button class="lnk" id="proBtn" type="button">Upgrade</button><span id="stT"></span></div>
+<div class="meter" id="meterW" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fillbar" id="stF"></div></div>
+<!-- === END: PLAN + STORAGE ROW === -->
 
   <section class="how" id="howSec" aria-labelledby="howT" hidden>
     <h2 id="howT">How to use</h2>
+<!-- === START: HAPTICS TOGGLE === -->
+<button class="lnk" id="hapBtn" type="button">Haptics: On</button>
+<!-- === END: HAPTICS TOGGLE === -->
     <ol>
       <li>Fill in the form below. Legal name, jurisdiction, currency, industry and mission are required.</li>
       <li>Copy cards 1 to 4 in order and paste each into a new chat with your AI.</li>
@@ -169,7 +249,10 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
     <div class="field"><label for="e_mis">Mission (one sentence)</label><textarea id="e_mis" placeholder="What the organization exists to do."></textarea></div>
   </div>
 
-  <div class="card" id="card-sp">
+  <!-- === START: PROMPTS HEADING === -->
+<h2 class="sec">Prompts &amp; Setup</h2>
+<!-- === END: PROMPTS HEADING === -->
+<div class="card" id="card-sp">
     <button class="n" type="button" data-n="sp" aria-label="Toggle step 1 done">1</button>
     <div class="ct"><h2>System prompt</h2><p class="sub">Sets the rules. Paste this first.</p></div>
     <div class="acts"><button class="sm p" id="cp" type="button">Copy</button></div>
@@ -194,10 +277,19 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
   </div>
 
   <section class="eform store" id="store" aria-labelledby="storeT">
-    <div class="sh"><h2 id="storeT">Storage</h2><span class="tag" id="planTag">Free</span><button class="lnk" id="proBtn" type="button">Upgrade</button></div>
-    <p class="sub">Paste what your AI gives you at the end of a session. Each save becomes a new version.</p>
-    <div class="field"><div class="lrow"><label for="s_text">Output</label><span class="lact"><button class="lnk" id="s_paste" type="button">Paste</button><button class="lnk" id="addBtn" type="button">Upload file</button></span></div><textarea id="s_text" placeholder="Paste here. The file type is picked for you." spellcheck="false"></textarea></div>
-    <div class="chips" role="group" aria-label="File type">
+    <h2 id="storeT">Save / Update Session</h2>
+    <!-- === START: RECORD TYPE SELECT === -->
+<div class="field"><label for="s_type">Record type</label>
+  <select id="s_type">
+    <option value="op">Operating record</option>
+    <option value="ss">Session snapshot</option>
+    <option value="cf">Configuration</option>
+    <option value="">Custom name</option>
+  </select>
+</div>
+<!-- === END: RECORD TYPE SELECT === -->
+    <div class="field"><div class="lrow"><label for="s_text">Paste output</label><span class="lact"><button class="lnk" id="s_paste" type="button">Paste</button><button class="lnk" id="addBtn" type="button">Upload file</button></span></div><textarea id="s_text" placeholder="Paste here. The file type is picked for you." spellcheck="false"></textarea></div>
+    <div class="chips" role="group" aria-label="File type" hidden>
       <button class="chip" type="button" data-t="op" aria-pressed="false">Operating record</button>
       <button class="chip" type="button" data-t="ss" aria-pressed="false">Session snapshot</button>
       <button class="chip" type="button" data-t="cf" aria-pressed="false">Configuration</button>
@@ -205,7 +297,6 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
     <div class="field"><label for="s_title">File name</label><input type="text" id="s_title" placeholder="Picked from the file type" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
     <p class="sub" id="s_hint" aria-live="polite"></p>
     <button class="sm p full" id="s_save" type="button" disabled>Save</button>
-    <div><p class="meta" id="stT"></p><div class="meter" id="meterW" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fillbar" id="stF"></div></div></div>
     <p class="sub">Stored on this device only. Export a backup so nothing is lost.</p>
   </section>
 
@@ -235,7 +326,7 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 </div>
 </main>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" popover="manual"></div>
 
 <dialog id="dlg" aria-labelledby="dT" aria-describedby="dM">
   <form method="dialog"><h2 id="dT"></h2><p id="dM"></p>
@@ -266,8 +357,32 @@ const LIMITS={free:5*1048576,pro:1024*1048576};
 let PLAN=LS.get("artibytte-plan-v1")==="pro"?"pro":"free";
 let LIMIT=LIMITS[PLAN];
 
+/* === START: HAPTICS JS === */
+const HAP=(()=>{
+  let lab=null;
+  try{
+    const i=document.createElement("input");i.type="checkbox";i.id="hapi";i.setAttribute("switch","");
+    lab=document.createElement("label");lab.setAttribute("for","hapi");lab.setAttribute("aria-hidden","true");
+    lab.style.cssText="position:fixed;left:-99px;top:-99px;opacity:0;pointer-events:none";
+    lab.appendChild(i);document.body.appendChild(lab);
+  }catch(e){}
+  const tick=()=>{try{lab&&lab.click()}catch(e){}};
+  const PAT={light:[8],medium:[18],success:[10,50,10],error:[28,50,28,50,28]};
+  return function(k){
+    if(matchMedia("(prefers-reduced-motion:reduce)").matches||LS.get("artibytte-haptics")==="off")return;
+    const p=PAT[k]||PAT.light;
+    if(navigator.vibrate){try{navigator.vibrate(p);return}catch(e){}}
+    let t=0;p.forEach((ms,i)=>{if(i%2===0)setTimeout(tick,t);t+=ms});
+  };
+})();
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");
+  if(!b||b.matches(".sm.p,[data-copy],.cmd"))return;
+  HAP(b.matches(".d,.bad")?"medium":"light");
+});
+/* === END: HAPTICS JS === */
 let toastT;
-function toast(m,k){const t=$("toast");t.textContent=m;t.className="toast on"+(k==="err"?" err":"");clearTimeout(toastT);toastT=setTimeout(()=>{t.className="toast"},k==="err"?6000:2200)}
+function toast(m,k){HAP(k==="err"?"error":"success");const t=$("toast");try{if(!t.matches(":popover-open"))t.showPopover()}catch(e){}t.textContent=m;t.className="toast on"+(k==="err"?" err":"");clearTimeout(toastT);toastT=setTimeout(()=>{t.className="toast"},k==="err"?6000:2200)}
 function confirmBox(title,msg,ok,danger){
   const d=$("dlg");if(!d.showModal)return Promise.resolve(true);
   $("dT").textContent=title;$("dM").textContent=msg;
@@ -280,7 +395,7 @@ async function copyText(text,btn){
   let ok=false;
   if(navigator.clipboard&&navigator.clipboard.writeText){try{await navigator.clipboard.writeText(text);ok=true}catch(e){}}
   if(!ok)ok=legacy(text);
-  if(ok){flash(btn,"ok","Copied",1500)}else{flash(btn,"bad","Copy failed",2500);toast("Copy failed. Try again.","err")}
+  if(ok){HAP("success");flash(btn,"ok","Copied",1500)}else{flash(btn,"bad","Copy failed",2500);toast("Copy failed. Try again.","err")}
   return ok;
 }
 document.addEventListener("click",e=>{const c=e.target.closest("[data-copy]");if(c)copyText(c.dataset.copy,c)});
@@ -1289,7 +1404,9 @@ let st={};try{st=JSON.parse(LS.get(SK)||"{}")}catch(e){}
 function paintSteps(){
   let n=0;
   STEPS.forEach((k,i)=>{const c=$("card-"+k),d=!!st[k];c.classList.toggle("done",d);c.querySelector(".n").textContent=d?"✓":String(i+1);if(d)n++});
-  $("progT").textContent=n+"/4";
+  /* === START: STEP LABEL EDIT === */
+const nx=STEPS.findIndex(k=>!st[k]);$("progT").textContent="Step "+(nx<0?4:nx+1)+" of 4";
+/* === END: STEP LABEL EDIT === */
 }
 function mark(k){if(!st[k]){st[k]=true;LS.set(SK,JSON.stringify(st));paintSteps()}}
 document.querySelectorAll(".n").forEach(b=>b.onclick=()=>{const k=b.dataset.n;st[k]=!st[k];LS.set(SK,JSON.stringify(st));paintSteps()});
@@ -1343,6 +1460,7 @@ const getOR=()=>{
     ...sec("EXECUTION LOGS",N),...sec("SESSION SNAPSHOTS",N,"Persistence status: NOT CONFIRMED"),...sec("EXCEPTION REGISTER",N),...sec("AMENDMENT LOG",N),
     ...sec("CONTINUITY DESIGNATION","Primary contact: [NOT PROVIDED]","Secondary contact: [NOT PROVIDED]","Threshold: [NOT PROVIDED]","Access handover: [NOT PROVIDED]")
   ].join("\n").trimEnd();
+
 };
 const REQ=[["name","Legal name"],["jur","Jurisdiction"],["cur","Currency"],["ind","Industry"],["mis","Mission"]];
 async function cc(id,get,k,need){
@@ -1367,8 +1485,8 @@ function render(){
   $("filesH").hidden=!has;$("tools").hidden=!has;$("empty").hidden=has;
   const u=used(),p=Math.min(100,u/LIMIT*100);
   $("stF").style.width=p+"%";$("stF").classList.toggle("hot",p>=90);
-  $("planTag").textContent=PLAN==="pro"?"Pro":"Free";$("proBtn").hidden=PLAN==="pro";
-$("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" of "+(PLAN==="pro"?"1 GB":"5 MB")+" used";
+  $("planTag").textContent=PLAN==="pro"?"Pro plan":"Free plan";$("proBtn").hidden=PLAN==="pro";
+$("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" / "+(PLAN==="pro"?"1 GB":"5 MB");
   $("meterW").setAttribute("aria-valuenow",Math.round(p));
   $("filesH").textContent="Saved files · "+all.length;
   $("list").innerHTML=shown.map(n=>{const f=db[n],c=lastOf(f),N=esc(n);
@@ -1404,11 +1522,15 @@ const DETECT=[["op",/OPERATING RECORD/i],["ss",/SESSION SNAPSHOT/i],["cf",/CONFI
 function detect(t){const h=t.slice(0,400);for(const[k,r]of DETECT)if(r.test(h))return k;return null}
 function sbState(){
   const n=finalName($("s_title").value),t=$("s_text").value,ex=n&&db[n],has=!!t.trim();
-  $("s_save").disabled=!n||!has;
+  $("s_save").disabled=!n||!has;syncType();
   $("s_save").textContent=ex?"Save as v"+db[n].next:"Save";
   document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(!!n&&n===CHIPS[c.dataset.t]())));
   $("s_hint").textContent=!has&&!n?"Paste your AI's output to begin.":!has?"Now paste the output.":!n?"Pick a file type above, or type a file name.":(ex?"Saves as v"+db[n].next+" of "+n:"Saves as a new file: "+n)+" · "+kb(new Blob([t]).size);
 }
+/* === START: RECORD TYPE SELECT JS === */
+function syncType(){const n=finalName($("s_title").value);let v="";for(const k in CHIPS)if(n&&n===CHIPS[k]())v=k;$("s_type").value=v}
+$("s_type").onchange=()=>{const k=$("s_type").value;if(!k)return;nameTouched=true;$("s_title").value=CHIPS[k]();sbState();$("s_text").focus()};
+/* === END: RECORD TYPE SELECT JS === */
 document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{nameTouched=true;$("s_title").value=CHIPS[c.dataset.t]();sbState();$("s_text").focus()});
 $("s_title").addEventListener("input",()=>{nameTouched=true;sbState()});
 $("s_text").addEventListener("input",()=>{
@@ -1461,10 +1583,28 @@ $("pickJson").onchange=async e=>{
   if(!persist())db=JSON.parse(snap);else toast("Imported.");render();
 };
 
+/* === START: SHEET MODALS JS === */
+function openSheet(id){const d=$(id).closest("dialog");if(d&&!d.open)d.showModal()}
+["howSec","eform","legalSec"].forEach(id=>{
+  const s=$(id),d=document.createElement("dialog");
+  d.className="sheet";d.setAttribute("aria-label",(s.querySelector("h2")||{}).textContent||"Info");
+  s.hidden=false;s.parentNode.insertBefore(d,s);d.appendChild(s);
+  const x=document.createElement("button");x.type="button";x.className="ic sheet-x";x.setAttribute("aria-label","Close");
+  x.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>';
+  x.onclick=()=>d.close();s.prepend(x);
+/* === START: SWIPE TO CLOSE === */
+let y0=null,dy=0;
+d.addEventListener("touchstart",e=>{y0=d.scrollTop<=0?e.touches[0].clientY:null;dy=0;d.style.transition="none"},{passive:true});
+d.addEventListener("touchmove",e=>{if(y0===null)return;dy=Math.max(0,e.touches[0].clientY-y0);d.style.transform="translateY("+dy+"px)"},{passive:true});
+d.addEventListener("touchend",()=>{if(y0===null)return;d.style.transition="transform .45s var(--spring)";if(dy>100){HAP("light");d.close()}else d.style.transform="";y0=null});
+d.addEventListener("close",()=>{d.style.transform="";d.style.transition=""});
+/* === END: SWIPE TO CLOSE === */
+  d.addEventListener("click",e=>{if(e.target!==d)return;const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()});
+});
+/* === END: SHEET MODALS JS === */
 /* footer toggles */
 document.querySelectorAll("[data-tg]").forEach(b=>b.onclick=()=>{
-  const s=$(b.dataset.tg);s.hidden=!s.hidden;
-  if(!s.hidden)s.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"nearest"});
+  openSheet(b.dataset.tg);
 });
 
 /* pro */
@@ -1473,6 +1613,11 @@ $("pm").textContent=CUR+PRICE.m.toLocaleString();$("py").textContent=CUR+PRICE.y
 $("proBtn").onclick=()=>{const d=$("pro");if(d.showModal)d.showModal()};
 $("proGo").addEventListener("click",()=>{LS.set("artibytte-plan-v1","pro");PLAN="pro";LIMIT=LIMITS.pro;render();toast("Pro preview on (test only).")});
 
+/* === START: HAPTICS TOGGLE JS === */
+function paintHap(){$("hapBtn").textContent="Haptics: "+(LS.get("artibytte-haptics")==="off"?"Off":"On")}
+$("hapBtn").onclick=()=>{const off=LS.get("artibytte-haptics")==="off";LS.set("artibytte-haptics",off?"on":"off");paintHap();if(off)HAP("success")};
+paintHap();
+/* === END: HAPTICS TOGGLE JS === */
 /* routing */
 let pushed=false,cur="home";
 function show(v,initial){
@@ -1493,8 +1638,64 @@ $("back").onclick=()=>{
   home();
 };
 
+/* === START: PARTICLE SPHERE JS === */
+(function(){
+  const cv=$("orbCv");if(!cv||!cv.getContext)return;
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=1500,NH=8,LEN=.03;
+  const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
+  const HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N);
+  for(let i=0;i<N;i++){
+    const u=Math.random()*2-1,a=Math.random()*TAU,s=Math.sqrt(1-u*u);
+    const nx=s*Math.cos(a),ny=u,nz=s*Math.sin(a);
+    const r=Math.random()<.5?1:Math.cbrt(Math.random());
+    let wx=Math.random()-.5,wy=Math.random()-.5,wz=Math.random()-.5;
+    const d=wx*nx+wy*ny+wz*nz;wx-=d*nx;wy-=d*ny;wz-=d*nz;
+    const l=Math.hypot(wx,wy,wz)||1;wx/=l;wy/=l;wz/=l;
+    const k=i*3;
+    P[k]=nx*r;P[k+1]=ny*r;P[k+2]=nz*r;
+    TG[k]=wx;TG[k+1]=wy;TG[k+2]=wz;
+    BN[k]=ny*wz-nz*wy;BN[k+1]=nz*wx-nx*wz;BN[k+2]=nx*wy-ny*wx;
+    HB[i]=(Math.random()*NH)|0;
+    SP[i]=(Math.random()<.5?-1:1)*(.4+Math.random()*1.4);
+    PH[i]=Math.random()*TAU;
+  }
+  const COL=[];
+  for(let k=0;k<NH;k++){const h=Math.round(k*(360/NH)+10);COL.push(["hsla("+h+",100%,60%,.35)","hsla("+h+",100%,64%,.95)"])}
+  const tilt=.38,ct=Math.cos(tilt),st=Math.sin(tilt);
+  let ry=0,last=performance.now(),boost=1,tgt=1;
+  function draw(now){
+    const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth;
+    if(!w)return;
+    const px=Math.round(w*dpr);
+    if(cv.width!==px){cv.width=px;cv.height=px}
+    const dt=Math.min(50,now-last)/1000;last=now;
+    boost+=(tgt-boost)*.08;
+    ry+=.55*boost*dt;
+    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000;
+    cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
+    const paths=[];for(let k=0;k<NH*2;k++)paths.push(new Path2D());
+    for(let i=0;i<N;i++){
+      const k=i*3,th=t*SP[i]+PH[i],cc=Math.cos(th)*LEN,ss=Math.sin(th)*LEN;
+      const ox=TG[k]*cc+BN[k]*ss,oy=TG[k+1]*cc+BN[k+1]*ss,oz=TG[k+2]*cc+BN[k+2]*ss;
+      const x=P[k],y=P[k+1],z=P[k+2];
+      const x1=x*cr+z*sr,z1=-x*sr+z*cr,y2=y*ct-z1*st,z2=y*st+z1*ct;
+      const a1=ox*cr+oz*sr,c1=-ox*sr+oz*cr,b2=oy*ct-c1*st;
+      const p=paths[HB[i]*2+(z2>0?1:0)];
+      p.moveTo(c+(x1-a1)*R,c+(y2-b2)*R);
+      p.lineTo(c+(x1+a1)*R,c+(y2+b2)*R);
+    }
+    cx.lineWidth=1.2;cx.lineCap="round";
+    for(let k=0;k<NH*2;k++){cx.strokeStyle=COL[k>>1][k&1];cx.stroke(paths[k])}
+  }
+  const go=$("go");
+  ["pointerdown"].forEach(ev=>go.addEventListener(ev,()=>{tgt=5}));
+  ["pointerup","pointerleave","pointercancel"].forEach(ev=>go.addEventListener(ev,()=>{tgt=1}));
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){draw(performance.now());return}
+  (function frame(now){if(!document.hidden&&!$("home").hidden)draw(now);requestAnimationFrame(frame)})(performance.now());
+})();
+/* === END: PARTICLE SPHERE JS === */
 $("homeVer").textContent="v"+VER.replace("-draft","");
-paintSteps();render();sbState();route(true);
+paintSteps();render();$("s_title").value=CHIPS.op();sbState();route(true);
 </script>
 </body>
 </html>
