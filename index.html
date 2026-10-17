@@ -1677,11 +1677,11 @@ $("back").onclick=()=>{
 /* === START: PARTICLE SPHERE JS === */
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
-  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=40000,NH=2,NA=120,NS=34000,NC=2500;
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=48000,NH=2,NA=0,NS=48000,NC=0;
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
   const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N),GE=new Float32Array(N);
   for(let i=0;i<N;i++){
-    const u0=Math.random()*2-1,u=u0,a=Math.random()*TAU,s=Math.sqrt(1-u*u);
+    const u0=Math.random()*2-1,u=(i<NA+NS)?u0:Math.sign(u0)*Math.pow(Math.abs(u0),.55),a=Math.random()*TAU,s=Math.sqrt(1-u*u);
     const nx=s*Math.cos(a),ny=u,nz=s*Math.sin(a);
     /* === START: PARTICLE HIERARCHY (TIERS) === */
 let tr,r;
@@ -1689,7 +1689,7 @@ if(i<NA){tr=3;r=.86+Math.random()*.14}
 else if(i<NA+NS){tr=0;r=.988+Math.random()*.012}
 else if(i<NA+NS+NC){tr=2;r=Math.pow(Math.random(),1.8)*.6}
 else{tr=1;r=.58+Math.cbrt(Math.random())*.36}
-TR[i]=tr;LN[i]=[0,.003,.003,.012][tr];GE[i]=Math.random();
+TR[i]=tr;LN[i]=[0,.013,.009,.028][tr];GE[i]=Math.random();
 /* === END: PARTICLE HIERARCHY (TIERS) === */
     let wx=Math.random()-.5,wy=Math.random()-.5,wz=Math.random()-.5;
     const d=wx*nx+wy*ny+wz*nz;wx-=d*nx;wy-=d*ny;wz-=d*nz;
@@ -1707,7 +1707,7 @@ TR[i]=tr;LN[i]=[0,.003,.003,.012][tr];GE[i]=Math.random();
   /* === START: 7 RAINBOW COLORS === */
 const HUES=[335,335],ACOL=[];
 /* alpha per tier as [back,front]: shell, mid, core */
-const TA=[[.3,.75],[.12,.3],[.1,.25]];
+const TA=[[.3,.75],[.32,.85],[.3,.6]];
 HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0]+")","hsla("+h+",100%,58%,"+a[1]+")")});COL.push(row);ACOL.push(["hsla("+h+",100%,70%,.2)","hsla("+h+",100%,82%,1)"])});
 /* === END: 7 RAINBOW COLORS === */
 const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(DB-1),al=a[0]+(a[1]-a[0])*t;return "hsla("+h+",100%,"+(54+4*t)+"%,"+al.toFixed(3)+")"})));
@@ -1721,7 +1721,7 @@ const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
     const dt=Math.min(50,now-last)/1000;last=now;
     boost+=(tgt-boost)*(1-Math.exp(-dt*5));
     ry+=.34*boost*dt;tm+=dt;
-    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=.38,ct=Math.cos(tl),st=Math.sin(tl),mo=0;
+    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=tm*.3,ct=Math.cos(tl),st=Math.sin(tl),mo=.7+.08*Math.sin(tm*.4);
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
     const paths=[],ap=[];for(let k=0;k<NH*3*DB;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()];
     for(let i=0;i<N;i++){
@@ -1748,7 +1748,7 @@ else p=paths[HB[i]*3*DB+db];
     }
     cx.lineWidth=1.3;cx.lineCap="round";
     /* === START: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
-for(let b=0;b<DB;b++){cx.lineWidth=.9+.6*b/(DB-1);for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COLD[h][tr][b];cx.stroke(paths[(h*3+tr)*DB+b])}}
+for(let b=0;b<DB;b++){cx.lineWidth=.7+.7*b/(DB-1);for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COLD[h][tr][b];cx.stroke(paths[(h*3+tr)*DB+b])}}
 /* === START: LIGHT RIG ON PARTICLES (KEY + FILL) === */
 cx.globalCompositeOperation="source-atop";
 let g=cx.createRadialGradient(w*.34,w*.28,0,w*.34,w*.28,w*1.05);
