@@ -2687,7 +2687,7 @@ $("back").onclick=()=>{
 /* === START: PARTICLE SPHERE JS === */
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
-  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=48000,NH=2,NA=0,NS=48000,NC=0;
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=78000,NH=2,NA=0,NS=78000,NC=0;
   /* === START: RBC SHAPE (BICONCAVE DISC) === */
   /* Evans-Fung profile, D=2.2. Particles are sampled by surface AREA so the dimple has no hot spot. */
   const rbcZ=p=>{const q=(p/2.2)*(p/2.2);return 1.1*Math.sqrt(Math.max(0,1-4*q))*(.2072+2.0026*q-1.1228*q*q)};
@@ -2751,10 +2751,10 @@ const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
 if(tr===3&&!fr)continue;
 let p;
 if(tr===0){
-  const rr=RR[i],gw=1,ge=GE[i],pg=rr<.4?Math.pow(1-rr/.4,1.6):0,gbi=Math.min(4,Math.floor(rr/.08));
+  const rr=RR[i],gw=1,ge=GE[i],pg=0,gbi=Math.min(4,Math.floor(rr/.08));
   let gi=-1;
   if(ge<pg)gi=fr?10+gbi:0;
-  else if(rr>.97&&ge<.5)gi=fr?1:0;
+  else if(0)gi=fr?1:0;
   const tw=0;
 if(gi>=10)p=gb[gi-10];else if(gi>=0)p=gp[gi];
 else if(0)p=tp[fr];
@@ -2765,7 +2765,7 @@ else p=paths[HB[i]*3*DB+db];
     }
     cx.lineWidth=1.3;cx.lineCap="round";
     /* === START: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
-for(let b=0;b<DB;b++){cx.lineWidth=.7+.7*b/(DB-1);for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COLD[h][tr][b];cx.stroke(paths[(h*3+tr)*DB+b])}}
+for(let b=0;b<DB;b++){cx.lineWidth=.6+.6*b/(DB-1);for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COLD[h][tr][b];cx.stroke(paths[(h*3+tr)*DB+b])}}
 /* === START: LIGHT RIG ON PARTICLES (KEY + FILL) === */
 cx.globalCompositeOperation="source-atop";cx.globalAlpha=0;
 let g=cx.createRadialGradient(w*.34,w*.28,0,w*.34,w*.28,w*1.05);
