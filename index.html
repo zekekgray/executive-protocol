@@ -179,7 +179,7 @@ dialog[open]::backdrop{animation:fadeIn .25s ease}
 /* === END: SPRING + MOTION CSS === */
 /* === START: PARTICLE SPHERE CSS === */
 /* === START: NO BLACK DISC === */
-.orb{width:min(90vw,360px);height:min(90vw,360px);background:transparent;box-shadow:none}
+.orb{width:min(80vw,330px);height:min(80vw,330px);background:transparent;box-shadow:none}
 /* === END: NO BLACK DISC === */
 /* === START: SPHERE MATERIAL (LIGHT + SHADOW) === */
 .orb::before,.orb::after{display:block;animation:none;-webkit-mask:none;mask:none;clip-path:none;border-radius:50%;pointer-events:none}
@@ -1679,7 +1679,7 @@ $("back").onclick=()=>{
 /* === START: PARTICLE SPHERE JS === */
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
-  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=90000,NH=2,NA=233,NS=31500,NC=24750;
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,const dpr=Math.min(2,window.devicePixelRatio||1)
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
   const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N);
   for(let i=0;i<N;i++){
@@ -1713,16 +1713,16 @@ const TA=[[.24,.7],[.32,.85],[.3,.6]];
 HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0]+")","hsla("+h+",100%,58%,"+a[1]+")")});COL.push(row);ACOL.push(["hsla("+h+",100%,70%,.2)","hsla("+h+",100%,82%,1)"])});
 /* === END: 7 RAINBOW COLORS === */
   const tilt=.38,ct=Math.cos(tilt),st=Math.sin(tilt);
-  let ry=0,last=performance.now(),boost=1,tgt=1;
+  let ry=0,tm=0,last=performance.now(),boost=1,tgt=1;
   function draw(now){
-    const dpr=Math.min(2,window.devicePixelRatio||1),w=cv.clientWidth;
+    const dpr=Math.min(1.5,window.devicePixelRatio||1),w=cv.clientWidth;
     if(!w)return;
     const px=Math.round(w*dpr);
     if(cv.width!==px){cv.width=px;cv.height=px}
     const dt=Math.min(50,now-last)/1000;last=now;
     boost+=(tgt-boost)*.08;
-    ry+=.55*boost*dt;
-    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=t*.45,ct=Math.cos(tl),st=Math.sin(tl),mo=.55+.45*Math.sin(t*.4);
+    ry+=.55*boost*dt;tm+=dt;
+    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=tm*.45,ct=Math.cos(tl),st=Math.sin(tl),mo=.55+.45*Math.sin(tm*.4);
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
     const paths=[],ap=[];for(let k=0;k<NH*6;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.025*Math.sin(t*1.1);
     for(let i=0;i<N;i++){
@@ -1732,7 +1732,7 @@ HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0
       const x1=x*cr+z*sr,z1=-x*sr+z*cr,y2=y*ct-z1*st,z2=y*st+z1*ct;
       const a1=ox*cr+oz*sr,c1=-ox*sr+oz*cr,b2=oy*ct-c1*st;
       const tr=TR[i],fr=z2>0?1:0;
-if(tr===3&&!fr)continue;
+if((tr===3||tr===0)&&!fr)continue;
 const p=tr===3?ap[HB[i]]:paths[HB[i]*6+tr*2+fr];
       p.moveTo(c+(x1+a1)*R,c+(y2+b2)*R);
       p.lineTo(c+(x1+a1)*R+.01,c+(y2+b2)*R);
