@@ -1679,7 +1679,7 @@ $("back").onclick=()=>{
 /* === START: PARTICLE SPHERE JS === */
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
-  const cx=cv.getContext("2d"),TAU=Math.PI*2,const dpr=Math.min(2,window.devicePixelRatio||1)
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=40000,NH=2,NA=233,NS=14000,NC=11000;
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
   const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N);
   for(let i=0;i<N;i++){
