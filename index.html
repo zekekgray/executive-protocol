@@ -2688,11 +2688,18 @@ $("back").onclick=()=>{
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
   const cx=cv.getContext("2d"),TAU=Math.PI*2,N=48000,NH=2,NA=0,NS=48000,NC=0;
+  /* === START: RBC SHAPE (BICONCAVE DISC) === */
+  /* Evans-Fung profile, D=2.2. Particles are sampled by surface AREA so the dimple has no hot spot. */
+  const rbcZ=p=>{const q=(p/2.2)*(p/2.2);return 1.1*Math.sqrt(Math.max(0,1-4*q))*(.2072+2.0026*q-1.1228*q*q)};
+  const RBC_M=4000,RBC_C=new Float32Array(RBC_M+1);
+  (()=>{let s=0,pz=rbcZ(0);for(let j=1;j<=RBC_M;j++){const p0=1.1*(j-1)/RBC_M,p1=1.1*j/RBC_M,z1=rbcZ(p1);s+=2*Math.PI*((p0+p1)/2)*Math.hypot(p1-p0,z1-pz);pz=z1;RBC_C[j]=s}for(let j=0;j<=RBC_M;j++)RBC_C[j]/=s})();
+  const rbcRho=()=>{const t=Math.random();let lo=0,hi=RBC_M;while(hi-lo>1){const m=(lo+hi)>>1;if(RBC_C[m]<t)lo=m;else hi=m}return 1.1*(lo+(t-RBC_C[lo])/((RBC_C[hi]-RBC_C[lo])||1))/RBC_M};
+  /* === END: RBC SHAPE (BICONCAVE DISC) === */
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
   const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N),GE=new Float32Array(N);
   for(let i=0;i<N;i++){
-    const u0=Math.random()*2-1,u=(i<NA+NS)?u0:Math.sign(u0)*Math.pow(Math.abs(u0),.55),a=Math.random()*TAU,s=Math.sqrt(1-u*u);
-    const nx=s*Math.cos(a),ny=u,nz=s*Math.sin(a);
+    const rho=rbcRho(),zz=(Math.random()<.5?-1:1)*rbcZ(rho),ph=Math.random()*TAU,L=Math.hypot(rho,zz);
+    const nx=rho/L*Math.cos(ph),ny=zz/L,nz=rho/L*Math.sin(ph);
     /* === START: PARTICLE HIERARCHY (TIERS) === */
 let tr,r;
 if(i<NA){tr=3;r=.86+Math.random()*.14}
@@ -2731,7 +2738,7 @@ const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
     const dt=Math.min(50,now-last)/1000;last=now;
     boost+=(tgt-boost)*(1-Math.exp(-dt*5));
     ry+=.34*boost*dt;tm+=dt;
-    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=tm*.3,ct=Math.cos(tl),st=Math.sin(tl),mo=.7+.08*Math.sin(tm*.4);
+    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=.9+tm*.3,ct=Math.cos(tl),st=Math.sin(tl),mo=1;
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
     const paths=[],ap=[];for(let k=0;k<NH*3*DB;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()];
     for(let i=0;i<N;i++){
@@ -3022,18 +3029,20 @@ function mitoFrags(list){
 function mitoPrompt(F,obj,ty){
   const e=getEnt().name,T=MT_TYPES[ty]||MT_TYPES.rd,H=ty==="cus"?"OUTPUTS":T[0].toUpperCase();
   return [
-    "You are the Mitochondria Engine of ArtiBytte Protocol"+(e?" for "+e:"")+". Below are raw note fragments, each with a source ID. Transform them into testable possibilities. Do not merely summarize.",
+    "Operating under ArtiBytte Protocol v"+VER+(e?" for "+e:"")+", already active in this chat. If it is not active, say so and stop. The Protocol is the source of truth: where this task conflicts with it, the Protocol prevails. Do not redefine its rules.",
+    "ROLE: analysis only. A-14 Data & Intelligence Officer analyzes; A-21 Devil's Advocate challenges every item. You may analyze, recommend, and draft. You do not decide, approve, or execute (Art. 10.4).",
+    "TASK: Transform the fragments below into testable possibilities. Do not merely summarize.",
     "",
     "OBJECTIVE: "+(obj.trim()||"Not specified. State the most useful objective the fragments support, then proceed."),
     "OUTPUT TYPE: "+T[0]+(T[1]?" - "+T[1]:""),
     "",
-    "RULES:",
+    "TASK RULES (the Core Rules apply on top of these):",
     "1. Use only the fragments below. Never invent facts, data, quotes, or sources.",
     "2. Every item must cite at least one fragment ID exactly as written (example: N1-2). No citation, no item.",
-    "3. Label every item and relationship BASIS: stated or inferred.",
-    "4. Every output item is a hypothesis. STATUS: UNVERIFIED. Never mark anything VERIFIED.",
-    "5. If the fragments are insufficient, say so under GAPS instead of filling in.",
-    "6. Look for relationships, conflicts, and combinations across different notes, not only within one.",
+    "3. Every fragment is the user's CLAIM, not evidence (Art. 4.3). Label every item and relationship BASIS: stated or inferred.",
+    "4. Every output item is EVIDENCE: CLAIMED (Verification model). Never mark anything VERIFIED. Only a reviewer can, with evidence (Art. 4.2, 4.7).",
+    "5. Missing information is NOT ESTABLISHED, not false (Art. 4.4). If the fragments are insufficient, say so under GAPS instead of filling in.",
+    "6. Every item is a proposal only (Decision model: PROPOSED). No approval is obtained or implied. Do not invent the user's reasoning (Art. 9.3). Look for relationships, conflicts, and combinations across different notes.",
     "",
     "OUTPUT FORMAT (exact headings, one item per line, each item starts with \"- \"):",
     "## MAP",
@@ -3041,13 +3050,13 @@ function mitoPrompt(F,obj,ty){
     "## RELATIONSHIPS",
     "- ID, ID | TYPE | BASIS   (TYPE is one of: supports, conflicts, depends-on, addresses, constrains, combines, related)",
     "## "+H,
-    "- TITLE | SOURCES: id, id | CLAIM: ... | BASIS: stated or inferred | STATUS: UNVERIFIED | TEST: the smallest way to check it",
+    "- TITLE | SOURCES: id, id | CLAIM: ... | BASIS: stated or inferred | EVIDENCE: CLAIMED | VERIFY BY: the evidence a reviewer would need to assign VERIFIED or REJECTED",
     "## CONTRADICTIONS",
     "- SOURCES: id, id | CONFLICT: ...",
     "## GAPS",
     "- MISSING: ... | WHY IT MATTERS: ...",
     "## SUPER PROMPT",
-    "One structured, editable prompt I can test in an AI model, built from the strongest items above, citing their IDs.",
+    "One structured, editable prompt I can test, built from the strongest items above, citing their IDs. It must keep the Protocol rules active and must not tell the model to ignore or relax them.",
     "If a section has nothing, write \"None.\"",
     "",
     "FRAGMENTS ("+F.length+"):",
