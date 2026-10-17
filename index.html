@@ -36,7 +36,7 @@ button{font-family:inherit}
 #setup{flex:1;display:flex;flex-direction:column}
 .wrap{width:100%;max-width:640px;margin:0 auto;padding:0 16px 20px;flex:1;display:flex;flex-direction:column}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:16px}
-.bar{display:flex;align-items:center;gap:12px}
+.bar{display:flex;align-items:center;gap:4px}
 .fillbar{height:100%;width:0;background:var(--accent);transition:width .25s ease}
 .cnt{flex:1;font-size:.8125rem;font-weight:600;text-align:center}
 .ic{width:44px;height:44px;border-radius:50%;border:0;background:none;color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
@@ -91,6 +91,7 @@ input[type=text],input[type=search]{font:inherit;font-size:.9375rem;min-height:4
 .perks li{position:relative;padding-left:22px;font-size:.875rem;color:var(--mute)}
 .perks li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:600}
 .perks b{color:var(--ink);font-weight:600}
+.perks li.soon::before{content:"•";color:var(--mute)}
 .tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .tools input{flex:1;min-width:140px}
 .file{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
@@ -114,13 +115,106 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 .plan:has(input:checked){border-color:var(--accent);background:var(--hover)}
 .plan b{display:block;font-size:1.1rem}
 .plan span{font-size:.75rem;color:var(--mute)}
-/* === START: UX REFRESH CSS === */
-:root{--bg:#f6f4ee;--surface:#fff;--ink:#1f1d19;--mute:#7a766c;--line:#e6e1d6;--accent:#c4693f;--on:#fff;--hover:rgba(196,105,63,.08)}
+.gal{display:flex;justify-content:space-between;gap:12px;margin-top:10px}
+.gal a.lnk{display:inline-flex;align-items:center}
+.gerr{color:var(--bad);min-height:1.2em;margin:6px 0 10px}
+.gcode{font:600 1.25rem ui-monospace,Menlo,Consolas,monospace;text-align:center;padding:14px;border:1px dashed var(--line);border-radius:12px;margin:12px 0;user-select:all;overflow-wrap:anywhere}
+
+.gal{display:flex;justify-content:space-between;gap:12px;margin-top:10px}
+.gal a.lnk{display:inline-flex;align-items:center}
+.gerr{color:var(--bad);min-height:1.2em;margin:6px 0 10px}
+.gcode{font:600 1.25rem ui-monospace,Menlo,Consolas,monospace;text-align:center;padding:14px;border:1px dashed var(--line);border-radius:12px;margin:12px 0;user-select:all;overflow-wrap:anywhere}
+/* === START: PROFILE MENU CSS === */
+.av{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--on);display:grid;place-items:center;font:600 .8125rem Sora,system-ui,sans-serif;text-transform:uppercase;flex:none}
+.av.lg{width:40px;height:40px;font-size:1rem}
+.avb{width:44px;height:44px;border-radius:50%;border:0;background:none;display:grid;place-items:center;cursor:pointer;padding:0;flex:none}
+.avb:hover{background:var(--hover)}
+dialog.prof{margin:calc(56px + env(safe-area-inset-top,0px)) 12px auto auto;padding:8px;width:min(86vw,300px);max-width:none}
+.pmh{display:flex;align-items:center;gap:12px;padding:8px 8px 12px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.pmh div{min-width:0}
+.pmh b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.pmh .sb{display:block;font-size:.75rem;color:var(--mute);overflow-wrap:anywhere}
+.pmi{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:8px 10px;border:0;border-radius:10px;background:none;color:var(--ink);font:inherit;font-size:.9375rem;text-align:left;cursor:pointer}
+.pmi:hover{background:var(--hover)}
+.pmi svg{width:18px;height:18px;flex:none;color:var(--mute);fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.pmi .soon{margin-left:auto;font-size:.6875rem;font-weight:600;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;border-bottom:1px solid var(--line);font-size:.9375rem}
+.srow .lnk{min-height:44px}
+.msel{font:inherit;font-size:.8125rem;min-height:40px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px}
+.mh{font-size:.9375rem;margin:16px 0 8px}
+.mfld{display:flex;align-items:center;gap:8px}
+.mfld input{flex:1;min-width:0}
+#m_link{font:.8125rem ui-monospace,Menlo,Consolas,monospace}
+.mrow{display:flex;align-items:center;gap:10px;min-height:52px;border-bottom:1px solid var(--line)}
+.mrow .mi{flex:1;min-width:0}
+.mrow b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.sub b{color:var(--ink)}
+.msel{font:inherit;font-size:.8125rem;min-height:40px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px}
+.mh{font-size:.9375rem;margin:16px 0 8px}
+.mfld{display:flex;align-items:center;gap:8px}
+.mfld input{flex:1;min-width:0}
+#m_link{font:.8125rem ui-monospace,Menlo,Consolas,monospace}
+.mrow{display:flex;align-items:center;gap:10px;min-height:52px;border-bottom:1px solid var(--line)}
+.mrow .mi{flex:1;min-width:0}
+.mrow b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.sub b{color:var(--ink)}
+/* === END: PROFILE MENU CSS === */
+/* === START: PROFILE MENU CSS === */
+.av{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--on);display:grid;place-items:center;font:600 .8125rem Sora,system-ui,sans-serif;text-transform:uppercase;flex:none}
+.av.lg{width:40px;height:40px;font-size:1rem}
+.avb{width:44px;height:44px;border-radius:50%;border:0;background:none;display:grid;place-items:center;cursor:pointer;padding:0;flex:none}
+.avb:hover{background:var(--hover)}
+dialog.prof{margin:calc(56px + env(safe-area-inset-top,0px)) 12px auto auto;padding:8px;width:min(86vw,300px);max-width:none}
+.pmh{display:flex;align-items:center;gap:12px;padding:8px 8px 12px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.pmh div{min-width:0}
+.pmh b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.pmh .sb{display:block;font-size:.75rem;color:var(--mute);overflow-wrap:anywhere}
+.pmi{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:8px 10px;border:0;border-radius:10px;background:none;color:var(--ink);font:inherit;font-size:.9375rem;text-align:left;cursor:pointer}
+.pmi:hover{background:var(--hover)}
+.pmi svg{width:18px;height:18px;flex:none;color:var(--mute);fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.pmi .soon{margin-left:auto;font-size:.6875rem;font-weight:600;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;border-bottom:1px solid var(--line);font-size:.9375rem}
+.srow .lnk{min-height:44px}
+/* === END: PROFILE MENU CSS === */
+/* === START: PROFILE MENU CSS === */
+.av{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--on);display:grid;place-items:center;font:600 .8125rem Sora,system-ui,sans-serif;text-transform:uppercase;flex:none}
+.av.lg{width:40px;height:40px;font-size:1rem}
+.avb{width:44px;height:44px;border-radius:50%;border:0;background:none;display:grid;place-items:center;cursor:pointer;padding:0;flex:none}
+.avb:hover{background:var(--hover)}
+dialog.prof{margin:calc(56px + env(safe-area-inset-top,0px)) 12px auto auto;padding:8px;width:min(86vw,300px);max-width:none}
+.pmh{display:flex;align-items:center;gap:12px;padding:8px 8px 12px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.pmh div{min-width:0}
+.pmh b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.pmh .sb{display:block;font-size:.75rem;color:var(--mute);overflow-wrap:anywhere}
+.pmi{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:8px 10px;border:0;border-radius:10px;background:none;color:var(--ink);font:inherit;font-size:.9375rem;text-align:left;cursor:pointer}
+.pmi:hover{background:var(--hover)}
+.pmi svg{width:18px;height:18px;flex:none;color:var(--mute);fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.pmi .soon{margin-left:auto;font-size:.6875rem;font-weight:600;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;border-bottom:1px solid var(--line);font-size:.9375rem}
+.srow .lnk{min-height:44px}
+.msel{font:inherit;font-size:.8125rem;min-height:40px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px}
+.mh{font-size:.9375rem;margin:16px 0 8px}
+.mfld{display:flex;align-items:center;gap:8px}
+.mfld input{flex:1;min-width:0}
+#m_link{font:.8125rem ui-monospace,Menlo,Consolas,monospace}
+.mrow{display:flex;align-items:center;gap:10px;min-height:52px;border-bottom:1px solid var(--line)}
+.mrow .mi{flex:1;min-width:0}
+.mrow b{display:block;font-size:.9375rem;overflow-wrap:anywhere}
+.sub b{color:var(--ink)}
+/* === END: PROFILE MENU CSS === */
+.stp{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--mute)}
+.stp::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.stp.off::before{background:var(--bad)}
+.ofl{max-height:32dvh;overflow:auto;border:1px solid var(--line);border-radius:12px;margin-top:8px}
+.ofl .fr:last-child{border-bottom:0}
+.ofn{font-size:.8125rem;line-height:1.5;color:var(--mute);margin:8px 0}
+/* === START: UX REFRESH CSS === */:root{--bg:#f6f4ee;--surface:#fff;--ink:#1f1d19;--mute:#7a766c;--line:#e6e1d6;--accent:#c4693f;--on:#fff;--hover:rgba(196,105,63,.08)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171512;--surface:#211e1a;--ink:#f1ede4;--mute:#a39d90;--line:#37322a;--accent:#e8946a;--on:#1b1208;--hover:rgba(232,148,106,.12)}}
 :root[data-theme="dark"]{--bg:#171512;--surface:#211e1a;--ink:#f1ede4;--mute:#a39d90;--line:#37322a;--accent:#e8946a;--on:#1b1208;--hover:rgba(232,148,106,.12)}
 .ttl{flex:1;min-width:0}
-.ttl b{display:block;font-size:1.25rem;line-height:1.2}
-.ttl span{display:block;font-size:.875rem;color:var(--mute)}
+.ttl{display:flex;align-items:baseline;gap:8px;white-space:nowrap;overflow:hidden}
+.ttl b{display:block;font-size:1rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis}
+.ttl span{display:block;flex:none;font-size:.75rem;color:var(--mute)}
 .top{border-bottom:0;margin-bottom:4px}
 .wsrow{display:flex;align-items:center;gap:10px;margin:8px 0}
 .wsrow .tag{background:var(--line);border:0;color:var(--mute);text-transform:uppercase;padding:8px 14px;font-size:.8125rem}
@@ -177,6 +271,10 @@ dialog[open]::backdrop{animation:fadeIn .25s ease}
   dialog.sheet>*{border-radius:22px 22px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
 }
 /* === END: SPRING + MOTION CSS === */
+.hl{display:grid;gap:8px;margin:12px 0}
+.faq{border-bottom:1px solid var(--line)}
+.faq summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:.9375rem;font-weight:600}
+.faq p{font-size:.8125rem;line-height:1.5;color:var(--mute);margin:0 0 12px}
 .cpo{display:grid;gap:8px;margin-top:14px}
 .cpo .plan{text-align:left;padding:12px 14px}
 .cpo .plan b{font-size:.9375rem}
@@ -243,7 +341,10 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 .edt{display:flex;align-items:center;gap:16px;min-height:40px;padding:0 16px;border-bottom:1px solid var(--line)}
 .edt .lnk{min-height:36px}
 .edx{display:flex;gap:16px;margin-left:auto}
-.code{flex:1;display:flex;min-height:0;font:16px/1.5 ui-monospace,Menlo,Consolas,monospace}
+.lim{font-size:.75rem;color:var(--mute);white-space:nowrap}
+.lim.over{color:var(--bad);font-weight:600}
+.lim{font-size:.75rem;color:var(--mute);white-space:nowrap}
+.lim.over{color:var(--bad);font-weight:600}.code{flex:1;display:flex;min-height:0;font:16px/1.5 ui-monospace,Menlo,Consolas,monospace}
 .code pre{margin:0;padding:12px 10px 40px 12px;min-width:3ch;text-align:right;color:var(--mute);background:var(--surface);border-right:1px solid var(--line);overflow:hidden;user-select:none;-webkit-user-select:none;font:inherit}
 .code textarea{flex:1;min-width:0;border:0;border-radius:0;background:var(--bg);color:var(--ink);padding:12px 14px 40px;font:inherit;resize:none;white-space:pre;overflow:auto}
 .code textarea:focus-visible{outline:0}
@@ -272,6 +373,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 <!-- === END: TITLE EDIT === -->
       <button class="ic" id="menuBtn" type="button" aria-label="Files"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
       <button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+      <button class="avb" id="avBtn" type="button" aria-label="Account menu" aria-haspopup="dialog"><span class="av" id="avL">A</span></button>
     </div>
   </header>
 
@@ -290,7 +392,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
       <li>Fill in the form below. Legal name, jurisdiction, currency, industry and mission are required.</li>
       <li>Copy cards 1 to 4 in order and paste each into a new chat with your AI.</li>
       <li>Send <button class="cmd" data-copy="Protocol, activate." type="button">Protocol, activate.</button></li>
-      <li>When done, send <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button> then <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button> Paste the output into Storage below and tap Save.</li>
+      <li>When done, send <button class="cmd" data-copy="Update the operating record." type="button">Update the operating record.</button> then <button class="cmd" data-copy="Produce session snapshot." type="button">Produce session snapshot.</button> Paste the output into Files (Add file) and tap Commit changes.</li>
     </ol>
   </section>
 
@@ -377,7 +479,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
         <input type="text" id="s_title" placeholder="Name your file" autocomplete="off" autocapitalize="off" spellcheck="false">
         <button class="sm p" id="s_save" type="button" disabled>Commit changes</button>
       </div>
-      <div class="edt"><button class="lnk" id="s_paste" type="button">Paste</button><span class="edx" id="edTools" hidden><button class="lnk" data-a="copy" type="button">Copy</button><button class="lnk" data-a="dl" type="button">Download</button><button class="lnk" data-a="del" type="button">Delete</button></span></div>
+      <div class="edt"><button class="lnk" id="s_paste" type="button">Paste</button><span class="lim" id="s_lim" aria-live="polite"></span><span class="edx" id="edTools" hidden><button class="lnk" data-a="copy" type="button">Copy</button><button class="lnk" data-a="dl" type="button">Download</button><button class="lnk" data-a="del" type="button">Delete</button></span></div>
       <div class="code"><pre id="gut" aria-hidden="true">1</pre><textarea id="s_text" wrap="off" placeholder="Paste or type here" spellcheck="false"></textarea></div>
     </div>
     <select id="s_type" hidden><option value="op"></option><option value="ss"></option><option value="cf"></option><option value=""></option></select>
@@ -405,16 +507,197 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   <div class="row"><button class="sm" id="cpX" type="button">Close</button><button class="sm" id="cpDl" type="button">Download .md</button><button class="sm p" id="cpCopy" type="button">Copy</button></div>
 </dialog>
 
-<dialog id="pro" aria-labelledby="proT">
-  <form method="dialog">
+<dialog class="prof" id="prof" aria-label="Account menu">
+  <div class="pmh"><span class="av lg" id="pAvL">A</span><div><b id="pEm"></b><span class="sb" id="pPl"></span></div></div>
+  <button class="pmi" type="button" data-p="ws" data-n="Switch workspace"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Switch workspace<span class="soon">Soon</span></button>
+  <button class="pmi" type="button" data-p="set"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></svg>Settings</button>
+  <button class="pmi" type="button" data-p="off"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Offline pages</button>
+  <button class="pmi" type="button" data-p="mem" data-n="Members"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Members</button>  <button class="pmi" type="button" data-p="tr" data-n="Trash"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Trash<span class="soon">Soon</span></button>
+  <button class="pmi" type="button" data-p="help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Help &amp; support</button>
+</dialog>
+
+<dialog class="sheet" id="helpD" aria-label="Help and support">
+  <section class="how">
+    <button class="ic sheet-x" id="helpX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Help &amp; support</h2>
+    <p class="sub" id="h_ver"></p>
+    <div class="hl">
+      <button class="sm full" id="h_how" type="button">How to use</button>
+      <button class="sm p full" id="h_mail" type="button">Email support</button>
+      <button class="sm full" id="h_bug" type="button">Report a problem</button>
+    </div>
+    <h3 class="mh">Common questions</h3>
+    <details class="faq"><summary>Where are my files saved?</summary><p>On this device, in your browser. The Free plan holds up to 5 MB. Clearing your browser data removes them, so export a backup from Files regularly.</p></details>
+    <details class="faq"><summary>How do versions work?</summary><p>Saving with the same file name creates a new version (v1, v2, v3). If nothing changed, no new version is made.</p></details>
+    <details class="faq"><summary>How do I back up or move my files?</summary><p>Open Files, then tap Export to download a backup, or Context Pack to export everything as one .md file. Import restores a backup.</p></details>
+    <details class="faq"><summary>I lost my license code</summary><p>Tap Email support and include the email address you used. Guest codes (ARTI-FREE) are saved on this device only.</p></details>
+    <details class="faq"><summary>What happens when I paste long text?</summary><p>Pasted paragraphs are split into rows of about 100 characters. Rows you type have no limit. The maximum is 50,000 lines per file.</p></details>
+    <details class="faq"><summary>Do members work across devices?</summary><p>Not yet. Members and invite links are saved on this device until cloud sync is available.</p></details>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="ofD" aria-label="Offline pages">
+  <section class="how">
+    <button class="ic sheet-x" id="ofX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Offline pages</h2>
+    <p class="sub"><span class="stp" id="of_net"></span></p>
+    <h3 class="mh">What works without internet</h3>
+    <p class="ofn">Everything you saved here: files and versions, organization, members and settings. They live in this browser, so you can open and edit them without internet while this page is open. Free and Pro work the same way today.</p>
+    <h3 class="mh" id="of_h">Saved on this device</h3>
+    <div class="ofl" id="of_list"></div>
+    <p class="ofn" id="of_st"></p>
+    <div class="srow"><span>Last backup</span><span class="meta" id="of_bk"></span></div>
+    <div class="srow"><span>Backup file</span><span class="lact"><button class="lnk" id="of_exp" type="button">Export</button><button class="lnk" id="of_imp" type="button">Import</button></span></div>
+    <h3 class="mh">Open the app without internet</h3>
+    <p class="ofn" id="of_app"></p>
+    <button class="sm full" id="of_save" type="button">Save app copy (.html)</button>
+    <h3 class="mh">Cloud sync</h3>
+    <p class="ofn">Not available yet, on Free or Pro. Your files are not copied to any server, so they are not on your other devices and are not backed up for you. Edits you make offline are saved here, and nothing waits to sync.</p>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="memD" aria-label="Members">  <section class="how">
+    <button class="ic sheet-x" id="memX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Members</h2>
+    <p class="sub" id="mem_sub"></p>
+    <div id="m_inv">
+      <h3 class="mh">Invite link</h3>
+      <div class="mfld"><input type="text" id="m_link" readonly aria-label="Invite link"><button class="sm" id="m_cp" type="button">Copy</button></div>
+      <div class="mfld" style="margin-top:8px"><span class="meta">Link joins as</span><select class="msel" id="m_lrole" aria-label="Role for invite link"><option value="member">Member</option><option value="restricted">Restricted member</option></select><button class="lnk" id="m_reset" type="button" style="margin-left:auto">Reset link</button></div>
+      <h3 class="mh">Add by email</h3>
+      <div class="mfld"><input type="text" id="m_email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@example.com" aria-label="Email address"></div>
+      <div class="mfld" style="margin-top:8px"><select class="msel" id="m_role" aria-label="Permission level"><option value="member">Member</option><option value="restricted">Restricted member</option></select><button class="sm p" id="m_add" type="button" style="margin-left:auto">Add</button></div>
+    </div>
+    <h3 class="mh">Workspace members</h3>
+    <div id="m_list"></div>
+    <h3 class="mh">Permission levels</h3>
+    <div id="m_leg"></div>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="memD" aria-label="Members">
+  <section class="how">
+    <button class="ic sheet-x" id="memX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Members</h2>
+    <p class="sub" id="mem_sub"></p>
+    <div id="m_inv">
+      <h3 class="mh">Invite link</h3>
+      <div class="mfld"><input type="text" id="m_link" readonly aria-label="Invite link"><button class="sm" id="m_cp" type="button">Copy</button></div>
+      <div class="mfld" style="margin-top:8px"><span class="meta">Link joins as</span><select class="msel" id="m_lrole" aria-label="Role for invite link"><option value="member">Member</option><option value="restricted">Restricted member</option></select><button class="lnk" id="m_reset" type="button" style="margin-left:auto">Reset link</button></div>
+      <h3 class="mh">Add by email</h3>
+      <div class="mfld"><input type="text" id="m_email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@example.com" aria-label="Email address"></div>
+      <div class="mfld" style="margin-top:8px"><select class="msel" id="m_role" aria-label="Permission level"><option value="member">Member</option><option value="restricted">Restricted member</option></select><button class="sm p" id="m_add" type="button" style="margin-left:auto">Add</button></div>
+    </div>
+    <h3 class="mh">Workspace members</h3>
+    <div id="m_list"></div>
+    <h3 class="mh">Permission levels</h3>
+    <div id="m_leg"></div>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="setD" aria-label="Settings">  <section class="how">
+    <button class="ic sheet-x" id="setX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Settings</h2>
+    <div class="srow"><span>Haptics</span><button class="lnk" id="set_hap" type="button"></button></div>
+    <div class="srow"><span>Organization</span><button class="lnk" id="set_org" type="button">Edit</button></div>
+    <div class="srow"><span>License</span><code id="set_lic"></code></div>
+    <div class="srow"><span>Plan</span><span id="set_plan"></span></div>
+    <div class="srow"><span>Subscription</span><span class="meta" id="set_sub"></span></div>
+    <h3 class="mh">Storage</h3>
+    <div class="meter" id="set_meterW" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fillbar" id="set_stF"></div></div>
+    <p class="sub" id="set_st"></p>
+    <p class="sub">Limits: 1.5 MB per file and 50,000 lines per file.</p>
+    <div class="srow"><span>Protected from browser cleanup</span><button class="lnk" id="set_pers" type="button"></button></div>
+    <div class="srow"><span>Backup</span><span class="lact"><button class="lnk" id="set_exp" type="button">Export</button><button class="lnk" id="set_imp" type="button">Import</button></span></div>
+    <div class="srow"><span>Theme</span><select class="msel" id="set_theme" aria-label="Theme"><option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+    <button class="sm d full" id="set_clr" type="button" style="margin-top:14px">Clear local data</button>    <button class="sm bad full" id="set_out" type="button" style="margin-top:14px">Log out</button>
+  </section>
+</dialog>
+
+<dialog class="prof" id="prof" aria-label="Account menu">
+  <div class="pmh"><span class="av lg" id="pAvL">A</span><div><b id="pEm"></b><span class="sb" id="pPl"></span></div></div>
+  <button class="pmi" type="button" data-p="ws" data-n="Switch workspace"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Switch workspace<span class="soon">Soon</span></button>
+  <button class="pmi" type="button" data-p="set"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></svg>Settings</button>
+  <button class="pmi" type="button" data-p="off"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Offline pages</button>
+  <button class="pmi" type="button" data-p="mem" data-n="Members"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Members</button>
+  <button class="pmi" type="button" data-p="tr" data-n="Trash"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Trash<span class="soon">Soon</span></button>
+  <button class="pmi" type="button" data-p="help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Help &amp; support</button>
+</dialog>
+
+<dialog class="sheet" id="setD" aria-label="Settings">
+  <section class="how">
+    <button class="ic sheet-x" id="setX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Settings</h2>
+    <div class="srow"><span>Haptics</span><button class="lnk" id="set_hap" type="button"></button></div>
+    <div class="srow"><span>Organization</span><button class="lnk" id="set_org" type="button">Edit</button></div>
+    <div class="srow"><span>License</span><code id="set_lic"></code></div>
+    <div class="srow"><span>Plan</span><span id="set_plan"></span></div>
+    <button class="sm bad full" id="set_out" type="button" style="margin-top:14px">Log out</button>
+  </section>
+</dialog>
+
+<dialog id="gate" aria-labelledby="gT">
+  <div id="gA">
+    <h2 id="gT">Protocol access</h2>
+    <p>Enter your license to continue.</p>
+    <div class="field" style="margin-top:12px"><label for="g_lic">License</label><input type="text" id="g_lic" placeholder="ARTI-000000" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
+    <p class="sub gerr" id="g_err" aria-live="polite"></p>
+    <button class="sm p full" id="g_go" type="button">Unlock</button>
+    <div class="gal"><button class="lnk" id="g_guest" type="button">Continue as guest</button><a class="lnk" id="g_get" href="#">Get your license</a></div>
+  </div>
+  <div id="gB" hidden>
+    <h2>Free account</h2>
+    <p>Enter your email to create a free guest license.</p>
+    <div class="field" style="margin-top:12px"><label for="g_email">Email</label><input type="text" id="g_email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com"></div>
+    <p class="sub gerr" id="g_merr" aria-live="polite"></p>
+    <button class="sm p full" id="g_mk" type="button">Create free account</button>
+    <div class="gal"><button class="lnk" id="g_back" type="button">Back</button></div>
+  </div>
+  <div id="gC" hidden>
+    <h2>You're in</h2>
+    <p>Your free license. Keep it safe.</p>
+    <div class="gcode" id="g_code"></div>
+    <button class="sm full" id="g_cp" type="button">Copy</button>
+    <button class="sm p full" id="g_ct" type="button" style="margin-top:8px">Continue</button>
+  </div>
+  <div class="row"><button class="sm" id="g_x" type="button">Close</button></div>
+</dialog>
+
+<dialog id="gate" aria-labelledby="gT">
+  <div id="gA">
+    <h2 id="gT">Protocol access</h2>
+    <p>Enter your license to continue.</p>
+    <div class="field" style="margin-top:12px"><label for="g_lic">License</label><input type="text" id="g_lic" placeholder="ARTI-000000" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
+    <p class="sub gerr" id="g_err" aria-live="polite"></p>
+    <button class="sm p full" id="g_go" type="button">Unlock</button>
+    <div class="gal"><button class="lnk" id="g_guest" type="button">Continue as guest</button><a class="lnk" id="g_get" href="#">Get your license</a></div>
+  </div>
+  <div id="gB" hidden>
+    <h2>Free account</h2>
+    <p>Enter your email to create a free guest license.</p>
+    <div class="field" style="margin-top:12px"><label for="g_email">Email</label><input type="text" id="g_email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com"></div>
+    <p class="sub gerr" id="g_merr" aria-live="polite"></p>
+    <button class="sm p full" id="g_mk" type="button">Create free account</button>
+    <div class="gal"><button class="lnk" id="g_back" type="button">Back</button></div>
+  </div>
+  <div id="gC" hidden>
+    <h2>You're in</h2>
+    <p>Your free license. Keep it safe.</p>
+    <div class="gcode" id="g_code"></div>
+    <button class="sm full" id="g_cp" type="button">Copy</button>
+    <button class="sm p full" id="g_ct" type="button" style="margin-top:8px">Continue</button>
+  </div>
+  <div class="row"><button class="sm" id="g_x" type="button">Close</button></div>
+</dialog>
+
+<dialog id="pro" aria-labelledby="proT">  <form method="dialog">
     <h2 id="proT">ArtiBytte Pro</h2>
-    <p>Keep your records safe and available everywhere.</p>
-    <ul class="perks"><li><b>1 GB storage</b> instead of 5 MB</li><li><b>Cloud storage</b> that survives clearing your browser</li><li><b>Every device</b>, same records</li><li><b>Automatic backups</b> of every version</li></ul>
-    <div class="plans">
+    <p>Pro is coming soon. Join the waitlist and we'll tell you when it opens.</p>
+    <ul class="perks"><li class="soon"><b>Cloud storage</b> that survives clearing your browser</li><li class="soon"><b>Every device</b>, same records</li><li class="soon"><b>Automatic backups</b> of every version</li><li class="soon"><b>Restore deleted files</b> from Trash</li></ul>    <div class="plans">
       <label class="plan"><input type="radio" name="plan" value="m" checked><b id="pm"></b><span>per month</span></label>
       <label class="plan"><input type="radio" name="plan" value="y"><b id="py"></b><span>per year</span></label>
     </div>
-    <div class="row"><button class="sm" value="no" type="submit">Not now</button><button class="sm p" id="proGo" value="no" type="submit">Upgrade</button></div>
+    <div class="row"><button class="sm" value="no" type="submit">Not now</button><button class="sm p" id="proGo" value="no" type="submit">Join waitlist</button></div>
   </form>
 </dialog>
 
@@ -424,9 +707,8 @@ const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k
 const fmt=t=>new Date(t).toLocaleString([],{dateStyle:"medium",timeStyle:"short"});
 const kb=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB";
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const LIMITS={free:5*1048576,pro:1024*1048576};
-let PLAN=LS.get("artibytte-plan-v1")==="pro"?"pro":"free";
-let LIMIT=LIMITS[PLAN];
+const LIMITS={free:5*1048576,pro:5*1048576}; /* pro = same browser limit until cloud storage exists */const PRO_PREVIEW=false; /* true = test mode: lets the button switch to Pro locally */
+let PLAN=PRO_PREVIEW&&LS.get("artibytte-plan-v1")==="pro"?"pro":"free";let LIMIT=LIMITS[PLAN];
 
 /* === START: HAPTICS JS === */
 const HAP=(()=>{
@@ -498,7 +780,7 @@ BEHAVIOR:
 - Report UNKNOWN when verification is unavailable.
 
 REFERENCE DOCUMENTS:
-- [protocol-v2.8.md](http://protocol-v2.8.md/) — full Protocol Core
+- protocol-v2.8.md — full Protocol Core
 - config-ISSUE.md — organization-specific configuration
 - operating-record-ISSUE.md — current state
 
@@ -1549,17 +1831,28 @@ const KEY="artibytte-protocol-files-v2";
 let db={},q="";
 try{const o=JSON.parse(LS.get(KEY)||"{}");for(const n in o)if(o[n]&&Array.isArray(o[n].vs))db[n]=o[n]}catch(e){}
 const lastOf=f=>f.vs[f.vs.length-1];
-const used=()=>JSON.stringify(db).length;
-function persist(){const ok=LS.set(KEY,JSON.stringify(db));if(!ok)toast("Storage is full or blocked. Nothing was changed.","err");return ok}
-const names=()=>Object.keys(db).filter(n=>db[n].vs.length).sort((a,b)=>lastOf(db[b]).t-lastOf(db[a]).t);
+const used=()=>{let n=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);n+=k.length+(localStorage.getItem(k)||"").length}}catch(e){n=JSON.stringify(db).length}return n};let warnLvl=0,persistAsked=false;
+function warnStorage(){
+  const p=used()/LIMIT*100,lv=p>=90?2:p>=80?1:0;
+  if(lv>warnLvl)setTimeout(()=>toast("Storage is "+(lv===2?"90":"80")+"% full. Export a backup and remove old files.","err"),2500);
+  warnLvl=lv;
+}
+function persist(){
+  const ok=LS.set(KEY,JSON.stringify(db));
+  if(!ok)toast("Storage is full or blocked. Nothing was changed.","err");
+  else{
+    warnStorage();
+    if(!persistAsked){persistAsked=true;try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}}
+  }
+  return ok;
+}const names=()=>Object.keys(db).filter(n=>db[n].vs.length).sort((a,b)=>lastOf(db[b]).t-lastOf(db[a]).t);
 function render(){
   const all=names(),shown=all.filter(n=>n.toLowerCase().includes(q)),has=all.length>0;
   $("tools").hidden=!has;$("empty").hidden=has;
   const u=used(),p=Math.min(100,u/LIMIT*100);
   $("stF").style.width=p+"%";$("stF").classList.toggle("hot",p>=90);
   $("planTag").textContent=PLAN==="pro"?"Pro plan":"Free plan";$("proBtn").hidden=PLAN==="pro";
-  $("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" / "+(PLAN==="pro"?"1 GB":"5 MB");
-  $("meterW").setAttribute("aria-valuenow",Math.round(p));
+  $("stT").textContent=(!all.length?"0 KB":u<1048576?Math.max(0.1,u/1024).toFixed(1)+" KB":(u/1048576).toFixed(2)+" MB")+" / 5 MB";  $("meterW").setAttribute("aria-valuenow",Math.round(p));
   $("drT").textContent=has?"Files · "+all.length:"Files";
   $("list").innerHTML=shown.map((n,i)=>{const c=lastOf(db[n]),N=esc(n);return `<button class="fr" type="button" data-a="open" data-n="${N}"><span class="ln">${i+1}</span><span class="nm">${N}</span><span class="vv">v${c.v}</span></button>`}).join("")||(has?'<p class="meta">No match</p>':"");
 }
@@ -1570,8 +1863,11 @@ async function handleFiles(files,target){
     if(f.size>1.5*1048576){toast(f.name+" is larger than 1.5 MB.","err");continue}
     let t;try{t=await f.text()}catch(e){toast("Could not read "+f.name,"err");continue}
     if(t.indexOf("\u0000")>-1){toast(f.name+" is not a text file.","err");continue}
-    if(used()+t.length>LIMIT*0.98){toast("Not enough storage.","err");continue}
-    const name=target||f.name,o=db[name]||(db[name]={next:1,vs:[]});
+       {const lm=limCheck(t);if(lm.over){toast(f.name+": "+lm.msg,"err");continue}}
+    {const lm=limCheck(t);if(lm.over){toast(f.name+": "+lm.msg,"err");continue}}    if(used()+t.length>LIMIT*0.98){toast("Not enough storage.","err");continue}
+    const name=target||f.name;
+    if(db[name]&&db[name].vs.length&&lastOf(db[name]).text===t){toast(name+": no changes.");continue}
+    const o=db[name]||(db[name]={next:1,vs:[]});
     o.vs.push({v:o.next++,t:Date.now(),size:f.size,text:t});added++;
   }
   if(!added){render();return}
@@ -1587,13 +1883,54 @@ $("addBtn").onclick=()=>pickFile(null);
 const EXT=/\.(md|txt|json|csv|ya?ml)$/i;
 const finalName=s=>{s=s.replace(/\s+/g," ").trim();return s?(EXT.test(s)?s:s+".md"):""};
 const CHIPS={op:()=>"operating-record-"+slug(getEnt().name)+".md",ss:()=>"session-snapshot-"+today()+".md",cf:()=>"config-"+slug(getEnt().name)+".md"};
-let nameTouched=false;
-const DETECT=[["op",/OPERATING RECORD/i],["ss",/SESSION SNAPSHOT/i],["cf",/CONFIGURATION RECORD/i]];
+const MAX_LINES=50000,MAX_LINE=100; /* MAX_LINE = lapad ng pag-distribute pag nag-paste lang, hindi limit */function wrapRows(t){
+  t=t.replace(/\r\n?/g,"\n");
+  const out=[];let ch=false;
+  for(const s of t.split("\n")){
+    if(s.length<=MAX_LINE){out.push(s);continue}
+    ch=true;let r=s;
+    while(r.length>MAX_LINE){
+      let cut=r.lastIndexOf(" ",MAX_LINE-1);
+      cut=cut<MAX_LINE*.5?MAX_LINE:cut+1;
+      out.push(r.slice(0,cut));r=r.slice(cut);
+    }
+    out.push(r);
+  }
+  return ch?out.join("\n"):t;
+}function limCheck(t){
+  const a=t.split("\n");let bad=0;
+  /* walang limit per row */
+  const many=a.length>MAX_LINES;
+  return{lines:a.length,bad,over:many||!!bad,msg:many?"Max "+MAX_LINES.toLocaleString()+" lines.":bad?"Line "+bad+" is over "+MAX_LINE.toLocaleString()+" characters.":""};
+}
+function wrapRows(t){
+  t=t.replace(/\r\n?/g,"\n");
+  const out=[];let ch=false;
+  for(const s of t.split("\n")){
+    if(s.length<=MAX_LINE){out.push(s);continue}
+    ch=true;let r=s;
+    while(r.length>MAX_LINE){
+      let cut=r.lastIndexOf(" ",MAX_LINE-1);
+      cut=cut<MAX_LINE*.5?MAX_LINE:cut+1;
+      out.push(r.slice(0,cut));r=r.slice(cut);
+    }
+    out.push(r);
+  }
+  return ch?out.join("\n"):t;
+}
+function limCheck(t){
+  const a=t.split("\n");let bad=0;
+  /* walang limit per row */
+  const many=a.length>MAX_LINES;
+  return{lines:a.length,bad,over:many||!!bad,msg:many?"Max "+MAX_LINES.toLocaleString()+" lines.":bad?"Line "+bad+" is over "+MAX_LINE.toLocaleString()+" characters.":""};
+}
+let nameTouched=false;const DETECT=[["op",/OPERATING RECORD/i],["ss",/SESSION SNAPSHOT/i],["cf",/CONFIGURATION RECORD/i]];
 function detect(t){const h=t.slice(0,400);for(const[k,r]of DETECT)if(r.test(h))return k;return null}
 function sbState(){
   const n=finalName($("s_title").value),t=$("s_text").value,ex=n&&db[n],has=!!t.trim();
-  $("s_save").disabled=!n||!has;syncType();
-  $("s_save").textContent="Commit changes";gut();
+  const lm=limCheck(t);
+  $("s_save").disabled=!n||!has||lm.over;syncType();
+  const le=$("s_lim");le.textContent=lm.over?lm.msg:lm.lines.toLocaleString()+" / "+MAX_LINES.toLocaleString()+" lines";le.classList.toggle("over",lm.over);  $("s_save").textContent="Commit changes";gut();
   document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(!!n&&n===CHIPS[c.dataset.t]())));
   $("s_hint").textContent=!has&&!n?"Paste your AI's output to begin.":!has?"Now paste the output.":!n?"Pick a file type above, or type a file name.":(ex?"Saves as v"+db[n].next+" of "+n:"Saves as a new file: "+n)+" · "+kb(new Blob([t]).size);
 }
@@ -1603,13 +1940,22 @@ $("s_type").onchange=()=>{const k=$("s_type").value;if(!k)return;if((k==="op"||k
 /* === END: RECORD TYPE SELECT JS === */
 document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{nameTouched=true;$("s_title").value=CHIPS[c.dataset.t]();sbState();$("s_text").focus()});
 $("s_title").addEventListener("input",()=>{nameTouched=true;sbState()});
-$("s_text").addEventListener("input",()=>{
+$("s_text").addEventListener("paste",e=>{
+  const txt=(e.clipboardData||window.clipboardData).getData("text");
+  if(!txt)return;
+  const w=wrapRows(txt);
+  if(w===txt)return;
+  e.preventDefault();
+  const el=$("s_text");
+  el.setRangeText(w,el.selectionStart,el.selectionEnd,"end");
+  el.dispatchEvent(new Event("input"));
+});$("s_text").addEventListener("input",()=>{
   if(!nameTouched){const k=detect($("s_text").value);if(k)$("s_title").value=CHIPS[k]()}
   sbState();
 });
 $("s_text").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter"&&!$("s_save").disabled)$("s_save").click()});
 $("s_paste").onclick=async()=>{
-  try{const t=await navigator.clipboard.readText();if(!t){toast("Clipboard is empty.","err");return}$("s_text").value=t;$("s_text").dispatchEvent(new Event("input"));$("s_text").focus()}
+  try{const t=await navigator.clipboard.readText();if(!t){toast("Clipboard is empty.","err");return}$("s_text").value=wrapRows(t);$("s_text").dispatchEvent(new Event("input"));$("s_text").focus()}
   catch(e){toast("Can't read the clipboard. Long-press the box and paste.","err")}
 };
 $("s_save").onclick=()=>{
@@ -1617,6 +1963,8 @@ $("s_save").onclick=()=>{
   if(!n||!t.trim())return;
   const size=new Blob([t]).size;
   if(size>1.5*1048576){toast("That's larger than 1.5 MB.","err");return}
+  {const lm=limCheck(t);if(lm.over){toast(lm.msg,"err");return}}
+  {const lm=limCheck(t);if(lm.over){toast(lm.msg,"err");return}}
   if(used()+t.length>LIMIT*0.98){toast("Not enough storage.","err");return}
   if(db[n]&&lastOf(db[n]).text===t){toast("No changes.");return}
   const snap=JSON.stringify(db),o=db[n]||(db[n]={next:1,vs:[]});
@@ -1642,8 +1990,8 @@ const lh=async e=>{
 };
 $("list").addEventListener("click",lh);$("editor").addEventListener("click",lh);
 $("exportBtn").onclick=()=>{
-  const url=URL.createObjectURL(new Blob([JSON.stringify({app:"artibytte-protocol",files:db})],{type:"application/json"})),a=document.createElement("a");
-  a.href=url;a.download="artibytte-versions-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+  const url=URL.createObjectURL(new Blob([JSON.stringify({app:"artibytte-protocol",v:2,files:db,entity:ent,members:MB})],{type:"application/json"})),a=document.createElement("a");
+  LS.set("artibytte-lastbackup",String(Date.now()));a.href=url;a.download="artibytte-versions-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
 };
 $("importBtn").onclick=()=>$("pickJson").click();
 $("pickJson").onchange=async e=>{
@@ -1651,8 +1999,15 @@ $("pickJson").onchange=async e=>{
   let o;try{o=JSON.parse(await f.text())}catch(err){toast("Not a valid backup.","err");return}
   if(!o||o.app!=="artibytte-protocol"||!o.files){toast("Not an ArtiBytte backup.","err");return}
   const snap=JSON.stringify(db);
-  for(const n in o.files){const x=o.files[n];if(!x||!Array.isArray(x.vs))continue;const d=db[n]||(db[n]={next:1,vs:[]});x.vs.forEach(y=>{if(typeof y.text==="string")d.vs.push({v:d.next++,t:y.t||Date.now(),size:y.size,text:y.text})})}
-  if(!persist())db=JSON.parse(snap);else toast("Imported.");render();
+  let add=0;
+  for(const n in o.files){
+    const x=o.files[n];if(!x||!Array.isArray(x.vs))continue;
+    const d=db[n]||(db[n]={next:1,vs:[]});
+    x.vs.forEach(y=>{if(y&&typeof y.text==="string"&&!d.vs.some(z=>z.text===y.text)){d.vs.push({v:d.next++,t:y.t||Date.now(),size:y.size||y.text.length,text:y.text});add++}});
+  }  if(!persist()){db=JSON.parse(snap);render();return}
+  if(o.entity&&typeof o.entity==="object"&&!Object.values(ent).some(Boolean)){const e2={};EF.forEach(k=>{if(typeof o.entity[k]==="string")e2[k]=o.entity[k]});ent=e2;LS.set(EK,JSON.stringify(ent));EF.forEach(k=>{if(ent[k])$("e_"+k).value=ent[k]});eh()}
+  if(o.members&&Array.isArray(o.members.list)&&!(MB.list&&MB.list.length)){MB={list:o.members.list.filter(m=>m&&typeof m.id==="string"&&typeof m.email==="string"&&["owner","member","restricted"].includes(m.role)),token:typeof o.members.token==="string"?o.members.token:undefined,linkRole:o.members.linkRole==="restricted"?"restricted":"member"};mbSave()}
+  toast(add?"Imported "+add+" new version"+(add>1?"s":"")+".":"Nothing new to import.");render();
 };
 
 /* === START: SHEET MODALS JS === */
@@ -1701,7 +2056,7 @@ function openEd(n){
 $("newBtn").onclick=()=>openEd("");
 $("menuBtn").onclick=()=>$("drawer").showModal();
 $("drClose").onclick=()=>$("drawer").close();
-$("edClose").onclick=()=>$("editor").close();
+$("edClose").onclick=async()=>{if(edDirty()&&!await confirmBox("Discard changes?","You have changes that are not committed yet.","Discard",true))return;$("editor").close()};
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").close()});
 /* context pack */
 const CPL={all:"All files, every version",lat:"Latest versions + operating history",sel:"Selected files, every version"};
@@ -1750,8 +2105,11 @@ $("cpDl").onclick=()=>{
 const PRICE={m:999,y:999*12},CUR="₱";
 $("pm").textContent=CUR+PRICE.m.toLocaleString();$("py").textContent=CUR+PRICE.y.toLocaleString();
 $("proBtn").onclick=()=>{const d=$("pro");if(d.showModal)d.showModal()};
-$("proGo").addEventListener("click",()=>{LS.set("artibytte-plan-v1","pro");PLAN="pro";LIMIT=LIMITS.pro;render();toast("Pro preview on (test only).")});
-
+$("proGo").addEventListener("click",()=>{
+  if(PRO_PREVIEW){LS.set("artibytte-plan-v1","pro");PLAN="pro";LIMIT=LIMITS.pro;render();toast("Pro preview on (test only).");return}
+  const l=getLic()||{},yr=document.querySelector('input[name="plan"]:checked').value==="y";
+  location.href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent("ArtiBytte Pro waitlist")+"&body="+encodeURIComponent("Hi ArtiBytte team,\n\nPlease add me to the Pro waitlist ("+(yr?"yearly":"monthly")+").\n\nLicense: "+(l.code||"none")+"\nEmail: "+(l.email||"")+"\n");
+});
 /* === START: HAPTICS TOGGLE JS === */
 function paintHap(){$("hapBtn").textContent="Haptics: "+(LS.get("artibytte-haptics")==="off"?"Off":"On")}
 $("hapBtn").onclick=()=>{const off=LS.get("artibytte-haptics")==="off";LS.set("artibytte-haptics",off?"on":"off");paintHap();if(off)HAP("success")};
@@ -1765,19 +2123,351 @@ function paintBar(){
 }
 try{matchMedia("(prefers-color-scheme:dark)").addEventListener("change",paintBar)}catch(e){}
 /* === END: THEME-COLOR (STATUS BAR) === */
+/* === START: LICENSE GATE === */
+const LICK="artibytte-license-v1",TEAM_EMAIL="team@artibytte.co";
+const LIC_RE=/^ARTI-\d{6}$/,FREE_RE=/^ARTI-FREE-\d{6}$/,EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const validLicense=c=>LIC_RE.test(c)||FREE_RE.test(c); /* palitan ng server check soon */
+const getLic=()=>{try{return JSON.parse(LS.get(LICK)||"null")}catch(e){return null}};
+const licOk=()=>{const l=getLic();return !!(l&&l.code&&validLicense(l.code))};
+const newFree=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967296)}return "ARTI-FREE-"+String(n%1000000).padStart(6,"0")};
+const gStep=s=>["A","B","C"].forEach(k=>$("g"+k).hidden=k!==s);
+function openGate(){
+  gStep("A");$("g_err").textContent="";$("g_lic").value="";
+  $("g_get").href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent("ArtiBytte Protocol License Request")+"&body="+encodeURIComponent("Hi ArtiBytte team,\n\nI'd like to request a license for the ArtiBytte Executive Protocol.\n\nName:\nEmail:\nOrganization: "+(getEnt().name||"")+"\nUse case:\n\nThank you.");
+  $("gate").showModal();setTimeout(()=>$("g_lic").focus(),60);
+}
+$("g_go").onclick=()=>{
+  const c=$("g_lic").value.trim().toUpperCase();
+  if(!validLicense(c)){$("g_err").textContent="Invalid license. Format: ARTI-000000";HAP("error");return}
+  LS.set(LICK,JSON.stringify({code:c,type:FREE_RE.test(c)?"free":"license",t:Date.now()}));
+  $("gate").close();enterSetup();
+};
+$("g_lic").addEventListener("keydown",e=>{if(e.key==="Enter")$("g_go").click()});
+$("g_guest").onclick=()=>{$("g_merr").textContent="";gStep("B");setTimeout(()=>$("g_email").focus(),60)};
+$("g_back").onclick=()=>gStep("A");
+$("g_mk").onclick=()=>{
+  const em=$("g_email").value.trim();
+  if(!EMAIL_RE.test(em)){$("g_merr").textContent="Enter a valid email.";HAP("error");return}
+  const code=newFree();
+  LS.set(LICK,JSON.stringify({code,email:em,type:"free",t:Date.now()}));
+  $("g_code").textContent=code;gStep("C");
+};
+$("g_email").addEventListener("keydown",e=>{if(e.key==="Enter")$("g_mk").click()});
+$("g_cp").onclick=()=>copyText($("g_code").textContent,$("g_cp"));
+$("g_ct").onclick=()=>{$("gate").close();enterSetup()};
+$("g_x").onclick=()=>$("gate").close();
+/* === END: LICENSE GATE === */
+/* === START: PROFILE MENU === */
+const PM=$("prof"),SD=$("setD");
+const outside=(d,e)=>{const r=d.getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom};
+function paintProf(){
+  const l=getLic()||{},em=l.email||"",L=((em||l.code||"A").trim()[0]||"A").toUpperCase();
+  $("avL").textContent=L;$("pAvL").textContent=L;
+  $("pEm").textContent=em||l.code||"Guest";
+  $("pPl").textContent=(PLAN==="pro"?"Pro plan":"Free plan")+(em&&l.code?" · "+l.code:"");
+}
+function paintSet(){
+  const l=getLic()||{};
+  $("set_hap").textContent=LS.get("artibytte-haptics")==="off"?"Off":"On";
+  $("set_lic").textContent=l.code||"-";
+  $("set_plan").textContent=PLAN==="pro"?"Pro":"Free";
+  paintSetX();
+}
+$("avBtn").onclick=()=>{paintProf();PM.showModal()};
+PM.addEventListener("click",e=>{
+  if(e.target===PM){if(outside(PM,e))PM.close();return}
+  const b=e.target.closest("[data-p]");if(!b)return;
+  const k=b.dataset.p;
+  if(k==="set"){PM.close();paintSet();SD.showModal()}
+  else if(k==="off"){PM.close();openOffline()}
+  else if(k==="help"){PM.close();openHelp()}  else if(k==="mem"){PM.close();openMembers()}
+  else toast(b.dataset.n+" is coming soon.");});
+$("set_hap").onclick=()=>{$("hapBtn").click();paintSet()};
+$("set_org").onclick=()=>{if(!can("settings")){toast("Only the owner can change workspace settings.","err");return}SD.close();openSheet("eform")};$("setX").onclick=()=>SD.close();
+SD.addEventListener("click",e=>{if(e.target===SD&&outside(SD,e))SD.close()});
+$("set_out").onclick=async()=>{
+  const l=getLic()||{};
+  if(!await confirmBox("Log out?","Your files stay on this device. Keep your license ("+(l.code||"")+") to log back in.","Log out",true))return;
+  LS.set(LICK,"");SD.close();
+  try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+  pushed=false;show("home");toast("Logged out.");
+};
+/* === END: PROFILE MENU === */
+/* === START: MEMBERS === */
+const MK="artibytte-members-v1",MD=$("memD");
+const ROLES={owner:["Owner","Can change workspace settings and invite new members."],member:["Member","Can't change workspace settings or invite new members."],restricted:["Restricted member","Can only see and edit content they created or were explicitly shared with."]};
+const meId=()=>{const l=getLic()||{};return (l.email||l.code||"owner").toLowerCase()};
+const newTok=()=>{let a;try{a=crypto.getRandomValues(new Uint8Array(9))}catch(e){a=Array.from({length:9},()=>Math.random()*256|0)}return Array.from(a,x=>x.toString(36).padStart(2,"0")).join("").slice(0,16)};
+let MB={};try{MB=JSON.parse(LS.get(MK)||"{}")||{}}catch(e){}
+const mbSave=()=>LS.set(MK,JSON.stringify(MB));
+function mbInit(){
+  if(!Array.isArray(MB.list))MB.list=[];
+  if(!MB.token)MB.token=newTok();
+  if(!MB.linkRole)MB.linkRole="member";
+  if(!MB.list.some(m=>m.role==="owner")){const l=getLic()||{};MB.list.unshift({id:meId(),email:l.email||l.code||"Owner",role:"owner",t:Date.now()})}
+  mbSave();
+}
+const myRole=()=>{const m=(MB.list||[]).find(x=>x.id===meId());return m?m.role:"owner"};
+/* permission helpers: gamitin sa ibang features */
+const can=a=>myRole()==="owner"||a==="content";
+const canEdit=it=>{if(myRole()!=="restricted")return true;const me=meId();return !!it&&(it.by===me||(it.sharedWith||[]).includes(me))};
+function mbRender(){
+  mbInit();
+  const own=can("invite");
+  $("m_inv").hidden=!own;
+  $("m_link").value=location.href.split("#")[0]+"#join="+MB.token;
+  $("m_lrole").value=MB.linkRole;
+  $("mem_sub").textContent=own?"Invite people and set what they can do.":"Only the owner can invite people or change roles.";
+  $("m_list").innerHTML=MB.list.map(m=>{
+    const E=esc(m.email),I=esc(m.id);
+    const right=m.role==="owner"?'<span class="meta">Owner</span>':own?`<select class="msel" data-r="${I}" aria-label="Role for ${E}">${["member","restricted"].map(k=>`<option value="${k}"${m.role===k?" selected":""}>${ROLES[k][0]}</option>`).join("")}</select><button class="lnk" type="button" data-x="${I}" aria-label="Remove ${E}">Remove</button>`:`<span class="meta">${ROLES[m.role][0]}</span>`;
+    return `<div class="mrow"><span class="av">${esc((m.email||"?")[0])}</span><div class="mi"><b>${E}</b></div>${right}</div>`;
+  }).join("");
+  $("m_leg").innerHTML=Object.keys(ROLES).map(k=>`<p class="sub"><b>${ROLES[k][0]}</b>: ${ROLES[k][1]}</p>`).join("");
+}
+function openMembers(){mbRender();MD.showModal()}
+$("m_cp").onclick=()=>copyText($("m_link").value,$("m_cp"));
+$("m_lrole").onchange=()=>{if(!can("invite"))return;MB.linkRole=$("m_lrole").value;mbSave()};
+$("m_reset").onclick=async()=>{
+  if(!can("invite"))return;
+  if(!await confirmBox("Reset invite link?","A new link will replace the current one.","Reset",true))return;
+  MB.token=newTok();mbSave();mbRender();toast("New invite link ready.");
+};
+$("m_add").onclick=()=>{
+  if(!can("invite")){toast("Only the owner can invite members.","err");return}
+  const em=$("m_email").value.trim().toLowerCase();
+  if(!EMAIL_RE.test(em)){toast("Enter a valid email.","err");$("m_email").focus();return}
+  if(MB.list.some(m=>m.id===em||String(m.email).toLowerCase()===em)){toast("Already in this workspace.","err");return}
+  MB.list.push({id:em,email:em,role:$("m_role").value,t:Date.now()});
+  mbSave();$("m_email").value="";mbRender();toast("Added "+em+".");
+};
+$("m_email").addEventListener("keydown",e=>{if(e.key==="Enter")$("m_add").click()});
+$("m_list").addEventListener("change",e=>{
+  const s=e.target.closest("[data-r]");if(!s||!can("invite"))return;
+  const m=MB.list.find(x=>x.id===s.dataset.r);
+  if(m&&m.role!=="owner"){m.role=s.value;mbSave();toast("Role updated.")}
+});
+$("m_list").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-x]");if(!b||!can("invite"))return;
+  const m=MB.list.find(x=>x.id===b.dataset.x);if(!m||m.role==="owner")return;
+  if(!await confirmBox("Remove member?","Remove "+m.email+" from this workspace?","Remove",true))return;
+  MB.list=MB.list.filter(x=>x!==m);mbSave();mbRender();
+});
+$("memX").onclick=()=>MD.close();
+MD.addEventListener("click",e=>{if(e.target===MD&&outside(MD,e))MD.close()});
+/* === END: MEMBERS === */
+/* === START: OFFLINE PAGES === */
+const OD=$("ofD"),LBK="artibytte-lastbackup";
+const netOn=()=>navigator.onLine!==false;
+function ofNet(){const s=$("of_net");s.textContent=netOn()?"Online":"Offline";s.classList.toggle("off",!netOn())}
+async function ofPers(){try{return navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():null}catch(e){return null}}
+async function ofPaint(){
+  ofNet();
+  const all=names(),u=used(),p=Math.round(Math.min(100,u/LIMIT*100)),local=location.protocol==="file:";
+  $("of_h").textContent="Saved on this device · "+all.length+" file"+(all.length===1?"":"s");
+  $("of_list").hidden=!all.length;
+  $("of_list").innerHTML=all.map((n,i)=>{const c=lastOf(db[n]),N=esc(n);return `<button class="fr" type="button" data-o="${N}"><span class="ln">${i+1}</span><span class="nm">${N}</span><span class="vv">v${c.v} · ${kb(c.size||c.text.length)}</span></button>`}).join("");
+  const ps=await ofPers();
+  $("of_st").textContent=kb(u)+" of "+kb(LIMIT)+" used ("+p+"%). "+(ps===true?"Protected from browser cleanup.":ps===false?"Not protected from browser cleanup: the browser may delete this data if space runs low.":"Browser cleanup protection is unknown.");
+  const bk=Number(LS.get(LBK)||0);
+  $("of_bk").textContent=bk?fmt(bk):(all.length?"Never. Export one now":"-");
+  $("of_app").textContent=local
+    ?"You are using a local copy of this page, so it opens without internet. Its storage is separate from the online version: export a backup there and import it here."
+    :"This page is not installed for offline use. Opening it without internet depends on your browser's cache, which is not guaranteed, and Add to Home Screen does not change that. To be sure, save a copy and open it from your device. The copy has its own storage, so export a backup here and import it there.";
+  $("of_save").hidden=local;
+}
+function openOffline(){ofPaint();OD.showModal()}
+$("of_exp").onclick=()=>{$("exportBtn").click();setTimeout(ofPaint,400)};
+$("of_imp").onclick=()=>$("importBtn").click();
+$("of_list").addEventListener("click",e=>{const b=e.target.closest("[data-o]");if(!b)return;OD.close();openEd(b.dataset.o)});
+$("of_save").onclick=async()=>{
+  try{
+    const r=await fetch(location.href.split("#")[0],{cache:"reload"});
+    if(!r.ok)throw new Error("fetch");
+    const t=await r.text();
+    if(t.indexOf("ArtiBytte Executive Protocol")<0)throw new Error("page");
+    const url=URL.createObjectURL(new Blob([t],{type:"text/html"})),a=document.createElement("a");
+    a.href=url;a.download="artibytte-protocol-app.html";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+    toast("App copy saved. Open it from your device to use it offline.");
+  }catch(e){toast("Can't copy the page from here. Use your browser's Save Page As.","err")}
+};
+$("ofX").onclick=()=>OD.close();
+OD.addEventListener("click",e=>{if(e.target===OD&&outside(OD,e))OD.close()});
+window.addEventListener("offline",()=>{ofNet();toast("You're offline. Your files are saved on this device.")});
+window.addEventListener("online",()=>{ofNet();toast("Back online.")});
+window.addEventListener("focus",()=>{if(OD.open)ofPaint()});
+const edDirty=()=>{
+  if(!$("editor").open)return false;
+  const t=$("s_text").value;if(!t.trim())return false;
+  const n=finalName($("s_title").value),f=n&&db[n];
+  return !f||lastOf(f).text!==t;
+};
+$("editor").addEventListener("cancel",e=>{if(edDirty()){e.preventDefault();$("edClose").click()}});
+window.addEventListener("beforeunload",e=>{if(edDirty()){e.preventDefault();e.returnValue=""}});
+/* === END: OFFLINE PAGES === *//* === START: HELP === */
+const HD=$("helpD");
+const diag=()=>{const l=getLic()||{};return "\n\n---\nApp: ArtiBytte Protocol v"+VER.replace("-draft","")+"\nLicense: "+(l.code||"none")+"\nPlan: "+PLAN+"\nBrowser: "+navigator.userAgent};
+const helpMail=(s,b)=>{location.href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent(s)+"&body="+encodeURIComponent(b+diag())};
+function openHelp(){const l=getLic()||{};$("h_ver").textContent="v"+VER.replace("-draft","")+(l.code?" · "+l.code:"");HD.showModal()}
+$("h_how").onclick=()=>{HD.close();openSheet("howSec")};
+$("h_mail").onclick=()=>helpMail("ArtiBytte Protocol Support","Hi ArtiBytte team,\n\nI need help with:\n\n");
+$("h_bug").onclick=()=>helpMail("ArtiBytte Protocol Problem Report","Hi ArtiBytte team,\n\nWhat happened:\n\nWhat I expected:\n\nSteps to reproduce:\n");
+$("helpX").onclick=()=>HD.close();
+HD.addEventListener("click",e=>{if(e.target===HD&&outside(HD,e))HD.close()});
+/* === END: HELP === */
+if(false){ /* DUPLICATE OLD BLOCKS: PROFILE MENU, MEMBERS, LICENSE GATE. Pwede mong burahin lahat hanggang sa katapat na "}" */
+const PM=$("prof"),SD=$("setD");
+const outside=(d,e)=>{const r=d.getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom};
+function paintProf(){
+  const l=getLic()||{},em=l.email||"",L=((em||l.code||"A").trim()[0]||"A").toUpperCase();
+  $("avL").textContent=L;$("pAvL").textContent=L;
+  $("pEm").textContent=em||l.code||"Guest";
+  $("pPl").textContent=(PLAN==="pro"?"Pro plan":"Free plan")+(em&&l.code?" · "+l.code:"");
+}
+function paintSet(){
+  const l=getLic()||{};
+  $("set_hap").textContent=LS.get("artibytte-haptics")==="off"?"Off":"On";
+  $("set_lic").textContent=l.code||"-";
+  $("set_plan").textContent=PLAN==="pro"?"Pro":"Free";
+}
+$("avBtn").onclick=()=>{paintProf();PM.showModal()};
+PM.addEventListener("click",e=>{
+  if(e.target===PM){if(outside(PM,e))PM.close();return}
+  const b=e.target.closest("[data-p]");if(!b)return;
+  const k=b.dataset.p;
+  if(k==="set"){PM.close();paintSet();SD.showModal()}
+  else if(k==="off"){PM.close();$("drawer").showModal()}
+  else if(k==="help"){PM.close();location.href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent("ArtiBytte Protocol Support")+"&body="+encodeURIComponent("Hi ArtiBytte team,\n\nI need help with:\n\n")}
+  else if(k==="mem"){PM.close();openMembers()}
+  else toast(b.dataset.n+" is coming soon.");
+});
+$("set_hap").onclick=()=>{$("hapBtn").click();paintSet()};
+$("set_org").onclick=()=>{if(!can("settings")){toast("Only the owner can change workspace settings.","err");return}SD.close();openSheet("eform")};
+$("setX").onclick=()=>SD.close();
+SD.addEventListener("click",e=>{if(e.target===SD&&outside(SD,e))SD.close()});
+$("set_out").onclick=async()=>{
+  const l=getLic()||{};
+  if(!await confirmBox("Log out?","Your files stay on this device. Keep your license ("+(l.code||"")+") to log back in.","Log out",true))return;
+  LS.set(LICK,"");SD.close();
+  try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+  pushed=false;show("home");toast("Logged out.");
+};
+/* === END: PROFILE MENU === */
+/* === START: MEMBERS === */
+const MK="artibytte-members-v1",MD=$("memD");
+const ROLES={owner:["Owner","Can change workspace settings and invite new members."],member:["Member","Can't change workspace settings or invite new members."],restricted:["Restricted member","Can only see and edit content they created or were explicitly shared with."]};
+const meId=()=>{const l=getLic()||{};return (l.email||l.code||"owner").toLowerCase()};
+const newTok=()=>{let a;try{a=crypto.getRandomValues(new Uint8Array(9))}catch(e){a=Array.from({length:9},()=>Math.random()*256|0)}return Array.from(a,x=>x.toString(36).padStart(2,"0")).join("").slice(0,16)};
+let MB={};try{MB=JSON.parse(LS.get(MK)||"{}")||{}}catch(e){}
+const mbSave=()=>LS.set(MK,JSON.stringify(MB));
+function mbInit(){
+  if(!Array.isArray(MB.list))MB.list=[];
+  if(!MB.token)MB.token=newTok();
+  if(!MB.linkRole)MB.linkRole="member";
+  if(!MB.list.some(m=>m.role==="owner")){const l=getLic()||{};MB.list.unshift({id:meId(),email:l.email||l.code||"Owner",role:"owner",t:Date.now()})}
+  mbSave();
+}
+const myRole=()=>{const m=(MB.list||[]).find(x=>x.id===meId());return m?m.role:"owner"};
+/* permission helpers: gamitin sa ibang features */
+const can=a=>myRole()==="owner"||a==="content";
+const canEdit=it=>{if(myRole()!=="restricted")return true;const me=meId();return !!it&&(it.by===me||(it.sharedWith||[]).includes(me))};
+function mbRender(){
+  mbInit();
+  const own=can("invite");
+  $("m_inv").hidden=!own;
+  $("m_link").value=location.href.split("#")[0]+"#join="+MB.token;
+  $("m_lrole").value=MB.linkRole;
+  $("mem_sub").textContent=own?"Invite people and set what they can do.":"Only the owner can invite people or change roles.";
+  $("m_list").innerHTML=MB.list.map(m=>{
+    const E=esc(m.email),I=esc(m.id);
+    const right=m.role==="owner"?'<span class="meta">Owner</span>':own?`<select class="msel" data-r="${I}" aria-label="Role for ${E}">${["member","restricted"].map(k=>`<option value="${k}"${m.role===k?" selected":""}>${ROLES[k][0]}</option>`).join("")}</select><button class="lnk" type="button" data-x="${I}" aria-label="Remove ${E}">Remove</button>`:`<span class="meta">${ROLES[m.role][0]}</span>`;
+    return `<div class="mrow"><span class="av">${esc((m.email||"?")[0])}</span><div class="mi"><b>${E}</b></div>${right}</div>`;
+  }).join("");
+  $("m_leg").innerHTML=Object.keys(ROLES).map(k=>`<p class="sub"><b>${ROLES[k][0]}</b>: ${ROLES[k][1]}</p>`).join("");
+}
+function openMembers(){mbRender();MD.showModal()}
+$("m_cp").onclick=()=>copyText($("m_link").value,$("m_cp"));
+$("m_lrole").onchange=()=>{if(!can("invite"))return;MB.linkRole=$("m_lrole").value;mbSave()};
+$("m_reset").onclick=async()=>{
+  if(!can("invite"))return;
+  if(!await confirmBox("Reset invite link?","A new link will replace the current one.","Reset",true))return;
+  MB.token=newTok();mbSave();mbRender();toast("New invite link ready.");
+};
+$("m_add").onclick=()=>{
+  if(!can("invite")){toast("Only the owner can invite members.","err");return}
+  const em=$("m_email").value.trim().toLowerCase();
+  if(!EMAIL_RE.test(em)){toast("Enter a valid email.","err");$("m_email").focus();return}
+  if(MB.list.some(m=>m.id===em||String(m.email).toLowerCase()===em)){toast("Already in this workspace.","err");return}
+  MB.list.push({id:em,email:em,role:$("m_role").value,t:Date.now()});
+  mbSave();$("m_email").value="";mbRender();toast("Added "+em+".");
+};
+$("m_email").addEventListener("keydown",e=>{if(e.key==="Enter")$("m_add").click()});
+$("m_list").addEventListener("change",e=>{
+  const s=e.target.closest("[data-r]");if(!s||!can("invite"))return;
+  const m=MB.list.find(x=>x.id===s.dataset.r);
+  if(m&&m.role!=="owner"){m.role=s.value;mbSave();toast("Role updated.")}
+});
+$("m_list").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-x]");if(!b||!can("invite"))return;
+  const m=MB.list.find(x=>x.id===b.dataset.x);if(!m||m.role==="owner")return;
+  if(!await confirmBox("Remove member?","Remove "+m.email+" from this workspace?","Remove",true))return;
+  MB.list=MB.list.filter(x=>x!==m);mbSave();mbRender();
+});
+$("memX").onclick=()=>MD.close();
+MD.addEventListener("click",e=>{if(e.target===MD&&outside(MD,e))MD.close()});
+/* === END: MEMBERS === *//* === START: LICENSE GATE === */
+const LICK="artibytte-license-v1",TEAM_EMAIL="team@artibytte.co";
+const LIC_RE=/^ARTI-\d{6}$/,FREE_RE=/^ARTI-FREE-\d{6}$/,EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const validLicense=c=>LIC_RE.test(c)||FREE_RE.test(c); /* palitan ng server check soon */
+const getLic=()=>{try{return JSON.parse(LS.get(LICK)||"null")}catch(e){return null}};
+const licOk=()=>{const l=getLic();return !!(l&&l.code&&validLicense(l.code))};
+const newFree=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967296)}return "ARTI-FREE-"+String(n%1000000).padStart(6,"0")};
+const gStep=s=>["A","B","C"].forEach(k=>$("g"+k).hidden=k!==s);
+function openGate(){
+  gStep("A");$("g_err").textContent="";$("g_lic").value="";
+  $("g_get").href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent("ArtiBytte Protocol License Request")+"&body="+encodeURIComponent("Hi ArtiBytte team,\n\nI'd like to request a license for the ArtiBytte Executive Protocol.\n\nName:\nEmail:\nOrganization: "+(getEnt().name||"")+"\nUse case:\n\nThank you.");
+  $("gate").showModal();setTimeout(()=>$("g_lic").focus(),60);
+}
+$("g_go").onclick=()=>{
+  const c=$("g_lic").value.trim().toUpperCase();
+  if(!validLicense(c)){$("g_err").textContent="Invalid license. Format: ARTI-000000";HAP("error");return}
+  LS.set(LICK,JSON.stringify({code:c,type:FREE_RE.test(c)?"free":"license",t:Date.now()}));
+  $("gate").close();enterSetup();
+};
+$("g_lic").addEventListener("keydown",e=>{if(e.key==="Enter")$("g_go").click()});
+$("g_guest").onclick=()=>{$("g_merr").textContent="";gStep("B");setTimeout(()=>$("g_email").focus(),60)};
+$("g_back").onclick=()=>gStep("A");
+$("g_mk").onclick=()=>{
+  const em=$("g_email").value.trim();
+  if(!EMAIL_RE.test(em)){$("g_merr").textContent="Enter a valid email.";HAP("error");return}
+  const code=newFree();
+  LS.set(LICK,JSON.stringify({code,email:em,type:"free",t:Date.now()}));
+  $("g_code").textContent=code;gStep("C");
+};
+$("g_email").addEventListener("keydown",e=>{if(e.key==="Enter")$("g_mk").click()});
+$("g_cp").onclick=()=>copyText($("g_code").textContent,$("g_cp"));
+$("g_ct").onclick=()=>{$("gate").close();enterSetup()};
+$("g_x").onclick=()=>$("gate").close();
+/* === END: LICENSE GATE === */
+} /* END DUPLICATE OLD BLOCKS */
 /* routing */
 let pushed=false,cur="home";
 function show(v,initial){
   const s=v==="setup";cur=v;$("home").hidden=s;$("setup").hidden=!s;document.documentElement.dataset.view=v;paintBar();
   if(!initial){window.scrollTo(0,0);(s?$("h1s"):$("go")).focus()}
 }
-const route=i=>show(location.hash==="#setup"?"setup":"home",i);
+const route=i=>show(location.hash==="#setup"&&licOk()?"setup":"home",i);
 window.addEventListener("hashchange",()=>route(false));
 window.addEventListener("popstate",()=>route(false));
 $("go").onclick=()=>{
+  if(!licOk()){openGate();return}
+  enterSetup();
+};
+function enterSetup(){
   show("setup");
-  try{if(location.hash!=="#setup"){history.pushState({v:"setup"},"","#setup");pushed=true}}
-  catch(e){try{location.hash="#setup";pushed=true}catch(e2){}}
+  paintProf();
+  paintProf();
+  try{if(location.hash!=="#setup"){history.pushState({v:"setup"},"","#setup");pushed=true}}  catch(e){try{location.hash="#setup";pushed=true}catch(e2){}}
 };
 $("back").onclick=()=>{
   const home=()=>{try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}show("home")};
@@ -1887,8 +2577,47 @@ for(let h=0;h<NH;h++){cx.lineWidth=2.6;cx.strokeStyle=ACOL[h][0];cx.stroke(ap[h]
   (function frame(now){if(!document.hidden&&!$("home").hidden)draw(now);requestAnimationFrame(frame)})(performance.now());
 })();
 /* === END: PARTICLE SPHERE JS === */
+/* === START: SETTINGS HARDENING === */
+const THK="artibytte-theme";
+function applyTheme(){const v=LS.get(THK),h=document.documentElement;if(v==="light"||v==="dark")h.dataset.theme=v;else delete h.dataset.theme;paintBar()}
+async function persState(){try{return navigator.storage&&navigator.storage.persisted?await navigator.storage.persisted():null}catch(e){return null}}
+async function paintSetX(){
+  const u=used(),p=Math.min(100,u/LIMIT*100);
+  $("set_stF").style.width=p+"%";$("set_stF").classList.toggle("hot",p>=90);
+  $("set_meterW").setAttribute("aria-valuenow",Math.round(p));
+  $("set_st").textContent=kb(u)+" of "+kb(LIMIT)+" used on this device ("+Math.round(p)+"%)";
+  $("set_sub").textContent=PLAN==="pro"?"Pro (preview)":"None. Free plan.";
+  $("set_theme").value=["light","dark"].includes(LS.get(THK))?LS.get(THK):"auto";
+  const ps=await persState();
+  $("set_pers").textContent=ps===true?"Yes":ps===false?"No. Tap to request":"Unknown";
+  $("set_pers").disabled=ps===true;
+}
+$("set_exp").onclick=()=>$("exportBtn").click();
+$("set_imp").onclick=()=>$("importBtn").click();
+$("set_theme").onchange=()=>{LS.set(THK,$("set_theme").value);applyTheme()};
+$("set_pers").onclick=async()=>{
+  if(!navigator.storage||!navigator.storage.persist){toast("Not supported in this browser.","err");return}
+  try{const ok=await navigator.storage.persist();toast(ok?"Storage protected.":"The browser declined. Bookmark or install this page, then try again.",ok?"":"err")}catch(e){toast("Could not request protection.","err")}
+  paintSetX();
+};
+$("set_clr").onclick=async()=>{
+  if(!await confirmBox("Clear local data?","This deletes all files, versions, members, your organization and your license from this device. Export a backup first. This can't be undone.","Delete everything",true))return;
+  try{Object.keys(localStorage).filter(k=>k.startsWith("artibytte-")).forEach(k=>localStorage.removeItem(k))}catch(e){}
+  location.replace(location.pathname+location.search);
+};
+window.addEventListener("storage",e=>{
+  try{
+    if(e.key===KEY){const o=JSON.parse(e.newValue||"{}");db={};for(const n in o)if(o[n]&&Array.isArray(o[n].vs))db[n]=o[n];render()}
+    else if(e.key===MK){MB=JSON.parse(e.newValue||"{}")||{}}
+    else if(e.key===EK){ent=JSON.parse(e.newValue||"{}")||{};EF.forEach(k=>{$("e_"+k).value=ent[k]||(k==="type"?DEF_TYPE:"")});eh()}
+    else if(e.key===SK){st=JSON.parse(e.newValue||"{}")||{};paintSteps()}
+    else if(e.key===LICK){paintProf();if(!licOk()&&cur==="setup")show("home")}
+    else if(e.key===THK){applyTheme()}
+  }catch(x){}
+});
+applyTheme();
+/* === END: SETTINGS HARDENING === */
 $("homeVer").textContent="v"+VER.replace("-draft","");
-paintSteps();render();$("s_title").value=CHIPS.op();sbState();route(true);
-</script>
+paintSteps();render();paintProf();$("s_title").value=CHIPS.op();sbState();route(true);</script>
 </body>
 </html>
