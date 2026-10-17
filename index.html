@@ -1678,7 +1678,7 @@ $("back").onclick=()=>{
 /* === START: PARTICLE SPHERE JS === */
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
-  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=40000,NH=2,NA=120,NS=14000,NC=11000;
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=54000,NH=2,NA=120,NS=28000,NC=11000;
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
   const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N);
   for(let i=0;i<N;i++){
@@ -1708,7 +1708,7 @@ TR[i]=tr;LN[i]=[.011,.013,.009,.028][tr];
   /* === START: 7 RAINBOW COLORS === */
 const HUES=[335,45],ACOL=[];
 /* alpha per tier as [back,front]: shell, mid, core */
-const TA=[[.24,.7],[.32,.85],[.3,.6]];
+const TA=[[.3,.75],[.32,.85],[.3,.6]];
 HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0]+")","hsla("+h+",100%,58%,"+a[1]+")")});COL.push(row);ACOL.push(["hsla("+h+",100%,70%,.2)","hsla("+h+",100%,82%,1)"])});
 /* === END: 7 RAINBOW COLORS === */
   const tilt=.38,ct=Math.cos(tilt),st=Math.sin(tilt);
