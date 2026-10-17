@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-view="home">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -179,14 +179,39 @@ dialog[open]::backdrop{animation:fadeIn .25s ease}
 /* === END: SPRING + MOTION CSS === */
 /* === START: PARTICLE SPHERE CSS === */
 /* === START: NO BLACK DISC === */
-/* === START: SUBTLE BLACK SPHERE BG === */
-.orb{width:min(70vw,260px);height:min(70vw,260px);background:radial-gradient(circle at 50% 45%,rgba(0,0,0,.88) 0,rgba(0,0,0,.78) 60%,rgba(0,0,0,.62) 100%);box-shadow:0 14px 40px rgba(0,0,0,.18)}
-/* === END: SUBTLE BLACK SPHERE BG === */
+.orb{width:min(70vw,260px);height:min(70vw,260px);background:transparent;box-shadow:none}
 /* === END: NO BLACK DISC === */
-.orb::before,.orb::after{display:none}
+/* === START: SPHERE MATERIAL (LIGHT + SHADOW) === */
+.orb::before,.orb::after{display:block;animation:none;-webkit-mask:none;mask:none;clip-path:none;border-radius:50%;pointer-events:none}
+.orb::before{left:50%;top:auto;bottom:-13%;width:72%;height:12%;transform:translateX(-38%);z-index:-1;background:radial-gradient(ellipse at center,rgba(0,0,0,.45),transparent 70%);filter:blur(8px)}
+.orb::after{left:0;top:0;width:100%;height:100%;transform:none;z-index:1;
+background-image:
+radial-gradient(ellipse 34% 22% at 32% 22%,rgba(255,244,228,.22),transparent 70%),
+radial-gradient(circle at 50% 50%,transparent 62%,rgba(150,170,255,.14) 92%,rgba(190,205,255,.28) 100%),
+/* === START: FILL LIGHT LOBE === */
+radial-gradient(circle at 84% 86%,rgba(120,150,255,.13),transparent 40%),
+/* === END: FILL LIGHT LOBE === */
+radial-gradient(circle at 74% 82%,rgba(0,0,0,.35),transparent 55%),
+url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .16 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+background-size:auto,auto,auto,auto,140px 140px;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat}
+/* === START: RIM LIGHT (BRONZE + COOL EDGE) === */
+.orb::after{transition:box-shadow .35s ease;box-shadow:inset 1.2px 1.4px 0 rgba(226,180,130,.60),inset 3px 4px 8px -2px rgba(190,135,90,.22),inset -1px -1.2px 0 rgba(178,198,255,.22),inset 0 0 0 1px rgba(255,255,255,.05)}
+.orb:hover::after{box-shadow:inset 1.2px 1.4px 0 rgba(232,188,140,.75),inset 3px 4px 8px -2px rgba(196,142,96,.30),inset -1px -1.2px 0 rgba(188,206,255,.30),inset 0 0 0 1px rgba(255,255,255,.08)}
+/* === END: RIM LIGHT (BRONZE + COOL EDGE) === */
+/* === END: SPHERE MATERIAL (LIGHT + SHADOW) === */
 .orb:hover{box-shadow:none}
 .orb canvas{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:50%;pointer-events:none}
 /* === END: PARTICLE SPHERE CSS === */
+/* === START: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
+html[data-view="home"],html[data-view="home"] body{background:#08080a}
+/* === START: AMBIENT ATMOSPHERE === */
+#home{color-scheme:dark;color:#e8ecf8;background:radial-gradient(circle 250px at 50% 50%,rgba(196,150,104,.07) 0,rgba(196,150,104,.03) 55%,transparent 100%),radial-gradient(ellipse 90% 70% at 50% 48%,#111113 0,#0c0c0e 60%,#08080a 100%)}
+#home::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");background-size:160px 160px}
+/* === END: AMBIENT ATMOSPHERE === */
+#home .hf-copy{color:rgba(226,232,248,.6)}
+#home .hf-legal{color:rgba(226,232,248,.5)}
+#home :focus-visible{outline-color:rgba(226,190,150,.85)}
+/* === END: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -1622,10 +1647,18 @@ function paintHap(){$("hapBtn").textContent="Haptics: "+(LS.get("artibytte-hapti
 $("hapBtn").onclick=()=>{const off=LS.get("artibytte-haptics")==="off";LS.set("artibytte-haptics",off?"on":"off");paintHap();if(off)HAP("success")};
 paintHap();
 /* === END: HAPTICS TOGGLE JS === */
+/* === START: THEME-COLOR (STATUS BAR) === */
+function paintBar(){
+  let m=document.querySelector('meta[name="theme-color"]');
+  if(!m){m=document.createElement("meta");m.name="theme-color";document.head.appendChild(m)}
+  m.content=cur==="home"?"#08080a":getComputedStyle(document.body).backgroundColor;
+}
+try{matchMedia("(prefers-color-scheme:dark)").addEventListener("change",paintBar)}catch(e){}
+/* === END: THEME-COLOR (STATUS BAR) === */
 /* routing */
 let pushed=false,cur="home";
 function show(v,initial){
-  const s=v==="setup";cur=v;$("home").hidden=s;$("setup").hidden=!s;
+  const s=v==="setup";cur=v;$("home").hidden=s;$("setup").hidden=!s;document.documentElement.dataset.view=v;paintBar();
   if(!initial){window.scrollTo(0,0);(s?$("h1s"):$("go")).focus()}
 }
 const route=i=>show(location.hash==="#setup"?"setup":"home",i);
@@ -1645,13 +1678,20 @@ $("back").onclick=()=>{
 /* === START: PARTICLE SPHERE JS === */
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
-  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=7777,NH=7,LEN=.03;
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=7777,NH=7,NA=233,NS=2900,NC=2500;
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
-  const HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N);
+  const HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N);
   for(let i=0;i<N;i++){
     const u=Math.random()*2-1,a=Math.random()*TAU,s=Math.sqrt(1-u*u);
     const nx=s*Math.cos(a),ny=u,nz=s*Math.sin(a);
-    const r=Math.random()<.5?1:Math.cbrt(Math.random());
+    /* === START: PARTICLE HIERARCHY (TIERS) === */
+let tr,r;
+if(i<NA){tr=3;r=.86+Math.random()*.14}
+else if(i<NA+NS){tr=0;r=.97+Math.random()*.03}
+else if(i<NA+NS+NC){tr=2;r=Math.pow(Math.random(),1.8)*.6}
+else{tr=1;r=.58+Math.cbrt(Math.random())*.36}
+TR[i]=tr;LN[i]=[.026,.03,.022,.052][tr];
+/* === END: PARTICLE HIERARCHY (TIERS) === */
     let wx=Math.random()-.5,wy=Math.random()-.5,wz=Math.random()-.5;
     const d=wx*nx+wy*ny+wz*nz;wx-=d*nx;wy-=d*ny;wz-=d*nz;
     const l=Math.hypot(wx,wy,wz)||1;wx/=l;wy/=l;wz/=l;
@@ -1663,9 +1703,12 @@ $("back").onclick=()=>{
     SP[i]=(Math.random()<.5?-1:1)*(.4+Math.random()*1.4);
     PH[i]=Math.random()*TAU;
   }
-  const COL=[];
+  const COL=[];window.ORBSTATS={total:N,accent:NA,shell:NS,core:NC,mid:N-NA-NS-NC};
   /* === START: 7 RAINBOW COLORS === */
-[0,30,55,125,210,250,285].forEach(h=>COL.push(["hsla("+h+",100%,52%,.4)","hsla("+h+",100%,55%,.95)"]));
+const HUES=[0,30,55,125,210,250,285],ACOL=[];
+/* alpha per tier as [back,front]: shell, mid, core */
+const TA=[[.22,.62],[.3,.8],[.28,.55]];
+HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0]+")","hsla("+h+",100%,58%,"+a[1]+")")});COL.push(row);ACOL.push(["hsla("+h+",100%,70%,.2)","hsla("+h+",100%,82%,1)"])});
 /* === END: 7 RAINBOW COLORS === */
   const tilt=.38,ct=Math.cos(tilt),st=Math.sin(tilt);
   let ry=0,last=performance.now(),boost=1,tgt=1;
@@ -1679,19 +1722,34 @@ $("back").onclick=()=>{
     ry+=.55*boost*dt;
     const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000;
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
-    const paths=[];for(let k=0;k<NH*2;k++)paths.push(new Path2D());
+    const paths=[],ap=[];for(let k=0;k<NH*6;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.025*Math.sin(t*1.1);
     for(let i=0;i<N;i++){
-      const k=i*3,th=t*SP[i]+PH[i],cc=Math.cos(th)*LEN,ss=Math.sin(th)*LEN;
+      const k=i*3,th=t*SP[i]+PH[i],cc=Math.cos(th)*LN[i],ss=Math.sin(th)*LN[i];
       const ox=TG[k]*cc+BN[k]*ss,oy=TG[k+1]*cc+BN[k+1]*ss,oz=TG[k+2]*cc+BN[k+2]*ss;
-      const x=P[k],y=P[k+1],z=P[k+2];
+      const bs=TR[i]===2?br:1,x=P[k]*bs,y=P[k+1]*bs,z=P[k+2]*bs;
       const x1=x*cr+z*sr,z1=-x*sr+z*cr,y2=y*ct-z1*st,z2=y*st+z1*ct;
       const a1=ox*cr+oz*sr,c1=-ox*sr+oz*cr,b2=oy*ct-c1*st;
-      const p=paths[HB[i]*2+(z2>0?1:0)];
+      const tr=TR[i],fr=z2>0?1:0;
+if(tr===3&&!fr)continue;
+const p=tr===3?ap[HB[i]]:paths[HB[i]*6+tr*2+fr];
       p.moveTo(c+(x1-a1)*R,c+(y2-b2)*R);
       p.lineTo(c+(x1+a1)*R,c+(y2+b2)*R);
     }
     cx.lineWidth=1;cx.lineCap="round";
-    for(let k=0;k<NH*2;k++){cx.strokeStyle=COL[k>>1][k&1];cx.stroke(paths[k])}
+    /* === START: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
+for(let f=0;f<2;f++)for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COL[h][tr*2+f];cx.stroke(paths[h*6+tr*2+f])}
+/* === START: LIGHT RIG ON PARTICLES (KEY + FILL) === */
+cx.globalCompositeOperation="source-atop";
+let g=cx.createRadialGradient(w*.34,w*.28,0,w*.34,w*.28,w*1.05);
+g.addColorStop(0,"rgba(255,232,205,.30)");g.addColorStop(.35,"rgba(255,232,205,0)");g.addColorStop(.45,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.5)");
+cx.fillStyle=g;cx.fillRect(0,0,w,w);
+g=cx.createRadialGradient(w*.86,w*.84,0,w*.86,w*.84,w*.4);
+g.addColorStop(0,"rgba(120,150,255,.20)");g.addColorStop(1,"rgba(120,150,255,0)");
+cx.fillStyle=g;cx.fillRect(0,0,w,w);
+cx.globalCompositeOperation="source-over";
+/* === END: LIGHT RIG ON PARTICLES (KEY + FILL) === */
+for(let h=0;h<NH;h++){cx.lineWidth=4;cx.strokeStyle=ACOL[h][0];cx.stroke(ap[h]);cx.lineWidth=1.6;cx.strokeStyle=ACOL[h][1];cx.stroke(ap[h])}
+/* === END: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
   }
   const go=$("go");
   ["pointerdown"].forEach(ev=>go.addEventListener(ev,()=>{tgt=5}));
