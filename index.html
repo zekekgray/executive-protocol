@@ -2738,24 +2738,24 @@ const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
     const dt=Math.min(50,now-last)/1000;last=now;
     boost+=(tgt-boost)*(1-Math.exp(-dt*5));
     ry+=.34*boost*dt;tm+=dt;
-    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=.9+tm*.3,ct=Math.cos(tl),st=Math.sin(tl),mo=1;
+    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=0,ct=1,st=0,fc=Math.cos(1.5708),fs=Math.sin(1.5708),mo=1;
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
     const paths=[],ap=[];for(let k=0;k<NH*3*DB;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()];
     for(let i=0;i<N;i++){
       const k=i*3,th=tm*SP[i]*.7+PH[i],cc=Math.cos(th)*LN[i],ss=Math.sin(th)*LN[i];
       const ox=TG[k]*cc+BN[k]*ss,oy=TG[k+1]*cc+BN[k+1]*ss,oz=TG[k+2]*cc+BN[k+2]*ss;
       const bs=(TR[i]===2?br:1)*(1+(CY[i]-1)*mo),x=P[k]*bs,y=P[k+1]*bs,z=P[k+2]*bs;
-      const x1=x*cr+z*sr,z1=-x*sr+z*cr,y2=y*ct-z1*st,z2=y*st+z1*ct;
-      const a1=ox*cr+oz*sr,c1=-ox*sr+oz*cr,b2=oy*ct-c1*st;
-      const tr=TR[i],fr=z2>0?1:0,db=Math.max(0,Math.min(DB-1,Math.floor((z2+1)*.5*DB)));
+      const xa=x*fc-y*fs,ya=x*fs+y*fc,x1=xa*cr+z*sr,z1=-xa*sr+z*cr,y2=ya*ct-z1*st,z2=ya*st+z1*ct;
+      const oxa=ox*fc-oy*fs,oya=ox*fs+oy*fc,a1=oxa*cr+oz*sr,c1=-oxa*sr+oz*cr,b2=oya*ct-c1*st;
+      const tr=TR[i],fr=z2>0?1:0,db=fr?DB-1:1;
 if(tr===3&&!fr)continue;
 let p;
 if(tr===0){
-  const gw=Math.max(0,-(x1+y2)*.7071),ge=GE[i];
+  const gw=0,ge=1;
   let gi=-1;
   if(fr&&gw>.45&&ge<.012)gi=2;
   else if(gw>0&&ge<.6*gw*gw*gw)gi=fr?1:0;
-  const tw=Math.max(0,(x1+y2)*.7071);
+  const tw=0;
 if(gi>=0)p=gp[gi];
 else if(tw>0&&ge>1-.5*tw*tw*tw)p=tp[fr];
 else p=paths[HB[i]*3*DB+db];
@@ -2767,14 +2767,14 @@ else p=paths[HB[i]*3*DB+db];
     /* === START: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
 for(let b=0;b<DB;b++){cx.lineWidth=.7+.7*b/(DB-1);for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COLD[h][tr][b];cx.stroke(paths[(h*3+tr)*DB+b])}}
 /* === START: LIGHT RIG ON PARTICLES (KEY + FILL) === */
-cx.globalCompositeOperation="source-atop";
+cx.globalCompositeOperation="source-atop";cx.globalAlpha=0;
 let g=cx.createRadialGradient(w*.34,w*.28,0,w*.34,w*.28,w*1.05);
 g.addColorStop(0,"rgba(255,232,205,.30)");g.addColorStop(.35,"rgba(255,232,205,0)");g.addColorStop(.45,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.28)");
 cx.fillStyle=g;cx.fillRect(0,0,w,w);
 g=cx.createRadialGradient(w*.86,w*.84,0,w*.86,w*.84,w*.4);
 g.addColorStop(0,"rgba(64,224,208,.18)");g.addColorStop(1,"rgba(64,224,208,0)");
 cx.fillStyle=g;cx.fillRect(0,0,w,w);
-cx.globalCompositeOperation="source-over";
+cx.globalCompositeOperation="source-over";cx.globalAlpha=1;
 /* === END: LIGHT RIG ON PARTICLES (KEY + FILL) === */
 cx.lineCap="round";
 cx.lineWidth=1.3;cx.strokeStyle="hsla(43,85%,50%,.35)";cx.stroke(gp[0]);
