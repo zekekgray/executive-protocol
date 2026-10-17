@@ -1711,6 +1711,7 @@ const HUES=[335,45],ACOL=[];
 const TA=[[.3,.75],[.32,.85],[.3,.6]];
 HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0]+")","hsla("+h+",100%,58%,"+a[1]+")")});COL.push(row);ACOL.push(["hsla("+h+",100%,70%,.2)","hsla("+h+",100%,82%,1)"])});
 /* === END: 7 RAINBOW COLORS === */
+const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(DB-1),al=a[0]+(a[1]-a[0])*t;return "hsla("+h+",100%,"+(54+4*t)+"%,"+al.toFixed(3)+")"})));
   const tilt=.38,ct=Math.cos(tilt),st=Math.sin(tilt);
   let ry=0,tm=0,last=performance.now(),boost=1,tgt=1;
   function draw(now){
@@ -1723,14 +1724,14 @@ HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0
     ry+=.34*boost*dt;tm+=dt;
     const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=tm*.3,ct=Math.cos(tl),st=Math.sin(tl),mo=.6+.3*Math.sin(tm*.3);
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
-    const paths=[],ap=[];for(let k=0;k<NH*6;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()];
+    const paths=[],ap=[];for(let k=0;k<NH*3*DB;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()];
     for(let i=0;i<N;i++){
       const k=i*3,th=tm*SP[i]*.7+PH[i],cc=Math.cos(th)*LN[i],ss=Math.sin(th)*LN[i];
       const ox=TG[k]*cc+BN[k]*ss,oy=TG[k+1]*cc+BN[k+1]*ss,oz=TG[k+2]*cc+BN[k+2]*ss;
       const bs=(TR[i]===2?br:1)*(1+(CY[i]-1)*mo),x=P[k]*bs,y=P[k+1]*bs,z=P[k+2]*bs;
       const x1=x*cr+z*sr,z1=-x*sr+z*cr,y2=y*ct-z1*st,z2=y*st+z1*ct;
       const a1=ox*cr+oz*sr,c1=-ox*sr+oz*cr,b2=oy*ct-c1*st;
-      const tr=TR[i],fr=z2>0?1:0;
+      const tr=TR[i],fr=z2>0?1:0,db=Math.max(0,Math.min(DB-1,Math.floor((z2+1)*.5*DB)));
 if(tr===3&&!fr)continue;if(tr===0&&z2<-.15)continue;
 let p;
 if(tr===0){
@@ -1743,14 +1744,14 @@ if(tr===0){
 if(gi>=0)p=gp[gi];
 else if(ge>.97)p=tp[fr];
 else if(fr&&tw>0&&ge>1-.22*tw*tw)p=tp[1];
-else p=paths[HB[i]*6+fr];
-}else p=tr===3?ap[HB[i]]:paths[HB[i]*6+tr*2+fr];
+else p=paths[HB[i]*3*DB+db];
+}else p=tr===3?ap[HB[i]]:paths[(HB[i]*3+tr)*DB+db];
       p.moveTo(c+(x1+a1)*R,c+(y2+b2)*R);
       p.lineTo(c+(x1+a1)*R+.01,c+(y2+b2)*R);
     }
     cx.lineWidth=1.3;cx.lineCap="round";
     /* === START: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
-for(let f=0;f<2;f++)for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COL[h][tr*2+f];cx.stroke(paths[h*6+tr*2+f])}
+for(let b=0;b<DB;b++){cx.lineWidth=.9+.6*b/(DB-1);for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COLD[h][tr][b];cx.stroke(paths[(h*3+tr)*DB+b])}}
 /* === START: LIGHT RIG ON PARTICLES (KEY + FILL) === */
 cx.globalCompositeOperation="source-atop";
 let g=cx.createRadialGradient(w*.34,w*.28,0,w*.34,w*.28,w*1.05);
