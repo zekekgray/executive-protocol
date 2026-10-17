@@ -18,7 +18,7 @@ code{font:.8125rem ui-monospace,Menlo,Consolas,monospace;background:var(--bg);pa
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 button{font-family:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.home{flex:1;position:relative;isolation:isolate;display:grid;place-items:center;padding:24px 20px}
+.home{flex:1;position:relative;isolation:isolate;display:grid;place-items:center;padding:24px 20px;overflow:hidden}
 @property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
 @keyframes ringspin{to{--a:360deg}}
 .orb{position:relative;width:64px;height:64px;border-radius:50%;border:0;padding:0;cursor:pointer;background:radial-gradient(circle at 34% 28%,rgba(255,246,218,.5),transparent 45%),linear-gradient(160deg,#e9d6a4 0,#d4b373 12%,#e3c98f 22%,#c29a58 34%,#dcc084 46%,#b98f4f 58%,#d8ba7c 70%,#b08545 84%,#9a7238 100%);box-shadow:inset -11px -11px 18px rgba(25,12,0,.5),0 0 0 rgba(240,210,140,0);transition:box-shadow .25s ease}
@@ -179,7 +179,7 @@ dialog[open]::backdrop{animation:fadeIn .25s ease}
 /* === END: SPRING + MOTION CSS === */
 /* === START: PARTICLE SPHERE CSS === */
 /* === START: NO BLACK DISC === */
-.orb{width:min(70vw,260px);height:min(70vw,260px);background:transparent;box-shadow:none}
+.orb{width:min(90vw,360px);height:min(90vw,360px);background:transparent;box-shadow:none}
 /* === END: NO BLACK DISC === */
 /* === START: SPHERE MATERIAL (LIGHT + SHADOW) === */
 .orb::before,.orb::after{display:block;animation:none;-webkit-mask:none;mask:none;clip-path:none;border-radius:50%;pointer-events:none}
@@ -200,7 +200,8 @@ background-size:auto,auto,auto,auto,140px 140px;background-repeat:no-repeat,no-r
 /* === END: RIM LIGHT (BRONZE + COOL EDGE) === */
 /* === END: SPHERE MATERIAL (LIGHT + SHADOW) === */
 .orb:hover{box-shadow:none}
-.orb canvas{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:50%;pointer-events:none}
+.orb canvas{position:absolute;inset:-12.5%;width:125%;height:125%;display:block;border-radius:0;pointer-events:none}
+.orb::before,.orb::after{display:none}
 /* === END: PARTICLE SPHERE CSS === */
 /* === START: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
 html[data-view="home"],html[data-view="home"] body{background:#08080a}
@@ -1678,11 +1679,11 @@ $("back").onclick=()=>{
 /* === START: PARTICLE SPHERE JS === */
 (function(){
   const cv=$("orbCv");if(!cv||!cv.getContext)return;
-  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=7777,NH=7,NA=233,NS=2900,NC=2500;
+  const cx=cv.getContext("2d"),TAU=Math.PI*2,N=20000,NH=7,NA=233,NS=7000,NC=5500;
   const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
-  const HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N);
+  const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N);
   for(let i=0;i<N;i++){
-    const u=Math.random()*2-1,a=Math.random()*TAU,s=Math.sqrt(1-u*u);
+    const u0=Math.random()*2-1,u=Math.sign(u0)*Math.pow(Math.abs(u0),.55),a=Math.random()*TAU,s=Math.sqrt(1-u*u);
     const nx=s*Math.cos(a),ny=u,nz=s*Math.sin(a);
     /* === START: PARTICLE HIERARCHY (TIERS) === */
 let tr,r;
@@ -1690,7 +1691,7 @@ if(i<NA){tr=3;r=.86+Math.random()*.14}
 else if(i<NA+NS){tr=0;r=.97+Math.random()*.03}
 else if(i<NA+NS+NC){tr=2;r=Math.pow(Math.random(),1.8)*.6}
 else{tr=1;r=.58+Math.cbrt(Math.random())*.36}
-TR[i]=tr;LN[i]=[.026,.03,.022,.052][tr];
+TR[i]=tr;LN[i]=[.011,.013,.009,.028][tr];
 /* === END: PARTICLE HIERARCHY (TIERS) === */
     let wx=Math.random()-.5,wy=Math.random()-.5,wz=Math.random()-.5;
     const d=wx*nx+wy*ny+wz*nz;wx-=d*nx;wy-=d*ny;wz-=d*nz;
@@ -1702,6 +1703,7 @@ TR[i]=tr;LN[i]=[.026,.03,.022,.052][tr];
     HB[i]=(Math.random()*NH)|0;
     SP[i]=(Math.random()<.5?-1:1)*(.4+Math.random()*1.4);
     PH[i]=Math.random()*TAU;
+{const sy=Math.abs(ny),sx=Math.sqrt(1-ny*ny);let lo=0,hi=1.2;for(let it=0;it<28;it++){const m=(lo+hi)/2,p=m*sx,u=(p/2.2)*(p/2.2),ins=4*u<1&&m*sy<=1.1*Math.sqrt(1-4*u)*(.2072+2.0026*u-1.1228*u*u);if(ins)lo=m;else hi=m}CY[i]=lo/1.1}
   }
   const COL=[];window.ORBSTATS={total:N,accent:NA,shell:NS,core:NC,mid:N-NA-NS-NC};
   /* === START: 7 RAINBOW COLORS === */
@@ -1720,13 +1722,13 @@ HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0
     const dt=Math.min(50,now-last)/1000;last=now;
     boost+=(tgt-boost)*.08;
     ry+=.55*boost*dt;
-    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000;
+    const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=t*.45,ct=Math.cos(tl),st=Math.sin(tl),mo=.55+.45*Math.sin(t*.4);
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
     const paths=[],ap=[];for(let k=0;k<NH*6;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.025*Math.sin(t*1.1);
     for(let i=0;i<N;i++){
       const k=i*3,th=t*SP[i]+PH[i],cc=Math.cos(th)*LN[i],ss=Math.sin(th)*LN[i];
       const ox=TG[k]*cc+BN[k]*ss,oy=TG[k+1]*cc+BN[k+1]*ss,oz=TG[k+2]*cc+BN[k+2]*ss;
-      const bs=TR[i]===2?br:1,x=P[k]*bs,y=P[k+1]*bs,z=P[k+2]*bs;
+      const bs=(TR[i]===2?br:1)*(1+(CY[i]-1)*mo),x=P[k]*bs,y=P[k+1]*bs,z=P[k+2]*bs;
       const x1=x*cr+z*sr,z1=-x*sr+z*cr,y2=y*ct-z1*st,z2=y*st+z1*ct;
       const a1=ox*cr+oz*sr,c1=-ox*sr+oz*cr,b2=oy*ct-c1*st;
       const tr=TR[i],fr=z2>0?1:0;
@@ -1735,7 +1737,7 @@ const p=tr===3?ap[HB[i]]:paths[HB[i]*6+tr*2+fr];
       p.moveTo(c+(x1-a1)*R,c+(y2-b2)*R);
       p.lineTo(c+(x1+a1)*R,c+(y2+b2)*R);
     }
-    cx.lineWidth=1;cx.lineCap="round";
+    cx.lineWidth=.6;cx.lineCap="round";
     /* === START: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
 for(let f=0;f<2;f++)for(let h=0;h<NH;h++)for(let tr=0;tr<3;tr++){cx.strokeStyle=COL[h][tr*2+f];cx.stroke(paths[h*6+tr*2+f])}
 /* === START: LIGHT RIG ON PARTICLES (KEY + FILL) === */
@@ -1748,7 +1750,7 @@ g.addColorStop(0,"rgba(120,150,255,.20)");g.addColorStop(1,"rgba(120,150,255,0)"
 cx.fillStyle=g;cx.fillRect(0,0,w,w);
 cx.globalCompositeOperation="source-over";
 /* === END: LIGHT RIG ON PARTICLES (KEY + FILL) === */
-for(let h=0;h<NH;h++){cx.lineWidth=4;cx.strokeStyle=ACOL[h][0];cx.stroke(ap[h]);cx.lineWidth=1.6;cx.strokeStyle=ACOL[h][1];cx.stroke(ap[h])}
+for(let h=0;h<NH;h++){cx.lineWidth=2.6;cx.strokeStyle=ACOL[h][0];cx.stroke(ap[h]);cx.lineWidth=1;cx.strokeStyle=ACOL[h][1];cx.stroke(ap[h])}
 /* === END: LAYERED DRAW (BACK TO FRONT, ACCENTS LAST) === */
   }
   const go=$("go");
