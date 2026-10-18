@@ -252,6 +252,10 @@ dialog.sheet h2{padding-right:44px}
 dialog.sheet .sheet-x{position:absolute;top:6px;right:6px;z-index:1}
 .toast{top:auto;right:auto;margin:0;border:0;overflow:visible}
 /* === END: SHEET MODALS CSS === */
+/* === START: SYSTEM PROMPT PREVIEW CSS === */
+.pvw{margin:12px 0;max-height:55dvh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:.8125rem/1.6 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 14px;user-select:text;-webkit-user-select:text}
+.acts .ic.eye{width:40px;height:40px;border:1px solid var(--line);background:var(--surface)}
+/* === END: SYSTEM PROMPT PREVIEW CSS === */
 /* === START: SPRING + MOTION CSS === */
 :root{--spring:cubic-bezier(.34,1.56,.64,1)}
 @supports (transition-timing-function:linear(0,1)){:root{--spring:linear(0,.009,.035 2.1%,.141,.281 6.7%,.723 12.9%,.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,.991,.977 51%,.974 53.8%,.975 57.1%,.997 69.8%,1.003 76.9%,1)}}
@@ -361,9 +365,13 @@ html[data-view="home"],html[data-view="home"] body{background:#f6f4ee}
 #home .hf-legal{color:var(--mute)}
 #home :focus-visible{outline-color:rgba(226,190,150,.85)}
 /* === END: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
-dialog.drawer{margin:0 0 0 auto;padding:0;border:0;border-radius:22px 0 0 22px;width:min(88vw,360px);max-width:none;height:100dvh;max-height:none;overflow:auto}
+dialog.drawer{margin:0 auto 0 0;padding:0;border:0;border-radius:0 22px 22px 0;width:min(88vw,360px);max-width:none;height:100dvh;max-height:none;overflow:auto}
 dialog.drawer[open]{animation:drawerIn .4s cubic-bezier(.2,.9,.3,1)}
-@keyframes drawerIn{from{transform:translateX(100%)}to{transform:none}}
+@keyframes drawerIn{from{transform:translateX(-100%)}to{transform:none}}
+/* === START: DRAWER SWIPE CSS === */
+dialog.drawer{touch-action:pan-y;overscroll-behavior:contain}
+/* === END: DRAWER SWIPE CSS === */
+
 .dr{display:flex;flex-direction:column;gap:12px;min-height:100%;padding:calc(10px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
 .drh{display:flex;align-items:center;justify-content:space-between}
 .drh b{font-size:1.25rem}
@@ -495,7 +503,9 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 <div class="card" id="card-sp">
     <button class="n" type="button" data-n="sp" aria-label="Toggle step 1 done">1</button>
     <div class="ct"><h2>System prompt</h2><p class="sub">Sets the rules. Paste this first.</p></div>
-    <div class="acts"><button class="sm p" id="cp" type="button">Copy</button></div>
+    <!-- === START: SYSTEM PROMPT EYE BTN === -->
+<div class="acts"><button class="ic eye" id="spEye" type="button" aria-label="Preview system prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="sm p" id="cp" type="button">Copy</button></div>
+<!-- === END: SYSTEM PROMPT EYE BTN === -->
   </div>
 
   <div class="card" id="card-pc">
@@ -652,6 +662,17 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   <button class="pmi" type="button" data-p="help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Help &amp; support</button>
 </dialog>
 
+<!-- === START: SYSTEM PROMPT PREVIEW DIALOG === -->
+<dialog class="sheet" id="spD" aria-label="System prompt preview">
+  <section class="how">
+    <button class="ic sheet-x" id="spX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>System prompt</h2>
+    <p class="sub" id="sp_meta" aria-live="polite"></p>
+    <div class="pvw" id="sp_pre" tabindex="0"></div>
+    <button class="sm p full" id="sp_cp" type="button">Copy</button>
+  </section>
+</dialog>
+<!-- === END: SYSTEM PROMPT PREVIEW DIALOG === -->
 <dialog class="sheet" id="helpD" aria-label="Help and support">
   <section class="how">
     <button class="ic sheet-x" id="helpX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
@@ -984,7 +1005,7 @@ BEHAVIOR:
 - Report UNKNOWN when verification is unavailable.
 
 REFERENCE DOCUMENTS:
-- protocol-v2.8.md — full Protocol Core
+- protocol-v2.8.1.md — full Protocol Core
 - config-ISSUE.md — organization-specific configuration
 - operating-record-ISSUE.md — current state
 
@@ -2263,6 +2284,44 @@ function openEd(n){
 }
 $("newBtn").onclick=()=>openEd("");
 $("menuBtn").onclick=()=>$("drawer").showModal();
+/* === START: DRAWER SWIPE JS === */
+(function(){
+  const d=$("drawer");
+  let x0=0,y0=0,dx=0,axis=null,on=false;
+  d.addEventListener("touchstart",e=>{
+    if(e.touches.length!==1){on=false;return}
+    x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;axis=null;on=true;
+  },{passive:true});
+  d.addEventListener("touchmove",e=>{
+    if(!on)return;
+    const mx=e.touches[0].clientX-x0,my=e.touches[0].clientY-y0;
+    if(!axis){
+      if(Math.abs(mx)<8&&Math.abs(my)<8)return;
+      axis=Math.abs(mx)>Math.abs(my)*1.2?"x":"y";
+      if(axis==="x")d.style.transition="none";
+    }
+    if(axis!=="x")return;
+    dx=Math.min(0,mx); /* left only */
+    d.style.transform="translateX("+dx+"px)";
+  },{passive:true});
+  const end=()=>{
+    if(!on)return;on=false;
+    if(axis!=="x"){return}
+    d.style.transition="transform .35s cubic-bezier(.2,.9,.3,1)";
+    if(dx<-Math.min(90,d.clientWidth*.28)){
+      HAP("light");
+      d.style.transform="translateX(-100%)";
+      setTimeout(()=>{d.close();d.style.transform="";d.style.transition=""},230);
+    }else{
+      d.style.transform="";
+      setTimeout(()=>{d.style.transition=""},360);
+    }
+  };
+  d.addEventListener("touchend",end);
+  d.addEventListener("touchcancel",end);
+  d.addEventListener("close",()=>{d.style.transform="";d.style.transition="";on=false});
+})();
+/* === END: DRAWER SWIPE JS === */
 $("drClose").onclick=()=>$("drawer").close();
 $("edClose").onclick=async()=>{if(edDirty()&&!await confirmBox("Discard changes?","You have changes that are not committed yet.","Discard",true))return;$("editor").close()};
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").close()});
@@ -2513,7 +2572,21 @@ const edDirty=()=>{
 };
 $("editor").addEventListener("cancel",e=>{if(edDirty()){e.preventDefault();$("edClose").click()}});
 window.addEventListener("beforeunload",e=>{if(edDirty()){e.preventDefault();e.returnValue=""}});
-/* === END: OFFLINE PAGES === *//* === START: HELP === */
+/* === END: OFFLINE PAGES === *//* === START: SYSTEM PROMPT PREVIEW JS === */
+const SPD=$("spD");
+function openSpPreview(){
+  const t=getSP(),miss=REQ.filter(r=>!getEnt()[r[0]]);
+  $("sp_pre").textContent=t;
+  $("sp_pre").scrollTop=0;
+  $("sp_meta").textContent="This is exactly what Copy gives you · "+kb(new Blob([t]).size)+(miss.length?" · Fill in Organization to replace the [brackets].":"");
+  SPD.showModal();
+}
+$("spEye").onclick=openSpPreview;
+$("spX").onclick=()=>SPD.close();
+SPD.addEventListener("click",e=>{if(e.target===SPD&&outside(SPD,e))SPD.close()});
+$("sp_cp").onclick=()=>{SPD.close();$("cp").click()};
+/* === END: SYSTEM PROMPT PREVIEW JS === */
+/* === START: HELP === */
 const HD=$("helpD");
 const diag=()=>{const l=getLic()||{};return "\n\n---\nApp: ArtiBytte Protocol v"+VER.replace("-draft","")+"\nLicense: "+(l.code||"none")+"\nPlan: "+PLAN+"\nBrowser: "+navigator.userAgent};
 const helpMail=(s,b)=>{location.href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent(s)+"&body="+encodeURIComponent(b+diag())};
@@ -2847,6 +2920,9 @@ applyTheme();
 /* === START: WHAT'S NEW === */
 /* Para magdagdag ng update: maglagay ng bagong linya sa PINAKA-ITAAS, at gawing +1 ang id ng dating pinakamataas. */
 const UPDATES=[
+  /* === START: UPDATE 8 === */
+{id:8,d:"2026-10-18",t:"Preview system prompt",b:"Tap the eye icon on the System prompt card to see exactly what Copy gives you. Swipe left to close the Files panel."},
+/* === END: UPDATE 8 === */
   {id:7,d:"2026-10-17",t:"Notes and Mitochondria",b:"Notes now have folders, pin, duplicate, share, move and version history. Select notes and tap Mitochondria to build a prompt for your AI."},
   {id:6,d:"2026-10-17",t:"Free and Pro",b:"Free supports text only. Uploading photos and files is for Pro, coming soon."},
   {id:5,d:"2026-10-17",t:"AI Notes",b:"Open Files, then AI Notes, to keep anything your AI tells you. It is separate from your workspace files."},
