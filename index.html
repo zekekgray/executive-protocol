@@ -256,6 +256,11 @@ dialog.sheet .sheet-x{position:absolute;top:6px;right:6px;z-index:1}
 .pvw{margin:12px 0;max-height:55dvh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:.8125rem/1.6 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 14px;user-select:text;-webkit-user-select:text}
 .acts .ic.eye{width:40px;height:40px;border:1px solid var(--line);background:var(--surface)}
 /* === END: SYSTEM PROMPT PREVIEW CSS === */
+/* === START: PROFILE ICON CSS === */
+.avb.new::after{display:none}
+#avL,#pAvL{font-size:0;position:relative}
+#avL::before,#pAvL::before{content:"";position:absolute;left:50%;top:50%;width:58%;height:58%;transform:translate(-50%,-50%);background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>") center/contain no-repeat}
+/* === END: PROFILE ICON CSS === */
 /* === START: SPRING + MOTION CSS === */
 :root{--spring:cubic-bezier(.34,1.56,.64,1)}
 @supports (transition-timing-function:linear(0,1)){:root{--spring:linear(0,.009,.035 2.1%,.141,.281 6.7%,.723 12.9%,.938 16.7%,1.017,1.077,1.121,1.149 24.3%,1.159,1.163,1.161,1.154 29.9%,1.129 32.8%,1.051 39.6%,1.017 43.1%,.991,.977 51%,.974 53.8%,.975 57.1%,.997 69.8%,1.003 76.9%,1)}}
@@ -511,19 +516,25 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   <div class="card" id="card-pc">
     <button class="n" type="button" data-n="pc" aria-label="Toggle step 2 done">2</button>
     <div class="ct"><h2>Protocol core</h2><p class="sub">The full protocol. Paste this second.</p></div>
-    <div class="acts"><button class="sm p" id="cp3" type="button">Copy</button></div>
+    <!-- === START: PROTOCOL CORE EYE BTN === -->
+<div class="acts"><button class="ic eye" id="pcEye" type="button" aria-label="Preview protocol core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="sm p" id="cp3" type="button">Copy</button></div>
+<!-- === END: PROTOCOL CORE EYE BTN === -->
   </div>
 
   <div class="card" id="card-cf">
     <button class="n" type="button" data-n="cf" aria-label="Toggle step 3 done">3</button>
     <div class="ct"><h2>Configuration record</h2><p class="sub">Your organization's details, built from the form.</p></div>
-    <div class="acts"><button class="sm p" id="cp4" type="button">Copy</button></div>
+    <!-- === START: CONFIG RECORD EYE BTN === -->
+<div class="acts"><button class="ic eye" id="cfEye" type="button" aria-label="Preview configuration record"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="sm p" id="cp4" type="button">Copy</button></div>
+<!-- === END: CONFIG RECORD EYE BTN === -->
   </div>
 
   <div class="card" id="card-or">
     <button class="n" type="button" data-n="or" aria-label="Toggle step 4 done">4</button>
     <div class="ct"><h2>Operating record</h2><p class="sub">A blank log to start tracking from.</p></div>
-    <div class="acts"><button class="sm p" id="cp2" type="button">Copy</button></div>
+    <!-- === START: OPERATING RECORD EYE BTN === -->
+<div class="acts"><button class="ic eye" id="orEye" type="button" aria-label="Preview operating record"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="sm p" id="cp2" type="button">Copy</button></div>
+<!-- === END: OPERATING RECORD EYE BTN === -->
   </div>
 
 <input type="file" id="pick" hidden accept=".md,.txt,.json,.csv,.yaml,.yml,text/*">
@@ -646,7 +657,10 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   <div class="cpo">
     <label class="plan"><input type="radio" name="cps" value="all" checked><b>All files, every version</b></label>
     <label class="plan"><input type="radio" name="cps" value="lat"><b>Latest versions + operating history</b><span>Operating records and snapshots keep all versions</span></label>
-    <label class="plan"><input type="radio" name="cps" value="sel"><b>Selected files only</b></label>
+    <!-- === START: COMPACT MODE OPTION === -->
+<label class="plan"><input type="radio" name="cps" value="cmp"><b>Compact (smallest handoff)</b><span>Latest version of each file only</span></label>
+<!-- === END: COMPACT MODE OPTION === -->
+<label class="plan"><input type="radio" name="cps" value="sel"><b>Selected files only</b></label>
   </div>
   <div class="cpf" id="cpF" hidden></div>
   <p class="sub" id="cpS" aria-live="polite"></p>
@@ -673,6 +687,19 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   </section>
 </dialog>
 <!-- === END: SYSTEM PROMPT PREVIEW DIALOG === -->
+<!-- === START: WORKSPACES DIALOG === -->
+<dialog class="sheet" id="wsD" aria-label="Workspaces">
+  <section class="how">
+    <button class="ic sheet-x" id="wsX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Workspaces</h2>
+    <p class="sub">Each workspace has its own files, notes, organization and steps. Switching never deletes or changes another workspace.</p>
+    <div id="ws_list"></div>
+    <h3 class="mh">New workspace</h3>
+    <div class="mfld"><input type="text" id="ws_new" placeholder="e.g. Livity" aria-label="New workspace name" autocomplete="off"><button class="sm p" id="ws_add" type="button">Create</button></div>
+    <p class="sub">Creating one switches to it. Export and Context Pack include only the active workspace.</p>
+  </section>
+</dialog>
+<!-- === END: WORKSPACES DIALOG === -->
 <dialog class="sheet" id="helpD" aria-label="Help and support">
   <section class="how">
     <button class="ic sheet-x" id="helpX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
@@ -935,6 +962,23 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 const LIMITS={free:5*1048576,pro:5*1048576}; /* pro = same browser limit until cloud storage exists */const PRO_PREVIEW=false; /* true = test mode: lets the button switch to Pro locally */
 let PLAN=PRO_PREVIEW&&LS.get("artibytte-plan-v1")==="pro"?"pro":"free";let LIMIT=LIMITS[PLAN];
 
+/* === START: WORKSPACES CORE === */
+const WSK="artibytte-ws-v1";
+const WS_BASE=["artibytte-protocol-files-v2","artibytte-entity-v2","artibytte-protocol-steps-v1","artibytte-ainotes-v1","artibytte-members-v1"];
+let WSR={list:[{id:"default",name:"Main workspace"}],active:"default"};
+try{const o=JSON.parse(LS.get(WSK)||"null");if(o&&Array.isArray(o.list)&&o.list.length){WSR=o;if(!WSR.list.some(w=>w.id===WSR.active))WSR.active=WSR.list[0].id}}catch(e){}
+const WSID=WSR.active;
+const wsSave=()=>LS.set(WSK,JSON.stringify(WSR));
+/* per-workspace keys: "default" keeps the old keys, others get a suffix */
+const wk2=k=>WSID!=="default"&&WS_BASE.includes(k)?k+"::"+WSID:k;
+{const _g=LS.get,_s=LS.set;LS.get=k=>_g(wk2(k));LS.set=(k,v)=>_s(wk2(k),v)}
+/* cross-tab sync for non-default workspaces */
+window.addEventListener("storage",e=>{
+  if(WSID==="default"||!e.key)return;
+  const sfx="::"+WSID;
+  if(e.key.endsWith(sfx)){const b=e.key.slice(0,-sfx.length);if(WS_BASE.includes(b))window.dispatchEvent(new StorageEvent("storage",{key:b,newValue:e.newValue}))}
+});
+/* === END: WORKSPACES CORE === */
 /* === START: HAPTICS JS === */
 const HAP=(()=>{
   let lab=null;
@@ -2326,14 +2370,14 @@ $("drClose").onclick=()=>$("drawer").close();
 $("edClose").onclick=async()=>{if(edDirty()&&!await confirmBox("Discard changes?","You have changes that are not committed yet.","Discard",true))return;$("editor").close()};
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").close()});
 /* context pack */
-const CPL={all:"All files, every version",lat:"Latest versions + operating history",sel:"Selected files, every version"};
+const CPL={all:"All files, every version",lat:"Latest versions + operating history",cmp:"Compact: latest version of each file",sel:"Selected files, every version"};
 const cpMode=()=>document.querySelector('input[name="cps"]:checked').value;
 const cpFence=t=>"`".repeat((t.match(/`+/g)||[]).reduce((a,b)=>Math.max(a,b.length),2)+1);
 function cpBuild(){
   const mode=cpMode(),e=getEnt();
   const picked=[...document.querySelectorAll("#cpF input:checked")].map(c=>c.value);
   const sel=names().sort().filter(n=>mode!=="sel"||picked.includes(n));
-  const full=n=>mode!=="lat"||/^(operating-record|session-snapshot)/i.test(n);
+  const full=n=>mode==="cmp"?false:(mode!=="lat"||/^(operating-record|session-snapshot)/i.test(n));
   const inc=n=>{const v=db[n].vs.slice().reverse();return full(n)?v:v.slice(0,1)};
   let vers=0;sel.forEach(n=>vers+=inc(n).length);
   const L=["# ArtiBytte Context Pack","",
@@ -2352,7 +2396,10 @@ function cpBuild(){
 function cpRefresh(){
   $("cpF").hidden=cpMode()!=="sel";
   const r=cpBuild();
-  $("cpS").textContent=r.files+" files · "+r.vers+" versions · "+kb(new Blob([r.text]).size);
+  /* === START: CONTEXT BUDGET === */
+const tk=Math.round(r.text.length/4); /* rough estimate: about 4 characters per token */
+$("cpS").textContent=r.files+" files · "+r.vers+" versions · "+kb(new Blob([r.text]).size)+" · ~"+tk.toLocaleString()+" tokens"+(tk>100000&&cpMode()!=="cmp"?" · Very large. Choose Compact or Selected files.":"");
+/* === END: CONTEXT BUDGET === */
   $("cpCopy").disabled=$("cpDl").disabled=!r.files;
 }
 $("cpkBtn").onclick=()=>{
@@ -2448,6 +2495,7 @@ PM.addEventListener("click",e=>{
   const k=b.dataset.p;
   if(k==="set"){PM.close();paintSet();SD.showModal()}
   else if(k==="off"){PM.close();openOffline()}
+  else if(k==="ws"){PM.close();openWs()}
   else if(k==="help"){PM.close();openHelp()}  else if(k==="mem"){PM.close();openMembers()}
   else toast(b.dataset.n+" is coming soon.");});
 $("set_hap").onclick=()=>{$("hapBtn").click();paintSet()};
@@ -2574,18 +2622,83 @@ $("editor").addEventListener("cancel",e=>{if(edDirty()){e.preventDefault();$("ed
 window.addEventListener("beforeunload",e=>{if(edDirty()){e.preventDefault();e.returnValue=""}});
 /* === END: OFFLINE PAGES === *//* === START: SYSTEM PROMPT PREVIEW JS === */
 const SPD=$("spD");
-function openSpPreview(){
-  const t=getSP(),miss=REQ.filter(r=>!getEnt()[r[0]]);
+const PVW={
+  sp:{t:"System prompt",get:getSP,btn:"cp",org:1},
+  pc:{t:"Protocol core",get:()=>PC,btn:"cp3",org:0},
+  cf:{t:"Configuration record",get:getCF,btn:"cp4",org:1},
+  or:{t:"Operating record",get:getOR,btn:"cp2",org:1}
+};
+let pvKey="sp";
+function openPreview(k){
+  pvKey=k;
+  const c=PVW[k],t=c.get(),miss=REQ.filter(r=>!getEnt()[r[0]]);
+  SPD.querySelector("h2").textContent=c.t;
   $("sp_pre").textContent=t;
   $("sp_pre").scrollTop=0;
-  $("sp_meta").textContent="This is exactly what Copy gives you · "+kb(new Blob([t]).size)+(miss.length?" · Fill in Organization to replace the [brackets].":"");
+  $("sp_meta").textContent="This is exactly what Copy gives you · "+kb(new Blob([t]).size)+(c.org&&miss.length?" · Fill in Organization to complete the missing fields.":"");
   SPD.showModal();
 }
-$("spEye").onclick=openSpPreview;
+$("spEye").onclick=()=>openPreview("sp");
+$("pcEye").onclick=()=>openPreview("pc");
+$("cfEye").onclick=()=>openPreview("cf");
+$("orEye").onclick=()=>openPreview("or");
 $("spX").onclick=()=>SPD.close();
 SPD.addEventListener("click",e=>{if(e.target===SPD&&outside(SPD,e))SPD.close()});
-$("sp_cp").onclick=()=>{SPD.close();$("cp").click()};
+$("sp_cp").onclick=()=>{SPD.close();$(PVW[pvKey].btn).click()};
 /* === END: SYSTEM PROMPT PREVIEW JS === */
+/* === START: WORKSPACES UI JS === */
+const WD=$("wsD");
+const wsCur=()=>WSR.list.find(w=>w.id===WSID)||WSR.list[0];
+const wsDup=(n,id)=>WSR.list.some(w=>w.id!==id&&w.name.toLowerCase()===n.toLowerCase());
+function wsPaint(){
+  const n=wsCur().name,s=$("wsName");
+  if(s)s.textContent=n;
+  document.querySelectorAll('[data-p="ws"] .soon').forEach(x=>{x.textContent=n;x.style.cssText="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"});
+}
+function wsRender(){
+  $("ws_list").innerHTML=WSR.list.map(w=>{
+    const A=w.id===WSID,I=esc(w.id);
+    return `<div class="mrow"><div class="mi"><b>${esc(w.name)}</b>${A?'<span class="meta">Active</span>':""}</div>${A?"":`<button class="sm" type="button" data-s="${I}">Switch</button>`}<button class="lnk" type="button" data-r="${I}">Rename</button>${w.id==="default"||A?"":`<button class="lnk" type="button" data-x="${I}">Delete</button>`}</div>`;
+  }).join("");
+}
+function openWs(){wsRender();$("ws_new").value="";WD.showModal()}
+function wsGo(id){
+  WSR.active=id;
+  if(!wsSave()){WSR.active=WSID;toast("Storage is full or blocked.","err");return}
+  location.reload();
+}
+(function(){
+  const t=document.querySelector(".ttl");
+  if(t){const s=document.createElement("span");s.id="wsName";t.appendChild(s);t.style.cursor="pointer";t.onclick=openWs}
+  wsPaint();
+})();
+$("ws_list").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-s],[data-r],[data-x]");if(!b)return;
+  if(b.dataset.s){wsGo(b.dataset.s);return}
+  const w=WSR.list.find(x=>x.id===(b.dataset.r||b.dataset.x));if(!w)return;
+  if(b.dataset.r){
+    const n=(prompt("Workspace name",w.name)||"").replace(/\s+/g," ").trim().slice(0,40);
+    if(!n||n===w.name)return;
+    if(wsDup(n,w.id)){toast("That name is already used.","err");return}
+    w.name=n;wsSave();wsRender();wsPaint();toast("Renamed.");return;
+  }
+  if(!await confirmBox("Delete workspace?","All files, notes and organization details in \""+w.name+"\" will be removed from this device. Other workspaces are not affected.","Delete",true))return;
+  try{WS_BASE.forEach(k=>localStorage.removeItem(k+"::"+w.id))}catch(x){}
+  WSR.list=WSR.list.filter(x=>x!==w);wsSave();wsRender();toast("Deleted.");
+});
+$("ws_add").onclick=()=>{
+  const n=$("ws_new").value.replace(/\s+/g," ").trim().slice(0,40);
+  if(!n){toast("Type a workspace name.","err");$("ws_new").focus();return}
+  if(wsDup(n,"")){toast("That name is already used.","err");return}
+  const id="w"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  WSR.list.push({id,name:n});WSR.active=id;
+  if(!wsSave()){WSR.list.pop();WSR.active=WSID;toast("Storage is full or blocked.","err");return}
+  location.reload();
+};
+$("ws_new").addEventListener("keydown",e=>{if(e.key==="Enter")$("ws_add").click()});
+$("wsX").onclick=()=>WD.close();
+WD.addEventListener("click",e=>{if(e.target===WD&&outside(WD,e))WD.close()});
+/* === END: WORKSPACES UI JS === */
 /* === START: HELP === */
 const HD=$("helpD");
 const diag=()=>{const l=getLic()||{};return "\n\n---\nApp: ArtiBytte Protocol v"+VER.replace("-draft","")+"\nLicense: "+(l.code||"none")+"\nPlan: "+PLAN+"\nBrowser: "+navigator.userAgent};
