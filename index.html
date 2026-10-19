@@ -435,6 +435,16 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 #ntO .fr.dng{color:var(--bad)}
 #nt_st:active{transform:scale(.93)}
 /* === END: NOTES UI CSS === */
+/* === START: PILL BUTTONS === */
+#proBtn,.ftl .lnk,.drf .lnk{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font:600 .8125rem Sora,system-ui,sans-serif;text-decoration:none;white-space:nowrap;cursor:pointer}
+#proBtn:hover,.ftl .lnk:hover,.drf .lnk:hover{background:var(--hover)}
+#proBtn{background:var(--accent);color:var(--on);border-color:transparent}
+#proBtn:hover{background:var(--accent);opacity:.9}
+.ftl{gap:8px;margin-bottom:10px}
+.drf{gap:8px;flex-wrap:wrap}
+.wsrow{gap:8px}
+.pmi[data-p="tr"] .soon{display:none}
+/* === END: PILL BUTTONS === */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -597,7 +607,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
       </ul>
 
       <h3 class="mh">8. Licenses, Free and Pro</h3>
-      <p>License codes are issued and verified by our server. Pro is not yet available: cloud storage, multi-device access, automatic backups and Trash are planned and not guaranteed. Joining the waitlist is not a purchase, a reservation or a promise of features, price or date. Plans, limits and prices may change before launch.</p>
+      <p>License codes are issued and verified by our server. Pro is a paid subscription, billed monthly or yearly through PayPal. We never see or store your card details. The subscription renews until you cancel it in your PayPal account, and Pro stays active until the end of the period you paid for. Prices and plan limits may change for future billing periods. For billing or refund questions, email team@artibytte.co.</p>
 
       <h3 class="mh">9. Members and roles</h3>
       <p>Members, roles and invite links are enforced by our server for each workspace. Anyone with an active invite link can join with the role set on the link, so reset the link if it is shared by mistake.</p>
@@ -736,6 +746,15 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
     <details class="faq"><summary>I lost my license code</summary><p>Tap Email support and include the email address you used. We will send your license code to that email.</p></details>
     <details class="faq"><summary>What happens when I paste long text?</summary><p>Pasted paragraphs are split into rows of about 100 characters. Rows you type have no limit. The maximum is 50,000 lines per file.</p></details>
     <details class="faq"><summary>Do members work across devices?</summary><p>Yes. Members join through an invite link or by email and see the same workspace on any device.</p></details>
+  </section>
+</dialog>
+
+<dialog class="sheet" id="trD" aria-label="Trash">
+  <section class="how">
+    <button class="ic sheet-x" id="trX" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></button>
+    <h2>Trash</h2>
+    <p class="sub" id="tr_sub"></p>
+    <div id="tr_list"></div>
   </section>
 </dialog>
 
@@ -979,11 +998,12 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 
 <dialog id="pro" aria-labelledby="proT">  <form method="dialog">
     <h2 id="proT">ArtiBytte Pro</h2>
-    <p>Pro is coming soon. Join the waitlist and we'll tell you when it opens.</p>
+    <p id="pro_p">Pro is coming soon. Join the waitlist and we'll tell you when it opens.</p>
     <ul class="perks"><li class="soon"><b>Upload photos and files</b>, not just text</li><li class="soon"><b>Cloud storage</b> that survives clearing your browser</li><li class="soon"><b>Every device</b>, same records</li><li class="soon"><b>Automatic backups</b> of every version</li><li class="soon"><b>Restore deleted files</b> from Trash</li></ul>    <div class="plans">
       <label class="plan"><input type="radio" name="plan" value="m" checked><b id="pm"></b><span>per month</span></label>
       <label class="plan"><input type="radio" name="plan" value="y"><b id="py"></b><span>per year</span></label>
     </div>
+    <div id="pp_box" hidden><div id="pp_btn"></div><p class="sub" id="pp_msg" aria-live="polite"></p></div>
     <div class="row"><button class="sm" value="no" type="submit">Not now</button><button class="sm p" id="proGo" value="no" type="submit">Join waitlist</button></div>
   </form>
 </dialog>
@@ -994,7 +1014,7 @@ const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k
 const fmt=t=>new Date(t).toLocaleString([],{dateStyle:"medium",timeStyle:"short"});
 const kb=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB";
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const API_URL="https://script.google.com/macros/s/AKfycbyvAcoFgfyL326mlp0XuF36kvwugeDA8JYvikkt9DPiVbvnioh3acC3J0h0FkFYUCx6/exec"; /* Apps Script web app URL (…/exec) */
+const API_URL="https://script.google.com/macros/s/AKfycbxx1bV2WZBpZvu2nE4ngU5M_uaedLb1rE5X21b5joN_NDP9rgccdFv36z1eKITPEfy6/exec"; /* Apps Script web app URL (…/exec) */
 const TKK="artibytte-token-v1";
 let PLAN="free",LIMIT=5*1048576,STUSED=0,STLAST=0,SESS=null,CFG={};
 {const m=location.hash.match(/^#join=([\w-]+)/);if(m)LS.set("artibytte-pendjoin",m[1])}
@@ -1017,7 +1037,7 @@ function authLost(){
   toast("Session expired. Log in again.","err");
 }
 async function loadCfg(){
-  try{CFG=await api("config.get",{},{noAuth:true,quiet:true});VER=CFG.protocolVersion||VER;$("homeVer").textContent="v"+VER.replace("-draft","");setPrice(CFG.proPriceMonth||999)}catch(e){}
+  try{CFG=await api("config.get",{},{noAuth:true,quiet:true});VER=CFG.protocolVersion||VER;setPrice(CFG.proPriceMonth||999,CFG.proPriceYear);paintVer()}catch(e){}
 }
 async function refreshUsed(){
   try{const s=await api("storage.status",{wsId:WSID},{quiet:true});STUSED=s.used;LIMIT=s.limit;STLAST=s.lastBackupAt;render();if(window.onStore)window.onStore()}catch(e){}
@@ -1043,9 +1063,12 @@ function paintAll(){
   eh();paintSteps();$("s_title").value=CHIPS.op();sbState();render();ntRender();paintProf();wsPaint();wsRender();
 }
 async function bootApp(){
+  if(!VER)loadCfg();
   try{
     if(!SESS)loadSession(await api("me.get"));
     const pj=LS.get("artibytte-pendjoin");
+    const ps=LS.get("artibytte-pendsub");
+    if(ps){ppConfirm(ps).then(r=>{if(!r.pending){LS.set("artibytte-pendsub","");if(r.pro){loadSession(r.session);render();paintProf();toast("Pro is active. Thank you!")}}}).catch(e=>{if(e.code==="PAY"||e.code==="EXISTS")LS.set("artibytte-pendsub","")})}
     if(pj){LS.set("artibytte-pendjoin","");try{const j=await api("member.join",{token:pj});await refreshWs();WSID=j.id;WSR.active=j.id;wsSave();toast("Joined "+j.name+".")}catch(e){toast(e.message,"err")}}
     await hydrate();paintAll();
   }catch(e){if(e.code!=="AUTH"&&e.code!=="LICENSE")toast(e.message,"err")}
@@ -1101,6 +1124,11 @@ async function copyText(text,btn){
 document.addEventListener("click",e=>{const c=e.target.closest("[data-copy]");if(c)copyText(c.dataset.copy,c)});
    let VER="";
 const DEF_TYPE="incorporated company";
+function paintVer(){
+  const t=VER?"v"+VER.replace("-draft","")+(CFG.backend?" · app "+CFG.backend:""):"";
+  $("homeVer").textContent=t;
+  const h=$("h_ver");if(h){const l=getLic()||{};h.textContent=[t,l.code].filter(Boolean).join(" · ")}
+}
 
 const SK="artibytte-protocol-steps-v1",EK="artibytte-entity-v2";
 const STEPS=["sp","pc","cf","or"];
@@ -1136,10 +1164,27 @@ async function entPush(){
   const x=await api("entity.save",Object.assign({wsId:WSID},getEnt()));
   ent=x.entity;entDirty=false;return x;
 }
+const CC=new Map();
+const ccKey=k=>WSID+"|"+k+"|"+VER+(k==="pc"?"":"|"+today()+"|"+JSON.stringify(getEnt()));
+const PCK="artibytte-pc-v1";
 async function getCard(k){
   if(entDirty)await entPush();
+  let key=ccKey(k),hit=CC.get(key);
+  if(hit)return hit;
+  if(k==="pc"&&VER){try{const s=JSON.parse(LS.get(PCK)||"null");if(s&&s.ver===VER&&s.text){hit={version:VER,missing:[],cards:{pc:{text:s.text,bytes:s.bytes,needsOrg:false,ready:true}}};CC.set(key,hit);return hit}}catch(e){}}
+  return getCardNet(k);
+}
+async function getCardNet(k){
+  if(entDirty)await entPush();
   const r=await api("protocol.get",{wsId:WSID,card:k});
-  VER=r.version;return r;
+  VER=r.version;
+  const c=r.cards[k];
+  if(c&&c.text&&(!c.needsOrg||c.ready)){
+    if(CC.size>=24)CC.delete(CC.keys().next().value);
+    CC.set(ccKey(k),r);
+    if(k==="pc")LS.set(PCK,JSON.stringify({ver:r.version,text:c.text,bytes:c.bytes}));
+  }
+  return r;
 }
 /* iOS-safe: clipboard write that waits for the server text */
 async function copyLater(p,btn){
@@ -1453,9 +1498,61 @@ $("cpDl").onclick=()=>{
 };
 /* pro */
 const CUR="₱";
-function setPrice(m){$("pm").textContent=CUR+Number(m).toLocaleString();$("py").textContent=CUR+(Number(m)*12).toLocaleString()}
+function setPrice(m,y){$("pm").textContent=CUR+Number(m).toLocaleString();$("py").textContent=CUR+Number(y||Number(m)*12).toLocaleString()}
 setPrice(999);
-$("proBtn").onclick=()=>{const d=$("pro");if(d.showModal)d.showModal()};
+/* === START: PAYPAL === */
+let ppState=0;
+function ppLoad(c){
+  return new Promise((res,rej)=>{
+    if(window.paypal)return res();
+    const s=document.createElement("script");
+    s.src="https://www.paypal.com/sdk/js?client-id="+encodeURIComponent(c.clientId)+"&vault=true&intent=subscription";
+    s.onload=res;s.onerror=()=>rej(new Error("Could not load PayPal. Check your internet."));
+    document.head.appendChild(s);
+  });
+}
+async function ppConfirm(id){
+  for(let i=0;i<5;i++){
+    const r=await api("pay.confirm",{subId:id});
+    if(!r.pending)return r;
+    await new Promise(x=>setTimeout(x,3000));
+  }
+  return {pending:true};
+}
+async function ppInit(){
+  if(!CFG.paypal)await loadCfg();
+  const c=CFG.paypal||{};
+  if(!c.enabled)return;
+  $("pp_box").hidden=false;$("proGo").hidden=true;
+  $("pro_p").textContent="Choose a plan and pay securely with PayPal. Cancel anytime in your PayPal account.";
+  if(ppState)return;
+  ppState=1;
+  try{
+    await ppLoad(c);
+    paypal.Buttons({
+      style:{layout:"vertical",shape:"pill",label:"subscribe"},
+      createSubscription:(d,a)=>{
+        const y=document.querySelector('input[name="plan"]:checked').value==="y";
+        return a.subscription.create({plan_id:y?c.planYear:c.planMonth,custom_id:(getLic()||{}).code});
+      },
+      onApprove:async d=>{
+        $("pp_msg").textContent="Confirming payment…";LS.set("artibytte-pendsub",d.subscriptionID);
+        try{
+          const r=await ppConfirm(d.subscriptionID);if(!r.pending)LS.set("artibytte-pendsub","");
+          if(r.pending){$("pp_msg").textContent="Payment is still processing. Pro turns on once PayPal confirms it.";return}
+          if(!r.pro){$("pp_msg").textContent="";toast("Subscription is "+String(r.status).toLowerCase()+".","err");return}
+          loadSession(r.session);render();paintProf();$("pp_msg").textContent="";
+          $("pro").close();toast("Pro is active. Thank you!");
+        }catch(e){$("pp_msg").textContent=e.message;toast(e.message,"err")}
+      },
+      onCancel:()=>{$("pp_msg").textContent="Payment cancelled."},
+      onError:()=>{$("pp_msg").textContent="PayPal had a problem. Try again."}
+    }).render("#pp_btn");
+    ppState=2;
+  }catch(e){ppState=0;$("pp_msg").textContent=e.message}
+}
+$("proBtn").onclick=()=>{const d=$("pro");if(d.showModal)d.showModal();ppInit()};
+/* === END: PAYPAL === */
 $("proGo").addEventListener("click",async()=>{
   const yr=document.querySelector('input[name="plan"]:checked').value==="y";
   try{const r=await api("waitlist.join",{plan:yr?"y":"m",diag:navigator.userAgent.slice(0,200)});toast(r.already?"You're already on the list.":"You're on the waitlist.")}
@@ -1538,6 +1635,7 @@ PM.addEventListener("click",e=>{
   else if(k==="off"){PM.close();openOffline()}
   else if(k==="ws"){PM.close();openWs()}
   else if(k==="help"){PM.close();openHelp()}  else if(k==="mem"){PM.close();openMembers()}
+  else if(k==="tr"){PM.close();openTrash()}
   else toast(b.dataset.n+" is coming soon.");});
 $("set_hap").onclick=()=>{$("hapBtn").click();paintSet();api("me.update",{haptics:LS.get("artibytte-haptics")==="off"?"off":"on"},{quiet:true}).catch(()=>{})};
 $("set_org").onclick=()=>{if(!can("settings")){toast("Only the owner can change workspace settings.","err");return}SD.close();openSheet("eform")};$("setX").onclick=()=>SD.close();
@@ -1744,11 +1842,41 @@ $("ws_new").addEventListener("keydown",e=>{if(e.key==="Enter")$("ws_add").click(
 $("wsX").onclick=()=>WD.close();
 WD.addEventListener("click",e=>{if(e.target===WD&&outside(WD,e))WD.close()});
 /* === END: WORKSPACES UI JS === */
+/* === START: TRASH === */
+const TD=$("trD");
+const trLeft=t=>{const d=Math.max(0,Math.ceil((t-Date.now())/86400000));return d<1?"today":"in "+d+" day"+(d===1?"":"s")};
+async function trPaint(){
+  const L=$("tr_list");
+  try{
+    const r=await api("trash.list",{wsId:WSID});
+    $("tr_sub").textContent="Deleted files stay here for "+r.days+" days, then are purged for good.";
+    L.innerHTML=r.files.length?r.files.sort((a,b)=>b.deletedAt-a.deletedAt).map(f=>{const N=esc(f.name);return `<div class="file"><h3>${N}</h3><p class="meta">Deleted ${esc(fmt(f.deletedAt))} · purged ${trLeft(f.purgeAt)}</p><div class="acts"><button class="sm p" type="button" data-tr="restore" data-n="${N}">Restore</button><button class="sm d" type="button" data-tr="purge" data-n="${N}">Delete forever</button></div></div>`}).join(""):'<div class="none"><b>Trash is empty</b>Deleted files appear here.</div>';
+  }catch(e){L.innerHTML='<p class="meta">'+esc(e.message)+'</p>'}
+}
+function openTrash(){$("tr_list").innerHTML='<p class="meta">Loading…</p>';TD.showModal();trPaint()}
+$("tr_list").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-tr]");if(!b)return;
+  const n=b.dataset.n;b.disabled=true;
+  try{
+    if(b.dataset.tr==="restore"){
+      await api("file.restore",{wsId:WSID,name:n});
+      await hydrate();render();toast("Restored "+n+".");
+    }else{
+      if(!await confirmBox("Delete forever?",'"'+n+'" and all its versions will be removed permanently.',"Delete forever",true)){b.disabled=false;return}
+      await api("file.purge",{wsId:WSID,name:n});
+      refreshUsed();toast("Deleted permanently.");
+    }
+    trPaint();
+  }catch(x){b.disabled=false;toast(x.message,"err")}
+});
+$("trX").onclick=()=>TD.close();
+TD.addEventListener("click",e=>{if(e.target===TD&&outside(TD,e))TD.close()});
+/* === END: TRASH === */
 /* === START: HELP === */
 const HD=$("helpD");
 const diag=()=>{const l=getLic()||{};return "\n\n---\nApp: ArtiBytte Protocol v"+VER.replace("-draft","")+"\nLicense: "+(l.code||"none")+"\nPlan: "+PLAN+"\nBrowser: "+navigator.userAgent};
 const helpMail=(s,b)=>{location.href="mailto:"+TEAM_EMAIL+"?subject="+encodeURIComponent(s)+"&body="+encodeURIComponent(b+diag())};
-function openHelp(){const l=getLic()||{};$("h_ver").textContent="v"+VER.replace("-draft","")+(l.code?" · "+l.code:"");HD.showModal()}
+function openHelp(){const l=getLic()||{};if(!VER)loadCfg();paintVer();HD.showModal()}
 $("h_how").onclick=()=>{HD.close();openSheet("howSec")};
 $("h_mail").onclick=()=>helpMail("ArtiBytte Protocol Support","Hi ArtiBytte team,\n\nI need help with:\n\n");
 $("h_bug").onclick=()=>helpMail("ArtiBytte Protocol Problem Report","Hi ArtiBytte team,\n\nWhat happened:\n\nWhat I expected:\n\nSteps to reproduce:\n");
@@ -1958,7 +2086,7 @@ const HUES=[335,185],ACOL=[];
 const TA=[[.3,.75],[.32,.85],[.3,.6]];
 HUES.forEach(h=>{const row=[];TA.forEach(a=>{row.push("hsla("+h+",100%,54%,"+a[0]+")","hsla("+h+",100%,58%,"+a[1]+")")});COL.push(row);ACOL.push(["hsla("+h+",100%,70%,.2)","hsla("+h+",100%,82%,1)"])});
 /* === END: 7 RAINBOW COLORS === */
-const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(DB-1),al=a[0]+(a[1]-a[0])*t;return "hsla("+h+",100%,"+(54+4*t)+"%,"+al.toFixed(3)+")"})));
+const DB=9,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(DB-1),al=a[0]+(a[1]-a[0])*t;return "hsla("+h+",100%,"+(54+4*t)+"%,"+al.toFixed(3)+")"})));
   const tilt=.38,ct=Math.cos(tilt),st=Math.sin(tilt);
   let ry=0,tm=0,last=performance.now(),boost=1,tgt=1;
   function draw(now){
@@ -1966,9 +2094,9 @@ const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
     if(!w)return;
     const px=Math.round(w*dpr);
     if(cv.width!==px){cv.width=px;cv.height=px}
-    const dt=Math.min(50,now-last)/1000;last=now;
+    const dt=Math.min(80,Math.max(0,now-last))/1000;last=now;
     boost+=(tgt-boost)*(1-Math.exp(-dt*5));
-    ry+=.34*boost*dt;tm+=dt;
+    ry=(ry+.34*boost*dt)%TAU;tm+=dt;
     const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=0,ct=1,st=0,fc=Math.cos(1.5708),fs=Math.sin(1.5708),mo=1;
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
     const paths=[],ap=[];for(let k=0;k<NH*3*DB;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gb=[0,1,2,3,4].map(()=>new Path2D()),gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()];
@@ -1978,7 +2106,7 @@ const DB=5,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
       const bs=(TR[i]===2?br:1)*(1+(CY[i]-1)*mo),x=P[k]*bs,y=P[k+1]*bs,z=P[k+2]*bs;
       const xa=x*fc-y*fs,ya=x*fs+y*fc,x1=xa*cr+z*sr,z1=-xa*sr+z*cr,y2=ya*ct-z1*st,z2=ya*st+z1*ct;
       const oxa=ox*fc-oy*fs,oya=ox*fs+oy*fc,a1=oxa*cr+oz*sr,c1=-oxa*sr+oz*cr,b2=oya*ct-c1*st;
-      const tr=TR[i],fr=z2>0?1:0,db=fr?DB-1:1;
+      const tr=TR[i],fr=z2>0?1:0,db=Math.max(0,Math.min(DB-1,Math.round((z2+1)*.5*(DB-1))));
 if(tr===3&&!fr)continue;
 let p;
 if(tr===0){
@@ -2033,7 +2161,7 @@ async function paintSetX(){
   $("set_stF").style.width=(u>0?Math.max(p,1.5):0)+"%";$("set_stF").classList.toggle("hot",p>=90);
   $("set_meterW").setAttribute("aria-valuenow",Math.round(p));
   $("set_st").textContent=kb(u)+" of "+kb(LIMIT)+" used in your account ("+Math.round(p)+"%)";
-  $("set_sub").textContent=PLAN==="pro"?"Pro (preview)":"None. Free plan.";
+  $("set_sub").textContent=PLAN==="pro"?"Pro · managed in PayPal":"None. Free plan.";
   $("set_theme").value=["light","dark"].includes(LS.get(THK))?LS.get(THK):"auto";
   const ps=await persState();
   $("set_pers").textContent=ps===true?"Yes":ps===false?"No. Tap to request":"Unknown";
