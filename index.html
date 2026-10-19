@@ -6,7 +6,6 @@
 <title>ArtiBytte Executive Protocol</title>
 <script>window.addEventListener("error",function(e){if(window.__abErr)return;window.__abErr=1;var d=document.createElement("div");d.onclick=function(){d.remove();window.__abErr=0};d.style.cssText="position:fixed;left:0;right:0;top:0;z-index:99999;background:#b3261e;color:#fff;font:12px/1.4 monospace;padding:8px;white-space:pre-wrap;max-height:50vh;overflow:auto";d.textContent="JS error: "+e.message+" (line "+e.lineno+", col "+e.colno+")";(document.body||document.documentElement).appendChild(d);try{fetch(location.href.split("#")[0],{cache:"reload"}).then(function(r){return r.text()}).then(function(t){var L=t.split("\n"),n=e.lineno,o="";for(var i=n-3;i<=n+1;i++){if(L[i-1]!==undefined)o+="\n"+i+": "+L[i-1].slice(0,300)}d.textContent+=o+"\n(tap to dismiss)"}).catch(function(){})}catch(x){}});</script>
 <script>window.addEventListener("error",function(e){if(!/Invalid or unexpected/.test(e.message||""))return;try{var S=document.scripts,T="",i;for(i=0;i<S.length;i++)if(S[i].text.length>T.length)T=S[i].text;var L=T.split("\n"),lo=1,hi=L.length,bad=function(n){try{new Function(L.slice(0,n).join("\n"))}catch(x){return /Invalid or unexpected/.test(x.message)}return false};while(lo<hi){var m=(lo+hi)>>1;if(bad(m))hi=m;else lo=m+1}var d=document.createElement("div");d.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#222;color:#ff0;font:12px/1.4 monospace;padding:8px;white-space:pre-wrap;max-height:40vh;overflow:auto";d.textContent=(lo>=L.length&&!bad(lo)?"Inconclusive. ":"")+"Bad token near script line "+lo+":\n"+L.slice(Math.max(0,lo-2),lo+1).join("\n").slice(0,900);d.onclick=function(){d.remove()};(document.body||document.documentElement).appendChild(d)}catch(x){}});</script>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#eef1f6;--surface:#fff;--ink:#141a2b;--mute:#5a6378;--line:#c9d0e0;--accent:#2d4bd6;--on:#fff;--ok:#14703b;--on-ok:#fff;--bad:#b3261e;--on-bad:#fff;--hover:rgba(45,75,214,.08)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1220;--surface:#171d31;--ink:#e8ecf8;--mute:#9aa4c0;--line:#2f3858;--accent:#8fa6ff;--on:#0e1220;--ok:#4ade80;--on-ok:#04210f;--bad:#ff8a80;--on-bad:#2a0a07;--hover:rgba(143,166,255,.12);color-scheme:dark}}
@@ -366,9 +365,9 @@ background-size:auto,auto,auto,auto,140px 140px;background-repeat:no-repeat,no-r
 .orb::before,.orb::after{display:none}
 /* === END: PARTICLE SPHERE CSS === */
 /* === START: ENTRANCE BACKGROUND (THEME-INDEPENDENT) === */
-html[data-view="home"],html[data-view="home"] body{background:#f6f4ee}
+html[data-view="home"],html[data-view="home"] body{background:var(--bg)}
 /* === START: AMBIENT ATMOSPHERE === */
-#home{color:#1f1d19;background:#f6f4ee}#home::before{display:none}#home .hf-copy,#home .hf-ver{color:#7a766c}
+#home{color:var(--ink);background:var(--bg)}#home::before{display:none}#home .hf-copy,#home .hf-ver{color:rgba(60,60,67,.6)}
 #home::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");background-size:160px 160px}
 /* === END: AMBIENT ATMOSPHERE === */
 #home .hf-legal{color:var(--mute)}
@@ -446,6 +445,59 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 .pmi[data-p="tr"] .soon{display:none}
 /* === END: PILL BUTTONS === */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+/* === START: ARTICARDD SKIN (same ecosystem) === */
+:root{--font:-apple-system,'SF Pro Text','SF Pro Display','Helvetica Neue',system-ui,sans-serif;
+--bg:#ECE4D6;            /* VERIFIED: theme-color ng articardd */
+--surface:#fff;--field:#fff;   /* TODO: palitan ng totoong card color */
+--ink:#1c1c1e;--mute:rgba(60,60,67,.6);--line:rgba(0,0,0,.08);   /* TODO */
+--accent:var(--ink);--on:var(--bg);--link:var(--ink);--avatar:#8E8E93;   /* TODO */
+--ok:#2FA84F;--on-ok:#fff;--bad:#E5382E;--on-bad:#fff;--hover:rgba(28,28,30,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1c1e;--surface:#2c2c2e;--field:#2c2c2e;--ink:#f2f2f7;--mute:rgba(235,235,245,.6);--line:rgba(255,255,255,.12);
+--accent:var(--ink);--on:var(--bg);--link:var(--ink);--avatar:#8E8E93;--ok:#34C759;--on-ok:#04210f;--bad:#FF453A;--on-bad:#2a0a07;--hover:rgba(255,255,255,.08)}}
+:root[data-theme="dark"]{--bg:#1c1c1e;--surface:#2c2c2e;--field:#2c2c2e;--ink:#f2f2f7;--mute:rgba(235,235,245,.6);--line:rgba(255,255,255,.12);
+--accent:var(--ink);--on:var(--bg);--link:var(--ink);--avatar:#8E8E93;--ok:#34C759;--on-ok:#04210f;--bad:#FF453A;--on-bad:#2a0a07;--hover:rgba(255,255,255,.08)}
+body,button,input,select,textarea,dialog,.chip,.sm,.n,.av,#proBtn,.ftl .lnk,.drf .lnk,.msel,.tag{font-family:var(--font)}
+.lnk{color:var(--link)}
+/* buttons: dark pill, 700 weight like articardd */
+.sm{font-weight:700;border-radius:14px;letter-spacing:.01em}
+.sm.p,.card .sm.p{background:var(--accent);color:var(--on);border-color:transparent}
+.sm.full{border-radius:14px;min-height:50px}
+.chip{font-weight:600;border-radius:999px;background:var(--surface)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--on)}
+#proBtn{background:var(--accent);color:var(--on);border-color:transparent;font-weight:700}
+#proBtn:hover{background:var(--accent);opacity:.92}
+/* cards */
+.card,.card.done{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card .n{color:var(--accent);border-color:var(--accent)}
+.card.done .n{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
+.how,.eform,.file{background:var(--surface);border-radius:16px}
+.nti.sel,.srow.new,.upd.new{background:var(--hover)}
+/* inputs */
+input[type=text],input[type=search],.eform select,.eform textarea,.msel,.ntin,.ntx,.rtm{background:var(--field);border-color:var(--line)}
+/* progress: gold */
+.fillbar{background:var(--accent)}
+.fillbar.hot{background:var(--bad)}
+.meter{background:var(--line)}
+/* avatar: same grey circle + cream person as articardd */
+.av{background:var(--avatar);color:var(--bg)}
+.wsrow .tag{background:var(--surface);border:1px solid var(--line);color:var(--mute);font-weight:700;letter-spacing:.08em}
+/* sheets: solid cream, 28px top, grabber */
+dialog{background:var(--bg)}
+dialog.sheet>.how{background:var(--bg);border:0}
+@media (max-width:600px){
+  dialog.sheet>*{border-radius:28px 28px 0 0}
+  dialog.sheet>.how::before{content:"";display:block;width:38px;height:5px;border-radius:3px;background:var(--line);margin:-4px auto 12px}
+}
+dialog::backdrop{background:rgba(28,28,30,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.toast{background:var(--ink);color:var(--bg);border-radius:14px;font-weight:600}
+.toast.err{background:var(--bad);color:var(--on-bad)}
+.gcode{background:var(--surface);color:var(--ink);border-color:var(--line)}
+/* wordmark + eyebrow (articardd style) */
+.wm{font:800 1.5rem/1 var(--font);letter-spacing:-.02em;color:var(--ink);text-align:center}
+.wm-tag{font:400 .75rem var(--font);letter-spacing:.12em;color:rgba(60,60,67,.6);text-align:center;margin-top:4px}
+.gate-wm{text-align:center;margin-bottom:14px}
+.eyebrow{font:700 .6875rem var(--font);letter-spacing:.16em;text-transform:uppercase;color:var(--link)}
+/* === END: ARTICARDD SKIN === */
 </style>
 </head>
 <body>
@@ -456,7 +508,9 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 <button class="orb" id="go" type="button" aria-label="Open setup"><canvas id="orbCv" aria-hidden="true"></canvas></button>
 <!-- === END: PARTICLE SPHERE HTML === -->
   <footer class="home-foot">
-       <p class="hf-copy">&copy; 2026 ArtiBytte. All rights reserved.</p>
+       <div class="wm">artibytte.</div>
+<div class="wm-tag">executive protocol</div>
+<p class="hf-copy" style="margin-top:8px">&copy; 2026 ArtiBytte. All rights reserved.</p>
   </footer>
 </main>
 
@@ -530,7 +584,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
   </div>
 
   <!-- === START: PROMPTS HEADING === -->
-<div class="sech"><div class="sect"><h2 class="sec">Prompts &amp; Setup</h2><p class="sub" id="progT" aria-live="polite"></p></div><button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button></div>
+<div class="sech"><div class="sect"><div class="eyebrow">Setup</div><h2 class="sec" style="margin-top:4px">Prompts &amp; Setup</h2><p class="sub" id="progT" aria-live="polite"></p></div><button class="ic" id="resetSteps" type="button" aria-label="New chat: reset steps" title="New chat: reset steps"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button></div>
 <!-- === END: PROMPTS HEADING === -->
 <div class="card" id="card-sp">
     <button class="n" type="button" data-n="sp" aria-label="Toggle step 1 done">1</button>
@@ -600,7 +654,7 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
       <ul>
         <li><b>What we store:</b> your license code and email, files and versions, AI notes, organization details, members and roles, settings, feedback, support messages and waitlist entries, plus basic usage logs (audit log kept up to 90 days).</li>
         <li><b>What we send:</b> transactional emails such as license, invitation, storage and backup notices, from team@artibytte.co.</li>
-        <li><b>Fonts:</b> the app loads a font from Google Fonts, so your browser connects to Google when the page opens. See Google's privacy policy.</li>
+        <li><b>Fonts:</b> the app uses your device's system fonts. No font files are loaded from third parties.</li>
         <li><b>No sale of data</b> and no ads or tracking in this version.</li>
         <li>We aim to handle any personal data we receive in line with the Data Privacy Act of 2012 (Republic Act No. 10173) and other applicable law. You may ask us to access, correct or delete data you sent us by emailing the address below.</li>
         <li>Do not enter data you are not allowed to store or share, such as another person's sensitive personal information without a lawful basis.</li>
@@ -944,7 +998,8 @@ dialog.editor[open]{animation:sheetUp .4s cubic-bezier(.2,.9,.3,1)}
 
 <dialog id="gate" aria-labelledby="gT">
   <div id="gA">
-    <h2 id="gT">Protocol access</h2>
+    <div class="gate-wm"><div class="wm">artibytte.</div><div class="wm-tag">executive protocol</div></div>
+<h2 id="gT" class="sr">Protocol access</h2>
     <p>Enter your license to continue.</p>
     <div class="field" style="margin-top:12px"><label for="g_lic">License</label><input type="text" id="g_lic" placeholder="ARTI-000000" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
     <p class="sub gerr" id="g_err" aria-live="polite"></p>
