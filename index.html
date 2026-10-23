@@ -2137,7 +2137,7 @@ TR[i]=tr;LN[i]=[0,.013,.009,.028][tr];GE[i]=Math.random();
     PH[i]=Math.random()*TAU;
 /* === START: NAVY STRIPE PICK === */
 /* one face (ny>0), center-to-rim line (cos(ph)>0), thin angular band */
-NV[i]=(ny>0&&nx>0&&Math.abs(nz)<.12)?1:0; /* vertical on screen: runs along local x, center to one rim */
+NV[i]=(ny>0&&nz>0&&Math.abs(nx)<.12)?1:0; /* horizontal on screen: runs along local z, center to one rim */
 /* === END: NAVY STRIPE PICK === */
 {const sy=Math.abs(ny),sx=Math.sqrt(1-ny*ny);let lo=0,hi=1.2;for(let it=0;it<28;it++){const m=(lo+hi)/2,p=m*sx,u=(p/2.2)*(p/2.2),ins=4*u<1&&m*sy<=1.1*Math.sqrt(1-4*u)*(.2072+2.0026*u-1.1228*u*u);if(ins)lo=m;else hi=m}CY[i]=lo/1.1}RR[i]=Math.min(1,Math.hypot(P[k],P[k+2])*CY[i]/1.1);
   }
@@ -2585,4 +2585,5 @@ if(location.hash==="#setup"&&!licOk())setTimeout(openGate,350);
 </script>
 </body>
 </html>
+
 
