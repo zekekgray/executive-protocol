@@ -2109,7 +2109,10 @@ $("back").onclick=()=>{
   (()=>{let s=0,pz=rbcZ(0);for(let j=1;j<=RBC_M;j++){const p0=1.1*(j-1)/RBC_M,p1=1.1*j/RBC_M,z1=rbcZ(p1);s+=2*Math.PI*((p0+p1)/2)*Math.hypot(p1-p0,z1-pz);pz=z1;RBC_C[j]=s}for(let j=0;j<=RBC_M;j++)RBC_C[j]/=s})();
   const rbcRho=()=>{const t=Math.random();let lo=0,hi=RBC_M;while(hi-lo>1){const m=(lo+hi)>>1;if(RBC_C[m]<t)lo=m;else hi=m}return 1.1*(lo+(t-RBC_C[lo])/((RBC_C[hi]-RBC_C[lo])||1))/RBC_M};
   /* === END: RBC SHAPE (BICONCAVE DISC) === */
-  const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
+  /* === START: NAVY STRIPE DATA === */
+const NV=new Uint8Array(N);
+/* === END: NAVY STRIPE DATA === */
+const P=new Float32Array(N*3),TG=new Float32Array(N*3),BN=new Float32Array(N*3);
   const CY=new Float32Array(N),HB=new Uint8Array(N),SP=new Float32Array(N),PH=new Float32Array(N),TR=new Uint8Array(N),LN=new Float32Array(N),GE=new Float32Array(N),RR=new Float32Array(N);
   for(let i=0;i<N;i++){
     const rho=rbcRho(),zz=(Math.random()<.5?-1:1)*rbcZ(rho),ph=Math.random()*TAU,L=Math.hypot(rho,zz);
@@ -2132,6 +2135,10 @@ TR[i]=tr;LN[i]=[0,.013,.009,.028][tr];GE[i]=Math.random();
     HB[i]=Math.random()<Math.max(0,Math.min(1,.5+(P[k+1]+P[k+2])*.6))?0:1;
     SP[i]=(Math.random()<.5?-1:1)*(.4+Math.random()*1.4);
     PH[i]=Math.random()*TAU;
+/* === START: NAVY STRIPE PICK === */
+/* one face (ny>0), center-to-rim line (cos(ph)>0), thin angular band */
+NV[i]=(ny>0&&Math.cos(ph)>0&&Math.abs(Math.sin(ph))<.07)?1:0;
+/* === END: NAVY STRIPE PICK === */
 {const sy=Math.abs(ny),sx=Math.sqrt(1-ny*ny);let lo=0,hi=1.2;for(let it=0;it<28;it++){const m=(lo+hi)/2,p=m*sx,u=(p/2.2)*(p/2.2),ins=4*u<1&&m*sy<=1.1*Math.sqrt(1-4*u)*(.2072+2.0026*u-1.1228*u*u);if(ins)lo=m;else hi=m}CY[i]=lo/1.1}RR[i]=Math.min(1,Math.hypot(P[k],P[k+2])*CY[i]/1.1);
   }
   const COL=[];window.ORBSTATS={total:N,accent:NA,shell:NS,core:NC,mid:N-NA-NS-NC};
@@ -2154,7 +2161,7 @@ const DB=9,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
     ry=(ry+.34*boost*dt)%TAU;tm+=dt;
     const cr=Math.cos(ry),sr=Math.sin(ry),c=w/2,R=w/2*.97,t=now/1000,tl=0,ct=1,st=0,fc=Math.cos(1.5708),fs=Math.sin(1.5708),mo=1;
     cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,w,w);
-    const paths=[],ap=[];for(let k=0;k<NH*3*DB;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gb=[0,1,2,3,4].map(()=>new Path2D()),gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()];
+    const paths=[],ap=[];for(let k=0;k<NH*3*DB;k++)paths.push(new Path2D());for(let k=0;k<NH;k++)ap.push(new Path2D());const br=1+.012*Math.sin(tm*1.1);const gb=[0,1,2,3,4].map(()=>new Path2D()),gp=[new Path2D(),new Path2D(),new Path2D()],tp=[new Path2D(),new Path2D()],nv=[new Path2D(),new Path2D()];
     for(let i=0;i<N;i++){
       const k=i*3,th=tm*SP[i]*.7+PH[i],cc=Math.cos(th)*LN[i],ss=Math.sin(th)*LN[i];
       const ox=TG[k]*cc+BN[k]*ss,oy=TG[k+1]*cc+BN[k+1]*ss,oz=TG[k+2]*cc+BN[k+2]*ss;
@@ -2163,6 +2170,9 @@ const DB=9,COLD=HUES.map(h=>TA.map(a=>Array.from({length:DB},(_,b)=>{const t=b/(
       const oxa=ox*fc-oy*fs,oya=ox*fs+oy*fc,a1=oxa*cr+oz*sr,c1=-oxa*sr+oz*cr,b2=oya*ct-c1*st;
       const tr=TR[i],fr=z2>0?1:0,db=Math.max(0,Math.min(DB-1,Math.round((z2+1)*.5*(DB-1))));
 if(tr===3&&!fr)continue;
+/* === START: NAVY STRIPE ROUTE === */
+if(NV[i]){const q=nv[fr];q.moveTo(c+(x1+a1)*R,c+(y2+b2)*R);q.lineTo(c+(x1+a1)*R+.01,c+(y2+b2)*R);continue}
+/* === END: NAVY STRIPE ROUTE === */
 let p;
 if(tr===0){
   const rr=RR[i],gw=1,ge=GE[i],pg=0,gbi=Math.min(4,Math.floor(rr/.08));
@@ -2195,6 +2205,10 @@ cx.lineWidth=1.3;cx.strokeStyle="hsla(43,85%,50%,.35)";cx.stroke(gp[0]);
 cx.lineWidth=1.5;cx.strokeStyle="hsla(43,90%,58%,.85)";cx.stroke(gp[1]);for(let b=0;b<5;b++){const f=1-b/5;cx.lineWidth=1.2+1.6*f;cx.strokeStyle="hsla(45,100%,"+(62+22*f)+"%,"+(.12+.88*f*f).toFixed(3)+")";cx.stroke(gb[b]);}
 cx.lineWidth=4.2;cx.strokeStyle="hsla(45,100%,70%,.22)";cx.stroke(gp[2]);
 cx.lineWidth=2.4;cx.strokeStyle="hsla(45,100%,78%,1)";cx.stroke(gp[2]);
+/* === START: NAVY STRIPE DRAW === */
+cx.lineWidth=1.2;cx.strokeStyle="hsla(224,75%,26%,.35)";cx.stroke(nv[0]);
+cx.lineWidth=1.4;cx.strokeStyle="hsla(224,80%,30%,.7)";cx.stroke(nv[1]);
+/* === END: NAVY STRIPE DRAW === */
 cx.lineWidth=1.3;cx.strokeStyle="hsla(174,70%,48%,.35)";cx.stroke(tp[0]);
 cx.lineWidth=1.5;cx.strokeStyle="hsla(174,75%,56%,.9)";cx.stroke(tp[1]);
 for(let h=0;h<NH;h++){cx.lineWidth=2.6;cx.strokeStyle=ACOL[h][0];cx.stroke(ap[h]);cx.lineWidth=1.5;cx.strokeStyle=ACOL[h][1];cx.stroke(ap[h])}
@@ -2571,3 +2585,4 @@ if(location.hash==="#setup"&&!licOk())setTimeout(openGate,350);
 </script>
 </body>
 </html>
+
